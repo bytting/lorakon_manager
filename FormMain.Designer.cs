@@ -101,6 +101,9 @@
             this.gridValidation = new System.Windows.Forms.DataGridView();
             this.menuValidationGrid = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.menuItemDeleteNuclide = new System.Windows.Forms.ToolStripMenuItem();
+            this.gridGeometries = new System.Windows.Forms.DataGridView();
+            this.menuGeometryGrid = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.menuItemDeleteGeometry = new System.Windows.Forms.ToolStripMenuItem();
             this.status.SuspendLayout();
             this.menu.SuspendLayout();
             this.tools.SuspendLayout();
@@ -121,8 +124,11 @@
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             this.pageValidation.SuspendLayout();
+            this.pageGeometries.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridValidation)).BeginInit();
             this.menuValidationGrid.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gridGeometries)).BeginInit();
+            this.menuGeometryGrid.SuspendLayout();
             this.SuspendLayout();
             // 
             // status
@@ -796,7 +802,7 @@
             this.btnMenuValidation.Name = "btnMenuValidation";
             this.btnMenuValidation.Size = new System.Drawing.Size(314, 216);
             this.btnMenuValidation.TabIndex = 3;
-            this.btnMenuValidation.Text = "Validering";
+            this.btnMenuValidation.Text = "Nuklider";
             this.btnMenuValidation.UseVisualStyleBackColor = true;
             this.btnMenuValidation.Click += new System.EventHandler(this.btnMenuValidation_Click);
             // 
@@ -865,11 +871,12 @@
             this.pageValidation.Padding = new System.Windows.Forms.Padding(3);
             this.pageValidation.Size = new System.Drawing.Size(1031, 514);
             this.pageValidation.TabIndex = 4;
-            this.pageValidation.Text = "Validering";
+            this.pageValidation.Text = "Nuklider";
             // 
             // pageGeometries
             // 
             this.pageGeometries.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.pageGeometries.Controls.Add(this.gridGeometries);
             this.pageGeometries.Location = new System.Drawing.Point(4, 24);
             this.pageGeometries.Name = "pageGeometries";
             this.pageGeometries.Padding = new System.Windows.Forms.Padding(3);
@@ -907,6 +914,36 @@
             this.menuItemDeleteNuclide.Size = new System.Drawing.Size(139, 22);
             this.menuItemDeleteNuclide.Text = "Slett nuklide";
             this.menuItemDeleteNuclide.Click += new System.EventHandler(this.menuItemDeleteNuclide_Click);
+            // 
+            // gridGeometries
+            // 
+            this.gridGeometries.AllowUserToResizeRows = false;
+            this.gridGeometries.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.gridGeometries.BackgroundColor = System.Drawing.SystemColors.ButtonFace;
+            this.gridGeometries.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.gridGeometries.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.gridGeometries.ContextMenuStrip = this.menuGeometryGrid;
+            this.gridGeometries.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gridGeometries.Location = new System.Drawing.Point(3, 3);
+            this.gridGeometries.Name = "gridGeometries";
+            this.gridGeometries.RowHeadersVisible = false;
+            this.gridGeometries.Size = new System.Drawing.Size(1025, 508);
+            this.gridGeometries.TabIndex = 0;
+            this.gridGeometries.RowValidating += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.gridGeometries_RowValidating);
+            // 
+            // menuGeometryGrid
+            // 
+            this.menuGeometryGrid.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuItemDeleteGeometry});
+            this.menuGeometryGrid.Name = "menuGeometryGrid";
+            this.menuGeometryGrid.Size = new System.Drawing.Size(162, 26);
+            // 
+            // menuItemDeleteGeometry
+            // 
+            this.menuItemDeleteGeometry.Name = "menuItemDeleteGeometry";
+            this.menuItemDeleteGeometry.Size = new System.Drawing.Size(161, 22);
+            this.menuItemDeleteGeometry.Text = "Delete geometry";
+            this.menuItemDeleteGeometry.Click += new System.EventHandler(this.menuItemDeleteGeometry_Click);
             // 
             // FormMain
             // 
@@ -953,8 +990,11 @@
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             this.pageValidation.ResumeLayout(false);
+            this.pageGeometries.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridValidation)).EndInit();
             this.menuValidationGrid.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.gridGeometries)).EndInit();
+            this.menuGeometryGrid.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1031,6 +1071,9 @@
         private System.Windows.Forms.DataGridView gridValidation;
         private System.Windows.Forms.ContextMenuStrip menuValidationGrid;
         private System.Windows.Forms.ToolStripMenuItem menuItemDeleteNuclide;
+        private System.Windows.Forms.DataGridView gridGeometries;
+        private System.Windows.Forms.ContextMenuStrip menuGeometryGrid;
+        private System.Windows.Forms.ToolStripMenuItem menuItemDeleteGeometry;
     }
 }
 

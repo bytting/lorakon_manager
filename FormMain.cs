@@ -125,6 +125,7 @@ namespace lorakon_manager
                 cboxEditSampleType.Items.Add(new SampleType(GetLabelFromSampleType(st), st));
 
             BindGridValidation();
+            BindGridGeometries();
         }
 
         public void LoadSettings()
@@ -639,7 +640,7 @@ where 1=1
             adapter.Fill(dt);
             gridValidation.DataSource = dt;
             gridValidation.Columns[0].Visible = false;
-        }
+        }        
 
         private void gridValidation_RowValidating(object sender, DataGridViewCellCancelEventArgs e)
         {
@@ -702,6 +703,77 @@ where 1=1
             command.Parameters.AddWithValue("@NuclideName", nuclideName);
             command.ExecuteNonQuery();            
             BindGridValidation();
+        }
+
+        private void BindGridGeometries()
+        {
+            SqlDataAdapter adapter = new SqlDataAdapter("select * from SpectrumGeometryRules", connection);
+            DataTable dt = new DataTable();
+            adapter.Fill(dt);
+            gridGeometries.DataSource = dt;
+            gridGeometries.Columns[0].Visible = false;
+        }
+
+        private void gridGeometries_RowValidating(object sender, DataGridViewCellCancelEventArgs e)
+        {
+            try
+            {
+                if (!gridGeometries.IsCurrentRowDirty)
+                    return;
+
+                SqlCommand command = GetInsertOrUpdateCommandForGeometries(e);
+                command.ExecuteNonQuery();
+                gridGeometries.Update();
+                gridGeometries.Refresh();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        public SqlCommand GetInsertOrUpdateCommandForGeometries(DataGridViewCellCancelEventArgs e)
+        {
+            DataGridViewRow row = gridGeometries.Rows[e.RowIndex];
+
+            string geometryName = row.Cells["Geometry"].Value.ToString();
+
+            SqlCommand command = new SqlCommand("select count(*) from SpectrumGeometryRules where Geometry = '" + geometryName + "'", connection);
+            int cnt = (int)command.ExecuteScalar();
+
+            if (cnt <= 0)
+            {
+                command.CommandText = "insert into SpectrumGeometryRules values (@ID, @Geometry, @Unit, @Minimum, @Maximum)";
+                command.Parameters.AddWithValue("@ID", Guid.NewGuid());
+            }
+            else
+            {
+                command.CommandText = "update SpectrumGeometryRules set Unit=@Unit, Minimum=@Minimum, Maximum=@Maximum where Geometry=@Geometry";
+            }
+
+            command.Parameters.AddWithValue("@Geometry", row.Cells["Geometry"].Value);
+            command.Parameters.AddWithValue("@Unit", row.Cells["Unit"].Value);
+            command.Parameters.AddWithValue("@Minimum", row.Cells["Minimum"].Value);
+            command.Parameters.AddWithValue("@Maximum", row.Cells["Maximum"].Value);            
+
+            return command;
+        }
+
+        private void menuItemDeleteGeometry_Click(object sender, EventArgs e)
+        {
+            if (gridGeometries.SelectedCells.Count <= 0)
+                return;
+
+            DataGridViewCell cell = gridGeometries.SelectedCells[0];
+            DataGridViewRow row = cell.OwningRow;
+            string geometry = row.Cells["Geometry"].Value.ToString();
+            if (String.IsNullOrEmpty(geometry.Trim()))
+                return;
+
+            SqlCommand command = new SqlCommand("delete from SpectrumGeometryRules where Geometry=@Geometry", connection);
+            command.Parameters.AddWithValue("@Geometry", geometry);
+            command.ExecuteNonQuery();
+            BindGridGeometries();
         }
 
         private bool SetSpectrumParameter(string filename, string param, string val)
