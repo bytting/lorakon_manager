@@ -67,10 +67,7 @@ namespace lorakon_manager
             tabs.ItemSize = new Size(0, 1);
             tabs.SizeMode = TabSizeMode.Fixed;
 
-            tabs_SelectedIndexChanged(sender, e);
-
-            tabs.SelectedTab = pageMain;
-            lblPage.Text = tabs.SelectedTab.Text;
+            tabs_SelectedIndexChanged(sender, e);            
 
             cboxAccount.DisplayMember = "Name";
             cboxAccount.ValueMember = "ID";
@@ -126,6 +123,8 @@ namespace lorakon_manager
             string[] sampTypes = GetSampleTypes();
             foreach (string st in sampTypes)
                 cboxEditSampleType.Items.Add(new SampleType(GetLabelFromSampleType(st), st));
+
+            BindGridValidation();
         }
 
         public void LoadSettings()
@@ -281,7 +280,27 @@ namespace lorakon_manager
             tabs.SelectedTab = pageSearch;
             populateGrid();
         }
-        
+
+        private void btnMenuValidation_Click(object sender, EventArgs e)
+        {
+            tabs.SelectedTab = pageValidation;
+        }
+
+        private void btnMenuGeometry_Click(object sender, EventArgs e)
+        {
+            tabs.SelectedTab = pageGeometries;
+        }
+
+        private void btnMainEdit_Click(object sender, EventArgs e)
+        {
+            tabs.SelectedTab = pageEdit;
+        }
+
+        private void btnMainLog_Click(object sender, EventArgs e)
+        {
+            tabs.SelectedTab = pageLog;
+        }
+
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
         {
             if(connection != null && connection.State == ConnectionState.Open)
@@ -393,12 +412,7 @@ where 1=1
             Guid id = new Guid(row.Cells["ID"].Value.ToString());            
             FormShowDetails form = new FormShowDetails(connection, id);
             form.ShowDialog();
-        }
-
-        private void btnMainEdit_Click(object sender, EventArgs e)
-        {
-            tabs.SelectedTab = pageEdit;
-        }
+        }        
 
         private void menuItemOpenFiles_Click(object sender, EventArgs e)
         {            
@@ -466,6 +480,8 @@ where 1=1
                 lbLogMessages.Items.Clear();
                 lbLogMessages.Items.AddRange(GetLogMessages(dtLogFrom.Value, dtLogTo.Value));
             }
+            
+            lblPage.Text = tabs.SelectedTab.Text;
         }
 
         private string GetSpectrumParameter(string filename, string param)
@@ -581,12 +597,7 @@ where 1=1
             if (account != null && account.ID != Guid.Empty)
                 tbEditAccountID.Text = account.ID.ToString();
             else tbEditAccountID.Text = "";
-        }
-
-        private void btnMainLog_Click(object sender, EventArgs e)
-        {
-            tabs.SelectedTab = pageLog;
-        }
+        }        
 
         void PopulateLog()
         {
@@ -619,6 +630,78 @@ where 1=1
         private void cboxLogSeverity_SelectedIndexChanged(object sender, EventArgs e)
         {
             PopulateLog();
+        }
+
+        private void BindGridValidation()
+        {
+            SqlDataAdapter adapter = new SqlDataAdapter("select * from SpectrumValidationRules", connection);
+            DataTable dt = new DataTable();
+            adapter.Fill(dt);
+            gridValidation.DataSource = dt;
+            gridValidation.Columns[0].Visible = false;
+        }
+
+        private void gridValidation_RowValidating(object sender, DataGridViewCellCancelEventArgs e)
+        {
+            try
+            {
+                if (!gridValidation.IsCurrentRowDirty)
+                    return;
+
+                SqlCommand command = GetInsertOrUpdateCommand(e);
+                command.ExecuteNonQuery();
+                gridValidation.Update();
+                gridValidation.Refresh();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        public SqlCommand GetInsertOrUpdateCommand(DataGridViewCellCancelEventArgs e)
+        {
+            DataGridViewRow row = gridValidation.Rows[e.RowIndex];
+
+            string nuclideName = row.Cells["NuclideName"].Value.ToString();            
+
+            SqlCommand command = new SqlCommand("select count(*) from SpectrumValidationRules where NuclideName = '" + nuclideName + "'", connection);
+            int cnt = (int)command.ExecuteScalar();            
+
+            if (cnt <= 0)
+            {
+                command.CommandText = "insert into SpectrumValidationRules values (@ID, @NuclideName, @ActivityMin, @ActivityMax, @ConfidenceMin, @CanBeAutoApproved)";
+                command.Parameters.AddWithValue("@ID", Guid.NewGuid());
+            }
+            else
+            {
+                command.CommandText = "update SpectrumValidationRules set ActivityMin=@ActivityMin, ActivityMax=@ActivityMax, ConfidenceMin=@ConfidenceMin, CanBeAutoApproved=@CanBeAutoApproved where NuclideName=@NuclideName";                
+            }
+
+            command.Parameters.AddWithValue("@NuclideName", row.Cells["NuclideName"].Value);
+            command.Parameters.AddWithValue("@ActivityMin", row.Cells["ActivityMin"].Value);
+            command.Parameters.AddWithValue("@ActivityMax", row.Cells["ActivityMax"].Value);
+            command.Parameters.AddWithValue("@ConfidenceMin", row.Cells["ConfidenceMin"].Value);
+            command.Parameters.AddWithValue("@CanBeAutoApproved", row.Cells["CanBeAutoApproved"].Value);
+
+            return command;
+        }
+
+        private void menuItemDeleteNuclide_Click(object sender, EventArgs e)
+        {
+            if (gridValidation.SelectedCells.Count <= 0)
+                return;
+
+            DataGridViewCell cell = gridValidation.SelectedCells[0];
+            DataGridViewRow row = cell.OwningRow;
+            string nuclideName = row.Cells["NuclideName"].Value.ToString();
+            if (String.IsNullOrEmpty(nuclideName.Trim()))
+                return;
+
+            SqlCommand command = new SqlCommand("delete from SpectrumValidationRules where NuclideName=@NuclideName", connection);
+            command.Parameters.AddWithValue("@NuclideName", nuclideName);
+            command.ExecuteNonQuery();            
+            BindGridValidation();
         }
 
         private bool SetSpectrumParameter(string filename, string param, string val)

@@ -73,9 +73,49 @@ namespace lorakon_manager.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap edit256 {
+        internal static System.Drawing.Bitmap doc_128 {
             get {
-                object obj = ResourceManager.GetObject("edit256", resourceCulture);
+                object obj = ResourceManager.GetObject("doc_128", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap doc_edit_128 {
+            get {
+                object obj = ResourceManager.GetObject("doc_edit_128", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap doc_search_128 {
+            get {
+                object obj = ResourceManager.GetObject("doc_search_128", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap doc_settings_128 {
+            get {
+                object obj = ResourceManager.GetObject("doc_settings_128", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap doc_star_128 {
+            get {
+                object obj = ResourceManager.GetObject("doc_star_128", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -103,29 +143,9 @@ namespace lorakon_manager.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap log256 {
-            get {
-                object obj = ResourceManager.GetObject("log256", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap open32 {
             get {
                 object obj = ResourceManager.GetObject("open32", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap search256 {
-            get {
-                object obj = ResourceManager.GetObject("search256", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
