@@ -465,12 +465,14 @@ where 1=1
 
         private void tabs_SelectedIndexChanged(object sender, EventArgs e)
         {
-            menuItemOpenFiles.Enabled = false;
+            menuItemOpenFiles.Visible = false;
             btnEditOpen.Visible = false;
+            btnValidationTrash.Visible = false;
+            btnGeometryTrash.Visible = false;
 
             if (tabs.SelectedTab == pageEdit)
             {
-                menuItemOpenFiles.Enabled = true;
+                menuItemOpenFiles.Visible = true;
                 btnEditOpen.Visible = true;
             }
             else if (tabs.SelectedTab == pageLog)
@@ -481,7 +483,15 @@ where 1=1
                 lbLogMessages.Items.Clear();
                 lbLogMessages.Items.AddRange(GetLogMessages(dtLogFrom.Value, dtLogTo.Value));
             }
-            
+            else if (tabs.SelectedTab == pageValidation)
+            {
+                btnValidationTrash.Visible = true;
+            }
+            else if (tabs.SelectedTab == pageGeometries)
+            {
+                btnGeometryTrash.Visible = true;
+            }
+
             lblPage.Text = tabs.SelectedTab.Text;
         }
 
@@ -693,6 +703,9 @@ where 1=1
             if (gridValidation.SelectedCells.Count <= 0)
                 return;
 
+            if (MessageBox.Show("Er du sikker på at du vil slette?", "Advarsel", MessageBoxButtons.YesNo) == DialogResult.No)
+                return;
+
             DataGridViewCell cell = gridValidation.SelectedCells[0];
             DataGridViewRow row = cell.OwningRow;
             string nuclideName = row.Cells["NuclideName"].Value.ToString();
@@ -762,6 +775,9 @@ where 1=1
         private void menuItemDeleteGeometry_Click(object sender, EventArgs e)
         {
             if (gridGeometries.SelectedCells.Count <= 0)
+                return;
+
+            if (MessageBox.Show("Er du sikker på at du vil slette?", "Advarsel", MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
 
             DataGridViewCell cell = gridGeometries.SelectedCells[0];

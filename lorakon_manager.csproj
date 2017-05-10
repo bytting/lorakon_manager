@@ -104,6 +104,7 @@
     <Content Include="images\Lorakon.ico" />
     <Content Include="images\open-32.png" />
     <None Include="images\search256.png" />
+    <None Include="images\trash-32.png" />
     <Content Include="pars.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

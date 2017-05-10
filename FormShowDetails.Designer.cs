@@ -164,21 +164,21 @@
             this.gridNuclideResults.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.gridNuclideResults.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gridNuclideResults.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gridNuclideResults.Location = new System.Drawing.Point(0, 302);
+            this.gridNuclideResults.Location = new System.Drawing.Point(0, 306);
             this.gridNuclideResults.Name = "gridNuclideResults";
             this.gridNuclideResults.RowHeadersVisible = false;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.ButtonFace;
             dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
             this.gridNuclideResults.RowsDefaultCellStyle = dataGridViewCellStyle1;
             this.gridNuclideResults.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.gridNuclideResults.Size = new System.Drawing.Size(993, 281);
+            this.gridNuclideResults.Size = new System.Drawing.Size(993, 277);
             this.gridNuclideResults.TabIndex = 2;
             // 
             // panel1
             // 
             this.panel1.Controls.Add(this.tableLayoutPanel1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 36);
+            this.panel1.Location = new System.Drawing.Point(0, 40);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(993, 266);
             this.panel1.TabIndex = 3;
@@ -1048,16 +1048,17 @@
             this.btnOpenInGenie});
             this.toolsDetails.Location = new System.Drawing.Point(0, 0);
             this.toolsDetails.Name = "toolsDetails";
-            this.toolsDetails.Size = new System.Drawing.Size(993, 36);
+            this.toolsDetails.Size = new System.Drawing.Size(993, 40);
             this.toolsDetails.TabIndex = 5;
             this.toolsDetails.Text = "toolStrip1";
             // 
             // btnOpenInGenie
             // 
             this.btnOpenInGenie.Image = global::lorakon_manager.Properties.Resources.genie;
+            this.btnOpenInGenie.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.btnOpenInGenie.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnOpenInGenie.Name = "btnOpenInGenie";
-            this.btnOpenInGenie.Size = new System.Drawing.Size(83, 33);
+            this.btnOpenInGenie.Size = new System.Drawing.Size(99, 37);
             this.btnOpenInGenie.Text = "Vis spekter";
             this.btnOpenInGenie.Click += new System.EventHandler(this.btnOpenInGenie_Click);
             // 
