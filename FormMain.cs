@@ -34,11 +34,12 @@ using System.Windows.Forms;
 namespace lorakon_manager
 {
     public partial class FormMain : Form
-    {        
+    {
         SqlConnection connection = null;
 
         private string ParsExecutable, GetParsExecutable;
 
+        string InstallationDirectory;
         private static string SettingsPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments) + Path.DirectorySeparatorChar + "LorakonManager";
         private static string SettingsFile = SettingsPath + Path.DirectorySeparatorChar + "Settings.xml";
         private string SampleTypeFile = SettingsPath + Path.DirectorySeparatorChar + "sample-types.xml";
@@ -52,14 +53,6 @@ namespace lorakon_manager
 
         private void FormMain_Load(object sender, EventArgs e)
         {
-            try
-            {
-                string[] files = Directory.GetFiles(Path.GetTempPath(), "*.cnf");
-                foreach (string file in files)
-                    File.Delete(file);
-            }
-            catch { }
-
             Width = (Screen.FromControl(this).Bounds.Right - Screen.FromControl(this).Bounds.Left) / 2;
             Height = (Screen.FromControl(this).Bounds.Bottom - Screen.FromControl(this).Bounds.Top) / 2;
 
@@ -67,7 +60,7 @@ namespace lorakon_manager
             tabs.ItemSize = new Size(0, 1);
             tabs.SizeMode = TabSizeMode.Fixed;
 
-            tabs_SelectedIndexChanged(sender, e);            
+            tabs_SelectedIndexChanged(sender, e);
 
             cboxAccount.DisplayMember = "Name";
             cboxAccount.ValueMember = "ID";
@@ -75,9 +68,9 @@ namespace lorakon_manager
             cboxEditAccountName.ValueMember = "ID";
 
             dtFrom.Value = DateTime.Now - new TimeSpan(30, 0, 0, 0);
-            dtTo.Value = DateTime.Now;            
+            dtTo.Value = DateTime.Now;
 
-            string InstallationDirectory = Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]) + Path.DirectorySeparatorChar;
+            InstallationDirectory = Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]) + Path.DirectorySeparatorChar;
 
             if (!Directory.Exists(SettingsPath))
                 Directory.CreateDirectory(SettingsPath);
@@ -86,24 +79,7 @@ namespace lorakon_manager
                 File.Copy(InstallationDirectory + Path.DirectorySeparatorChar + "sample-types.xml", SampleTypeFile, false);
 
             LoadSettings();
-
-            connection = new SqlConnection(SettingsData.ConnectionString);
-            connection.Open();
-
-            SqlCommand command = new SqlCommand("select ID, vchName from Account order by vchName", connection);
-            SqlDataReader reader = command.ExecuteReader();
-
-            cboxAccount.Items.Add(new Account(Guid.Empty, ""));
-            cboxEditAccountName.Items.Add(new Account(Guid.Empty, ""));
-            while (reader.Read())
-            {
-                Guid id = new Guid(Convert.ToString(reader["ID"]));
-                string name = Convert.ToString(reader["vchName"]);
-
-                cboxAccount.Items.Add(new Account(id, name));
-                cboxEditAccountName.Items.Add(new Account(id, name));
-            }
-            reader.Close();            
+            lblStatus.Text = "Kontakter databasen, vennligst vent...";
 
             ParsExecutable = InstallationDirectory + "pars.exe";
             if (!File.Exists(ParsExecutable))
@@ -123,9 +99,57 @@ namespace lorakon_manager
             string[] sampTypes = GetSampleTypes();
             foreach (string st in sampTypes)
                 cboxEditSampleType.Items.Add(new SampleType(GetLabelFromSampleType(st), st));
+        }
 
-            BindGridValidation();
-            BindGridGeometries();
+        private void FormMain_Shown(object sender, EventArgs e)
+        {
+            Enabled = false;
+
+            try
+            {
+                string[] files = Directory.GetFiles(Path.GetTempPath(), "*.cnf");
+                foreach (string file in files)
+                    File.Delete(file);
+            }
+            catch { }            
+
+            try
+            {
+                connection = new SqlConnection(SettingsData.ConnectionString);                
+                connection.Open();
+
+                SqlCommand command = new SqlCommand("select ID, vchName from Account order by vchName", connection);
+                SqlDataReader reader = command.ExecuteReader();
+
+                cboxAccount.Items.Add(new Account(Guid.Empty, ""));
+                cboxEditAccountName.Items.Add(new Account(Guid.Empty, ""));
+                while (reader.Read())
+                {
+                    Guid id = new Guid(Convert.ToString(reader["ID"]));
+                    string name = Convert.ToString(reader["vchName"]);
+
+                    cboxAccount.Items.Add(new Account(id, name));
+                    cboxEditAccountName.Items.Add(new Account(id, name));
+                }
+                reader.Close();                
+
+                BindGridValidation();
+                BindGridGeometries();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Feil");
+                Application.Exit();
+            }
+            finally
+            {
+                lblStatus.Text = "";
+                Enabled = true;
+            }
+        }
+
+        private void FormMain_Paint(object sender, PaintEventArgs e)
+        {            
         }
 
         public void LoadSettings()
@@ -435,7 +459,9 @@ where 1=1
                 {
                     progress.Value++;
 
-                    string stype = GetSpectrumParameter(filename, "STYPE");                    
+                    string stype = GetSpectrumParameter(filename, "STYPE");
+                    stype += " - " + GetSpectrumParameter(filename, "STITLE");
+                    string lab = GetSpectrumParameter(filename, "SSPRSTR1");
                     string accountID = GetSpectrumParameter(filename, "SURSTRING1");
                     string accountName = "";
                     if (!String.IsNullOrEmpty(accountID))
@@ -450,7 +476,7 @@ where 1=1
                     string sampleType = GetSpectrumParameter(filename, "SUCSTRING1");
                     string sampleComponent = GetSpectrumParameter(filename, "SUCSTRING2");
 
-                    string[] items = { filename, stype, accountName, accountID, sampleType, sampleComponent };
+                    string[] items = { filename, stype, lab, accountName, accountID, sampleType, sampleComponent };
 
                     gridEditFiles.Rows.Add(items);
 
@@ -556,6 +582,7 @@ where 1=1
 
         private void btnEditSave_Click(object sender, EventArgs e)
         {
+            String labName = tbEditLab.Text.Trim();
             Account account = cboxEditAccountName.SelectedItem as Account;
             SampleType sampleType = cboxEditSampleType.SelectedItem as SampleType;
             String sampleComponent = cboxEditSampleComponent.SelectedItem as String;
@@ -576,6 +603,12 @@ where 1=1
                 string filename = row.Cells["colFilename"].Value.ToString();
                 if (!File.Exists(filename))
                     continue;
+
+                if(!String.IsNullOrEmpty(labName))
+                {
+                    SetSpectrumParameter(filename, "SSPRSTR1", labName);
+                    row.Cells["colLab"].Value = labName;
+                }
 
                 if (account != null && account.ID != Guid.Empty)
                 {
@@ -689,11 +722,16 @@ where 1=1
                 command.CommandText = "update SpectrumValidationRules set ActivityMin=@ActivityMin, ActivityMax=@ActivityMax, ConfidenceMin=@ConfidenceMin, CanBeAutoApproved=@CanBeAutoApproved where NuclideName=@NuclideName";                
             }
 
+            bool canBeAutoApproved;
+            if (row.Cells["CanBeAutoApproved"].Value == null || row.Cells["CanBeAutoApproved"].Value == DBNull.Value)
+                canBeAutoApproved = false;
+            else canBeAutoApproved = Convert.ToBoolean(row.Cells["CanBeAutoApproved"].Value);
+
             command.Parameters.AddWithValue("@NuclideName", row.Cells["NuclideName"].Value);
             command.Parameters.AddWithValue("@ActivityMin", row.Cells["ActivityMin"].Value);
             command.Parameters.AddWithValue("@ActivityMax", row.Cells["ActivityMax"].Value);
             command.Parameters.AddWithValue("@ConfidenceMin", row.Cells["ConfidenceMin"].Value);
-            command.Parameters.AddWithValue("@CanBeAutoApproved", row.Cells["CanBeAutoApproved"].Value);
+            command.Parameters.AddWithValue("@CanBeAutoApproved", canBeAutoApproved);
 
             return command;
         }
@@ -790,7 +828,7 @@ where 1=1
             command.Parameters.AddWithValue("@Geometry", geometry);
             command.ExecuteNonQuery();
             BindGridGeometries();
-        }
+        }        
 
         private bool SetSpectrumParameter(string filename, string param, string val)
         {

@@ -33,16 +33,28 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.status = new System.Windows.Forms.StatusStrip();
+            this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.progress = new System.Windows.Forms.ToolStripProgressBar();
             this.menu = new System.Windows.Forms.MenuStrip();
             this.menuItemFile = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuItemOpenFiles = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.menuItemExit = new System.Windows.Forms.ToolStripMenuItem();
             this.tools = new System.Windows.Forms.ToolStrip();
+            this.btnBack = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.btnEditOpen = new System.Windows.Forms.ToolStripButton();
             this.lblPage = new System.Windows.Forms.ToolStripLabel();
+            this.btnValidationTrash = new System.Windows.Forms.ToolStripButton();
+            this.btnGeometryTrash = new System.Windows.Forms.ToolStripButton();
             this.tabs = new System.Windows.Forms.TabControl();
             this.pageMain = new System.Windows.Forms.TabPage();
             this.tableMain = new System.Windows.Forms.TableLayoutPanel();
+            this.btnMainSearch = new System.Windows.Forms.Button();
+            this.btnMainEdit = new System.Windows.Forms.Button();
+            this.btnMainLog = new System.Windows.Forms.Button();
+            this.btnMenuValidation = new System.Windows.Forms.Button();
+            this.btnMenuGeometry = new System.Windows.Forms.Button();
             this.pageSearch = new System.Windows.Forms.TabPage();
             this.gridSearch = new System.Windows.Forms.DataGridView();
             this.menuGrid = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -65,6 +77,7 @@
             this.gridEditFiles = new System.Windows.Forms.DataGridView();
             this.colFilename = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colSTYPE = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colLab = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colAccountName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colAccountID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colSampleType = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -76,6 +89,11 @@
             this.cboxEditAccountName = new System.Windows.Forms.ComboBox();
             this.btnEditSave = new System.Windows.Forms.Button();
             this.tbEditAccountID = new System.Windows.Forms.TextBox();
+            this.tbEditLab = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
             this.pageLog = new System.Windows.Forms.TabPage();
             this.lbLogMessages = new System.Windows.Forms.ListBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -86,26 +104,15 @@
             this.dtLogTo = new System.Windows.Forms.DateTimePicker();
             this.label7 = new System.Windows.Forms.Label();
             this.cboxLogSeverity = new System.Windows.Forms.ComboBox();
-            this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.pageValidation = new System.Windows.Forms.TabPage();
-            this.pageGeometries = new System.Windows.Forms.TabPage();
             this.gridValidation = new System.Windows.Forms.DataGridView();
             this.menuValidationGrid = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.menuItemDeleteNuclide = new System.Windows.Forms.ToolStripMenuItem();
+            this.pageGeometries = new System.Windows.Forms.TabPage();
             this.gridGeometries = new System.Windows.Forms.DataGridView();
             this.menuGeometryGrid = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.menuItemDeleteGeometry = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnMainSearch = new System.Windows.Forms.Button();
-            this.btnMainEdit = new System.Windows.Forms.Button();
-            this.btnMainLog = new System.Windows.Forms.Button();
-            this.btnMenuValidation = new System.Windows.Forms.Button();
-            this.btnMenuGeometry = new System.Windows.Forms.Button();
-            this.btnBack = new System.Windows.Forms.ToolStripButton();
-            this.btnEditOpen = new System.Windows.Forms.ToolStripButton();
-            this.btnValidationTrash = new System.Windows.Forms.ToolStripButton();
-            this.btnGeometryTrash = new System.Windows.Forms.ToolStripButton();
-            this.menuItemOpenFiles = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuItemExit = new System.Windows.Forms.ToolStripMenuItem();
+            this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.status.SuspendLayout();
             this.menu.SuspendLayout();
             this.tools.SuspendLayout();
@@ -126,9 +133,9 @@
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             this.pageValidation.SuspendLayout();
-            this.pageGeometries.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridValidation)).BeginInit();
             this.menuValidationGrid.SuspendLayout();
+            this.pageGeometries.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridGeometries)).BeginInit();
             this.menuGeometryGrid.SuspendLayout();
             this.SuspendLayout();
@@ -136,6 +143,7 @@
             // status
             // 
             this.status.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.lblStatus,
             this.progress});
             this.status.Location = new System.Drawing.Point(0, 602);
             this.status.Name = "status";
@@ -143,6 +151,11 @@
             this.status.Size = new System.Drawing.Size(1039, 22);
             this.status.TabIndex = 0;
             this.status.Text = "statusStrip1";
+            // 
+            // lblStatus
+            // 
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(0, 17);
             // 
             // progress
             // 
@@ -171,10 +184,26 @@
             this.menuItemFile.Size = new System.Drawing.Size(31, 20);
             this.menuItemFile.Text = "&Fil";
             // 
+            // menuItemOpenFiles
+            // 
+            this.menuItemOpenFiles.Image = global::lorakon_manager.Properties.Resources.open32;
+            this.menuItemOpenFiles.Name = "menuItemOpenFiles";
+            this.menuItemOpenFiles.Size = new System.Drawing.Size(169, 22);
+            this.menuItemOpenFiles.Text = "&Åpne CNF spekter";
+            this.menuItemOpenFiles.Click += new System.EventHandler(this.menuItemOpenFiles_Click);
+            // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(166, 6);
+            // 
+            // menuItemExit
+            // 
+            this.menuItemExit.Image = global::lorakon_manager.Properties.Resources.exit32;
+            this.menuItemExit.Name = "menuItemExit";
+            this.menuItemExit.Size = new System.Drawing.Size(169, 22);
+            this.menuItemExit.Text = "&Avslutt";
+            this.menuItemExit.Click += new System.EventHandler(this.menuItemExit_Click);
             // 
             // tools
             // 
@@ -193,10 +222,33 @@
             this.tools.TabIndex = 2;
             this.tools.Text = "toolStrip1";
             // 
+            // btnBack
+            // 
+            this.btnBack.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnBack.Image = global::lorakon_manager.Properties.Resources.back;
+            this.btnBack.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.btnBack.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnBack.Name = "btnBack";
+            this.btnBack.Size = new System.Drawing.Size(36, 37);
+            this.btnBack.Text = "Tilbake";
+            this.btnBack.Click += new System.EventHandler(this.menuItemBack_Click);
+            // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 40);
+            // 
+            // btnEditOpen
+            // 
+            this.btnEditOpen.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnEditOpen.Image = global::lorakon_manager.Properties.Resources.open32;
+            this.btnEditOpen.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.btnEditOpen.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnEditOpen.Name = "btnEditOpen";
+            this.btnEditOpen.Size = new System.Drawing.Size(36, 37);
+            this.btnEditOpen.Text = "Åpne CNF spekter";
+            this.btnEditOpen.ToolTipText = "Åpne CNF spekter";
+            this.btnEditOpen.Click += new System.EventHandler(this.menuItemOpenFiles_Click);
             // 
             // lblPage
             // 
@@ -207,6 +259,30 @@
             this.lblPage.Name = "lblPage";
             this.lblPage.Size = new System.Drawing.Size(90, 37);
             this.lblPage.Text = "lblPage";
+            // 
+            // btnValidationTrash
+            // 
+            this.btnValidationTrash.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnValidationTrash.Image = global::lorakon_manager.Properties.Resources.trash_32;
+            this.btnValidationTrash.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.btnValidationTrash.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnValidationTrash.Name = "btnValidationTrash";
+            this.btnValidationTrash.Size = new System.Drawing.Size(36, 37);
+            this.btnValidationTrash.Text = "toolStripButton1";
+            this.btnValidationTrash.ToolTipText = "Slett nuklide";
+            this.btnValidationTrash.Click += new System.EventHandler(this.menuItemDeleteNuclide_Click);
+            // 
+            // btnGeometryTrash
+            // 
+            this.btnGeometryTrash.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnGeometryTrash.Image = global::lorakon_manager.Properties.Resources.trash_32;
+            this.btnGeometryTrash.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.btnGeometryTrash.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnGeometryTrash.Name = "btnGeometryTrash";
+            this.btnGeometryTrash.Size = new System.Drawing.Size(36, 37);
+            this.btnGeometryTrash.Text = "toolStripButton1";
+            this.btnGeometryTrash.ToolTipText = "Slett geometri";
+            this.btnGeometryTrash.Click += new System.EventHandler(this.menuItemDeleteGeometry_Click);
             // 
             // tabs
             // 
@@ -256,6 +332,91 @@
             this.tableMain.Size = new System.Drawing.Size(1025, 504);
             this.tableMain.TabIndex = 0;
             // 
+            // btnMainSearch
+            // 
+            this.btnMainSearch.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnMainSearch.FlatAppearance.BorderSize = 0;
+            this.btnMainSearch.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.btnMainSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnMainSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 26F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnMainSearch.ForeColor = System.Drawing.Color.DimGray;
+            this.btnMainSearch.Image = global::lorakon_manager.Properties.Resources.doc_search_128;
+            this.btnMainSearch.Location = new System.Drawing.Point(35, 35);
+            this.btnMainSearch.Name = "btnMainSearch";
+            this.btnMainSearch.Size = new System.Drawing.Size(314, 214);
+            this.btnMainSearch.TabIndex = 0;
+            this.btnMainSearch.Text = "Søk";
+            this.btnMainSearch.UseVisualStyleBackColor = true;
+            this.btnMainSearch.Click += new System.EventHandler(this.btnMainSearch_Click);
+            // 
+            // btnMainEdit
+            // 
+            this.btnMainEdit.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnMainEdit.FlatAppearance.BorderSize = 0;
+            this.btnMainEdit.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.btnMainEdit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnMainEdit.Font = new System.Drawing.Font("Microsoft Sans Serif", 26F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnMainEdit.ForeColor = System.Drawing.Color.DimGray;
+            this.btnMainEdit.Image = global::lorakon_manager.Properties.Resources.doc_edit_128;
+            this.btnMainEdit.Location = new System.Drawing.Point(355, 35);
+            this.btnMainEdit.Name = "btnMainEdit";
+            this.btnMainEdit.Size = new System.Drawing.Size(314, 214);
+            this.btnMainEdit.TabIndex = 1;
+            this.btnMainEdit.Text = "Rediger";
+            this.btnMainEdit.UseVisualStyleBackColor = true;
+            this.btnMainEdit.Click += new System.EventHandler(this.btnMainEdit_Click);
+            // 
+            // btnMainLog
+            // 
+            this.btnMainLog.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnMainLog.FlatAppearance.BorderSize = 0;
+            this.btnMainLog.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.btnMainLog.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnMainLog.Font = new System.Drawing.Font("Microsoft Sans Serif", 26F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnMainLog.ForeColor = System.Drawing.Color.DimGray;
+            this.btnMainLog.Image = global::lorakon_manager.Properties.Resources.doc_128;
+            this.btnMainLog.Location = new System.Drawing.Point(675, 35);
+            this.btnMainLog.Name = "btnMainLog";
+            this.btnMainLog.Size = new System.Drawing.Size(315, 214);
+            this.btnMainLog.TabIndex = 2;
+            this.btnMainLog.Text = "Logg";
+            this.btnMainLog.UseVisualStyleBackColor = true;
+            this.btnMainLog.Click += new System.EventHandler(this.btnMainLog_Click);
+            // 
+            // btnMenuValidation
+            // 
+            this.btnMenuValidation.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnMenuValidation.FlatAppearance.BorderSize = 0;
+            this.btnMenuValidation.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.btnMenuValidation.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnMenuValidation.Font = new System.Drawing.Font("Microsoft Sans Serif", 26F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnMenuValidation.ForeColor = System.Drawing.Color.DimGray;
+            this.btnMenuValidation.Image = global::lorakon_manager.Properties.Resources.doc_settings_128;
+            this.btnMenuValidation.Location = new System.Drawing.Point(35, 255);
+            this.btnMenuValidation.Name = "btnMenuValidation";
+            this.btnMenuValidation.Size = new System.Drawing.Size(314, 214);
+            this.btnMenuValidation.TabIndex = 3;
+            this.btnMenuValidation.Text = "Nuklider";
+            this.btnMenuValidation.UseVisualStyleBackColor = true;
+            this.btnMenuValidation.Click += new System.EventHandler(this.btnMenuValidation_Click);
+            // 
+            // btnMenuGeometry
+            // 
+            this.btnMenuGeometry.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnMenuGeometry.FlatAppearance.BorderSize = 0;
+            this.btnMenuGeometry.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.btnMenuGeometry.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnMenuGeometry.Font = new System.Drawing.Font("Microsoft Sans Serif", 26F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnMenuGeometry.ForeColor = System.Drawing.Color.DimGray;
+            this.btnMenuGeometry.Image = global::lorakon_manager.Properties.Resources.doc_star_128;
+            this.btnMenuGeometry.Location = new System.Drawing.Point(355, 255);
+            this.btnMenuGeometry.Name = "btnMenuGeometry";
+            this.btnMenuGeometry.Size = new System.Drawing.Size(314, 214);
+            this.btnMenuGeometry.TabIndex = 4;
+            this.btnMenuGeometry.Text = "Geometrier";
+            this.btnMenuGeometry.UseVisualStyleBackColor = true;
+            this.btnMenuGeometry.Click += new System.EventHandler(this.btnMenuGeometry_Click);
+            // 
             // pageSearch
             // 
             this.pageSearch.BackColor = System.Drawing.SystemColors.ButtonFace;
@@ -264,7 +425,7 @@
             this.pageSearch.Location = new System.Drawing.Point(4, 24);
             this.pageSearch.Name = "pageSearch";
             this.pageSearch.Padding = new System.Windows.Forms.Padding(3);
-            this.pageSearch.Size = new System.Drawing.Size(1031, 514);
+            this.pageSearch.Size = new System.Drawing.Size(1031, 510);
             this.pageSearch.TabIndex = 1;
             this.pageSearch.Text = "Søk";
             // 
@@ -286,7 +447,7 @@
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.gridSearch.RowsDefaultCellStyle = dataGridViewCellStyle1;
             this.gridSearch.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.gridSearch.Size = new System.Drawing.Size(1025, 424);
+            this.gridSearch.Size = new System.Drawing.Size(1025, 419);
             this.gridSearch.TabIndex = 2;
             // 
             // menuGrid
@@ -466,7 +627,7 @@
             this.pageEdit.Location = new System.Drawing.Point(4, 24);
             this.pageEdit.Name = "pageEdit";
             this.pageEdit.Padding = new System.Windows.Forms.Padding(3);
-            this.pageEdit.Size = new System.Drawing.Size(1031, 514);
+            this.pageEdit.Size = new System.Drawing.Size(1031, 510);
             this.pageEdit.TabIndex = 2;
             this.pageEdit.Text = "Rediger";
             // 
@@ -482,6 +643,7 @@
             this.gridEditFiles.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colFilename,
             this.colSTYPE,
+            this.colLab,
             this.colAccountName,
             this.colAccountID,
             this.colSampleType,
@@ -494,7 +656,7 @@
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.gridEditFiles.RowsDefaultCellStyle = dataGridViewCellStyle2;
             this.gridEditFiles.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.gridEditFiles.Size = new System.Drawing.Size(1025, 421);
+            this.gridEditFiles.Size = new System.Drawing.Size(1025, 384);
             this.gridEditFiles.TabIndex = 1;
             // 
             // colFilename
@@ -505,9 +667,15 @@
             // 
             // colSTYPE
             // 
-            this.colSTYPE.HeaderText = "STYPE";
+            this.colSTYPE.HeaderText = "Type (STYPE)";
             this.colSTYPE.Name = "colSTYPE";
             this.colSTYPE.ReadOnly = true;
+            // 
+            // colLab
+            // 
+            this.colLab.HeaderText = "Lab (SSPRSTR1)";
+            this.colLab.Name = "colLab";
+            this.colLab.ReadOnly = true;
             // 
             // colAccountName
             // 
@@ -537,31 +705,37 @@
             // 
             this.panel1.Controls.Add(this.tableEdit);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(3, 424);
+            this.panel1.Location = new System.Drawing.Point(3, 387);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1025, 88);
+            this.panel1.Size = new System.Drawing.Size(1025, 120);
             this.panel1.TabIndex = 0;
             // 
             // tableEdit
             // 
-            this.tableEdit.ColumnCount = 3;
-            this.tableEdit.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableEdit.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableEdit.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableEdit.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 18F));
-            this.tableEdit.Controls.Add(this.cboxEditSampleType, 1, 0);
-            this.tableEdit.Controls.Add(this.cboxEditSampleComponent, 2, 0);
-            this.tableEdit.Controls.Add(this.cboxEditAccountName, 0, 0);
-            this.tableEdit.Controls.Add(this.btnEditSave, 2, 2);
-            this.tableEdit.Controls.Add(this.tbEditAccountID, 0, 1);
+            this.tableEdit.ColumnCount = 4;
+            this.tableEdit.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableEdit.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableEdit.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableEdit.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableEdit.Controls.Add(this.cboxEditSampleType, 2, 1);
+            this.tableEdit.Controls.Add(this.cboxEditSampleComponent, 3, 1);
+            this.tableEdit.Controls.Add(this.cboxEditAccountName, 1, 1);
+            this.tableEdit.Controls.Add(this.btnEditSave, 3, 3);
+            this.tableEdit.Controls.Add(this.tbEditAccountID, 1, 2);
+            this.tableEdit.Controls.Add(this.tbEditLab, 0, 1);
+            this.tableEdit.Controls.Add(this.label8, 0, 0);
+            this.tableEdit.Controls.Add(this.label9, 1, 0);
+            this.tableEdit.Controls.Add(this.label10, 2, 0);
+            this.tableEdit.Controls.Add(this.label11, 3, 0);
             this.tableEdit.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableEdit.Location = new System.Drawing.Point(0, 0);
             this.tableEdit.Name = "tableEdit";
-            this.tableEdit.RowCount = 3;
+            this.tableEdit.RowCount = 4;
+            this.tableEdit.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
             this.tableEdit.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
             this.tableEdit.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
             this.tableEdit.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableEdit.Size = new System.Drawing.Size(1025, 88);
+            this.tableEdit.Size = new System.Drawing.Size(1025, 120);
             this.tableEdit.TabIndex = 0;
             // 
             // cboxEditSampleType
@@ -571,9 +745,9 @@
             this.cboxEditSampleType.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cboxEditSampleType.DropDownWidth = 520;
             this.cboxEditSampleType.FormattingEnabled = true;
-            this.cboxEditSampleType.Location = new System.Drawing.Point(344, 3);
+            this.cboxEditSampleType.Location = new System.Drawing.Point(515, 31);
             this.cboxEditSampleType.Name = "cboxEditSampleType";
-            this.cboxEditSampleType.Size = new System.Drawing.Size(335, 23);
+            this.cboxEditSampleType.Size = new System.Drawing.Size(250, 23);
             this.cboxEditSampleType.TabIndex = 1;
             this.cboxEditSampleType.SelectedIndexChanged += new System.EventHandler(this.cboxEditSampleType_SelectedIndexChanged);
             // 
@@ -582,9 +756,9 @@
             this.cboxEditSampleComponent.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cboxEditSampleComponent.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboxEditSampleComponent.FormattingEnabled = true;
-            this.cboxEditSampleComponent.Location = new System.Drawing.Point(685, 3);
+            this.cboxEditSampleComponent.Location = new System.Drawing.Point(771, 31);
             this.cboxEditSampleComponent.Name = "cboxEditSampleComponent";
-            this.cboxEditSampleComponent.Size = new System.Drawing.Size(337, 23);
+            this.cboxEditSampleComponent.Size = new System.Drawing.Size(251, 23);
             this.cboxEditSampleComponent.TabIndex = 3;
             // 
             // cboxEditAccountName
@@ -593,18 +767,18 @@
             this.cboxEditAccountName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboxEditAccountName.DropDownWidth = 400;
             this.cboxEditAccountName.FormattingEnabled = true;
-            this.cboxEditAccountName.Location = new System.Drawing.Point(3, 3);
+            this.cboxEditAccountName.Location = new System.Drawing.Point(259, 31);
             this.cboxEditAccountName.Name = "cboxEditAccountName";
-            this.cboxEditAccountName.Size = new System.Drawing.Size(335, 23);
+            this.cboxEditAccountName.Size = new System.Drawing.Size(250, 23);
             this.cboxEditAccountName.TabIndex = 4;
             this.cboxEditAccountName.SelectedIndexChanged += new System.EventHandler(this.cboxEditAccountName_SelectedIndexChanged);
             // 
             // btnEditSave
             // 
             this.btnEditSave.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnEditSave.Location = new System.Drawing.Point(685, 59);
+            this.btnEditSave.Location = new System.Drawing.Point(771, 87);
             this.btnEditSave.Name = "btnEditSave";
-            this.btnEditSave.Size = new System.Drawing.Size(337, 26);
+            this.btnEditSave.Size = new System.Drawing.Size(251, 30);
             this.btnEditSave.TabIndex = 0;
             this.btnEditSave.Text = "Save";
             this.btnEditSave.UseVisualStyleBackColor = true;
@@ -614,11 +788,55 @@
             // 
             this.tbEditAccountID.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tbEditAccountID.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbEditAccountID.Location = new System.Drawing.Point(3, 31);
+            this.tbEditAccountID.Location = new System.Drawing.Point(259, 59);
             this.tbEditAccountID.Name = "tbEditAccountID";
             this.tbEditAccountID.ReadOnly = true;
-            this.tbEditAccountID.Size = new System.Drawing.Size(335, 14);
+            this.tbEditAccountID.Size = new System.Drawing.Size(250, 14);
             this.tbEditAccountID.TabIndex = 5;
+            // 
+            // tbEditLab
+            // 
+            this.tbEditLab.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tbEditLab.Location = new System.Drawing.Point(3, 31);
+            this.tbEditLab.Name = "tbEditLab";
+            this.tbEditLab.Size = new System.Drawing.Size(250, 21);
+            this.tbEditLab.TabIndex = 6;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(3, 0);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(28, 15);
+            this.label8.TabIndex = 7;
+            this.label8.Text = "Lab";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(259, 0);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(39, 15);
+            this.label9.TabIndex = 8;
+            this.label9.Text = "Konto";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(515, 0);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(60, 15);
+            this.label10.TabIndex = 9;
+            this.label10.Text = "Prøvetype";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(771, 0);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(29, 15);
+            this.label11.TabIndex = 10;
+            this.label11.Text = "Part";
             // 
             // pageLog
             // 
@@ -628,7 +846,7 @@
             this.pageLog.Location = new System.Drawing.Point(4, 24);
             this.pageLog.Name = "pageLog";
             this.pageLog.Padding = new System.Windows.Forms.Padding(3);
-            this.pageLog.Size = new System.Drawing.Size(1031, 514);
+            this.pageLog.Size = new System.Drawing.Size(1031, 510);
             this.pageLog.TabIndex = 3;
             this.pageLog.Text = "Logg";
             // 
@@ -643,7 +861,7 @@
             this.lbLogMessages.Location = new System.Drawing.Point(3, 35);
             this.lbLogMessages.Name = "lbLogMessages";
             this.lbLogMessages.ScrollAlwaysVisible = true;
-            this.lbLogMessages.Size = new System.Drawing.Size(1025, 477);
+            this.lbLogMessages.Size = new System.Drawing.Size(1025, 472);
             this.lbLogMessages.TabIndex = 6;
             // 
             // tableLayoutPanel1
@@ -737,11 +955,6 @@
             this.cboxLogSeverity.TabIndex = 6;
             this.cboxLogSeverity.SelectedIndexChanged += new System.EventHandler(this.cboxLogSeverity_SelectedIndexChanged);
             // 
-            // ofd
-            // 
-            this.ofd.Filter = "CNF files (*.cnf)|*.cnf|All files (*.*)|*.*";
-            this.ofd.Multiselect = true;
-            // 
             // pageValidation
             // 
             this.pageValidation.BackColor = System.Drawing.SystemColors.ButtonFace;
@@ -749,20 +962,9 @@
             this.pageValidation.Location = new System.Drawing.Point(4, 24);
             this.pageValidation.Name = "pageValidation";
             this.pageValidation.Padding = new System.Windows.Forms.Padding(3);
-            this.pageValidation.Size = new System.Drawing.Size(1031, 514);
+            this.pageValidation.Size = new System.Drawing.Size(1031, 510);
             this.pageValidation.TabIndex = 4;
             this.pageValidation.Text = "Nuklider";
-            // 
-            // pageGeometries
-            // 
-            this.pageGeometries.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.pageGeometries.Controls.Add(this.gridGeometries);
-            this.pageGeometries.Location = new System.Drawing.Point(4, 24);
-            this.pageGeometries.Name = "pageGeometries";
-            this.pageGeometries.Padding = new System.Windows.Forms.Padding(3);
-            this.pageGeometries.Size = new System.Drawing.Size(1031, 514);
-            this.pageGeometries.TabIndex = 5;
-            this.pageGeometries.Text = "Geometrier";
             // 
             // gridValidation
             // 
@@ -777,7 +979,7 @@
             this.gridValidation.MultiSelect = false;
             this.gridValidation.Name = "gridValidation";
             this.gridValidation.RowHeadersVisible = false;
-            this.gridValidation.Size = new System.Drawing.Size(1025, 509);
+            this.gridValidation.Size = new System.Drawing.Size(1025, 504);
             this.gridValidation.TabIndex = 0;
             this.gridValidation.RowValidating += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.gridValidation_RowValidating);
             // 
@@ -795,6 +997,17 @@
             this.menuItemDeleteNuclide.Text = "Slett nuklide";
             this.menuItemDeleteNuclide.Click += new System.EventHandler(this.menuItemDeleteNuclide_Click);
             // 
+            // pageGeometries
+            // 
+            this.pageGeometries.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.pageGeometries.Controls.Add(this.gridGeometries);
+            this.pageGeometries.Location = new System.Drawing.Point(4, 24);
+            this.pageGeometries.Name = "pageGeometries";
+            this.pageGeometries.Padding = new System.Windows.Forms.Padding(3);
+            this.pageGeometries.Size = new System.Drawing.Size(1031, 510);
+            this.pageGeometries.TabIndex = 5;
+            this.pageGeometries.Text = "Geometrier";
+            // 
             // gridGeometries
             // 
             this.gridGeometries.AllowUserToResizeRows = false;
@@ -807,7 +1020,7 @@
             this.gridGeometries.Location = new System.Drawing.Point(3, 3);
             this.gridGeometries.Name = "gridGeometries";
             this.gridGeometries.RowHeadersVisible = false;
-            this.gridGeometries.Size = new System.Drawing.Size(1025, 509);
+            this.gridGeometries.Size = new System.Drawing.Size(1025, 504);
             this.gridGeometries.TabIndex = 0;
             this.gridGeometries.RowValidating += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.gridGeometries_RowValidating);
             // 
@@ -825,153 +1038,10 @@
             this.menuItemDeleteGeometry.Text = "Delete geometry";
             this.menuItemDeleteGeometry.Click += new System.EventHandler(this.menuItemDeleteGeometry_Click);
             // 
-            // btnMainSearch
+            // ofd
             // 
-            this.btnMainSearch.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnMainSearch.FlatAppearance.BorderSize = 0;
-            this.btnMainSearch.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.btnMainSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnMainSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 26F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnMainSearch.ForeColor = System.Drawing.Color.DimGray;
-            this.btnMainSearch.Image = global::lorakon_manager.Properties.Resources.doc_search_128;
-            this.btnMainSearch.Location = new System.Drawing.Point(35, 35);
-            this.btnMainSearch.Name = "btnMainSearch";
-            this.btnMainSearch.Size = new System.Drawing.Size(314, 214);
-            this.btnMainSearch.TabIndex = 0;
-            this.btnMainSearch.Text = "Søk";
-            this.btnMainSearch.UseVisualStyleBackColor = true;
-            this.btnMainSearch.Click += new System.EventHandler(this.btnMainSearch_Click);
-            // 
-            // btnMainEdit
-            // 
-            this.btnMainEdit.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnMainEdit.FlatAppearance.BorderSize = 0;
-            this.btnMainEdit.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.btnMainEdit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnMainEdit.Font = new System.Drawing.Font("Microsoft Sans Serif", 26F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnMainEdit.ForeColor = System.Drawing.Color.DimGray;
-            this.btnMainEdit.Image = global::lorakon_manager.Properties.Resources.doc_edit_128;
-            this.btnMainEdit.Location = new System.Drawing.Point(355, 35);
-            this.btnMainEdit.Name = "btnMainEdit";
-            this.btnMainEdit.Size = new System.Drawing.Size(314, 214);
-            this.btnMainEdit.TabIndex = 1;
-            this.btnMainEdit.Text = "Rediger";
-            this.btnMainEdit.UseVisualStyleBackColor = true;
-            this.btnMainEdit.Click += new System.EventHandler(this.btnMainEdit_Click);
-            // 
-            // btnMainLog
-            // 
-            this.btnMainLog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnMainLog.FlatAppearance.BorderSize = 0;
-            this.btnMainLog.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.btnMainLog.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnMainLog.Font = new System.Drawing.Font("Microsoft Sans Serif", 26F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnMainLog.ForeColor = System.Drawing.Color.DimGray;
-            this.btnMainLog.Image = global::lorakon_manager.Properties.Resources.doc_128;
-            this.btnMainLog.Location = new System.Drawing.Point(675, 35);
-            this.btnMainLog.Name = "btnMainLog";
-            this.btnMainLog.Size = new System.Drawing.Size(315, 214);
-            this.btnMainLog.TabIndex = 2;
-            this.btnMainLog.Text = "Logg";
-            this.btnMainLog.UseVisualStyleBackColor = true;
-            this.btnMainLog.Click += new System.EventHandler(this.btnMainLog_Click);
-            // 
-            // btnMenuValidation
-            // 
-            this.btnMenuValidation.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnMenuValidation.FlatAppearance.BorderSize = 0;
-            this.btnMenuValidation.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.btnMenuValidation.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnMenuValidation.Font = new System.Drawing.Font("Microsoft Sans Serif", 26F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnMenuValidation.ForeColor = System.Drawing.Color.DimGray;
-            this.btnMenuValidation.Image = global::lorakon_manager.Properties.Resources.doc_settings_128;
-            this.btnMenuValidation.Location = new System.Drawing.Point(35, 255);
-            this.btnMenuValidation.Name = "btnMenuValidation";
-            this.btnMenuValidation.Size = new System.Drawing.Size(314, 214);
-            this.btnMenuValidation.TabIndex = 3;
-            this.btnMenuValidation.Text = "Nuklider";
-            this.btnMenuValidation.UseVisualStyleBackColor = true;
-            this.btnMenuValidation.Click += new System.EventHandler(this.btnMenuValidation_Click);
-            // 
-            // btnMenuGeometry
-            // 
-            this.btnMenuGeometry.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnMenuGeometry.FlatAppearance.BorderSize = 0;
-            this.btnMenuGeometry.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.btnMenuGeometry.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnMenuGeometry.Font = new System.Drawing.Font("Microsoft Sans Serif", 26F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnMenuGeometry.ForeColor = System.Drawing.Color.DimGray;
-            this.btnMenuGeometry.Image = global::lorakon_manager.Properties.Resources.doc_star_128;
-            this.btnMenuGeometry.Location = new System.Drawing.Point(355, 255);
-            this.btnMenuGeometry.Name = "btnMenuGeometry";
-            this.btnMenuGeometry.Size = new System.Drawing.Size(314, 214);
-            this.btnMenuGeometry.TabIndex = 4;
-            this.btnMenuGeometry.Text = "Geometrier";
-            this.btnMenuGeometry.UseVisualStyleBackColor = true;
-            this.btnMenuGeometry.Click += new System.EventHandler(this.btnMenuGeometry_Click);
-            // 
-            // btnBack
-            // 
-            this.btnBack.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnBack.Image = global::lorakon_manager.Properties.Resources.back;
-            this.btnBack.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.btnBack.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnBack.Name = "btnBack";
-            this.btnBack.Size = new System.Drawing.Size(36, 37);
-            this.btnBack.Text = "Tilbake";
-            this.btnBack.Click += new System.EventHandler(this.menuItemBack_Click);
-            // 
-            // btnEditOpen
-            // 
-            this.btnEditOpen.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnEditOpen.Image = global::lorakon_manager.Properties.Resources.open32;
-            this.btnEditOpen.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.btnEditOpen.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnEditOpen.Name = "btnEditOpen";
-            this.btnEditOpen.Size = new System.Drawing.Size(36, 37);
-            this.btnEditOpen.Text = "Åpne CNF spekter";
-            this.btnEditOpen.ToolTipText = "Åpne CNF spekter";
-            this.btnEditOpen.Click += new System.EventHandler(this.menuItemOpenFiles_Click);
-            // 
-            // btnValidationTrash
-            // 
-            this.btnValidationTrash.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnValidationTrash.Image = global::lorakon_manager.Properties.Resources.trash_32;
-            this.btnValidationTrash.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.btnValidationTrash.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnValidationTrash.Name = "btnValidationTrash";
-            this.btnValidationTrash.Size = new System.Drawing.Size(36, 37);
-            this.btnValidationTrash.Text = "toolStripButton1";
-            this.btnValidationTrash.ToolTipText = "Slett nuklide";
-            this.btnValidationTrash.Click += new System.EventHandler(this.menuItemDeleteNuclide_Click);
-            // 
-            // btnGeometryTrash
-            // 
-            this.btnGeometryTrash.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnGeometryTrash.Image = global::lorakon_manager.Properties.Resources.trash_32;
-            this.btnGeometryTrash.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.btnGeometryTrash.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnGeometryTrash.Name = "btnGeometryTrash";
-            this.btnGeometryTrash.Size = new System.Drawing.Size(36, 37);
-            this.btnGeometryTrash.Text = "toolStripButton1";
-            this.btnGeometryTrash.ToolTipText = "Slett geometri";
-            this.btnGeometryTrash.Click += new System.EventHandler(this.menuItemDeleteGeometry_Click);
-            // 
-            // menuItemOpenFiles
-            // 
-            this.menuItemOpenFiles.Image = global::lorakon_manager.Properties.Resources.open32;
-            this.menuItemOpenFiles.Name = "menuItemOpenFiles";
-            this.menuItemOpenFiles.Size = new System.Drawing.Size(169, 22);
-            this.menuItemOpenFiles.Text = "&Åpne CNF spekter";
-            this.menuItemOpenFiles.Click += new System.EventHandler(this.menuItemOpenFiles_Click);
-            // 
-            // menuItemExit
-            // 
-            this.menuItemExit.Image = global::lorakon_manager.Properties.Resources.exit32;
-            this.menuItemExit.Name = "menuItemExit";
-            this.menuItemExit.Size = new System.Drawing.Size(169, 22);
-            this.menuItemExit.Text = "&Avslutt";
-            this.menuItemExit.Click += new System.EventHandler(this.menuItemExit_Click);
+            this.ofd.Filter = "CNF files (*.cnf)|*.cnf|All files (*.*)|*.*";
+            this.ofd.Multiselect = true;
             // 
             // FormMain
             // 
@@ -991,6 +1061,8 @@
             this.Text = "Lorakon Database";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);
             this.Load += new System.EventHandler(this.FormMain_Load);
+            this.Shown += new System.EventHandler(this.FormMain_Shown);
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.FormMain_Paint);
             this.status.ResumeLayout(false);
             this.status.PerformLayout();
             this.menu.ResumeLayout(false);
@@ -1018,9 +1090,9 @@
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             this.pageValidation.ResumeLayout(false);
-            this.pageGeometries.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridValidation)).EndInit();
             this.menuValidationGrid.ResumeLayout(false);
+            this.pageGeometries.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridGeometries)).EndInit();
             this.menuGeometryGrid.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -1072,12 +1144,6 @@
         private System.Windows.Forms.ComboBox cboxEditSampleType;
         private System.Windows.Forms.ComboBox cboxEditSampleComponent;
         private System.Windows.Forms.CheckBox cbApproved;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colFilename;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colSTYPE;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colAccountName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colAccountID;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colSampleType;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colSampleComponent;
         private System.Windows.Forms.ComboBox cboxEditAccountName;
         private System.Windows.Forms.ToolStripProgressBar progress;
         private System.Windows.Forms.TextBox tbEditAccountID;
@@ -1104,6 +1170,19 @@
         private System.Windows.Forms.ToolStripMenuItem menuItemDeleteGeometry;
         private System.Windows.Forms.ToolStripButton btnValidationTrash;
         private System.Windows.Forms.ToolStripButton btnGeometryTrash;
+        private System.Windows.Forms.ToolStripStatusLabel lblStatus;
+        private System.Windows.Forms.TextBox tbEditLab;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colFilename;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colSTYPE;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colLab;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colAccountName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colAccountID;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colSampleType;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colSampleComponent;
     }
 }
 
