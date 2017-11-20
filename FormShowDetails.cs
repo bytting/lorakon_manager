@@ -20,92 +20,109 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Data.SqlClient;
-using System.Drawing;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.Net;
+using Newtonsoft.Json;
 using Microsoft.Win32;
 
 namespace lorakon_manager
 {
     public partial class FormShowDetails : Form
-    {
-        SqlConnection connection = null;
+    {        
+        LorakonManagerSettings Settings = null;
         Guid id = Guid.Empty;
 
         // Registry key for the Genie2k installation path
         const string GenieRegistry = @"SOFTWARE\Wow6432Node\Canberra Industries, Inc.\Genie-2000 Environment";
         string GeniePath;
 
-        public FormShowDetails(SqlConnection conn, Guid sid)
+        public FormShowDetails(LorakonManagerSettings s, Guid sid)
         {
             InitializeComponent();
-            connection = conn;
+            Settings = s;    
             id = sid;
         }
 
         private void FormShowDetails_Load(object sender, EventArgs e)
         {
-            SqlCommand command = new SqlCommand("select a.vchName, si.* from Account a, SpectrumInfo si where si.id = @SID and a.ID = si.AccountID", connection);
-            command.Parameters.AddWithValue("@SID", id);
-            using (SqlDataReader reader = command.ExecuteReader())
-            {
-                if (!reader.HasRows)
-                    return;
+            if (String.IsNullOrEmpty(Settings.WebServiceUri))
+                return;
 
-                reader.Read();
-                tbLabName.Text = reader["vchName"].ToString();                
-                tbRefDate.Text = reader["ReferenceDate"].ToString();
-                tbOperator.Text = reader["Operator"].ToString();
-                tbExternalID.Text = reader["ExternalID"].ToString();
-                tbSampleType.Text = reader["SampleType"].ToString();
-                tbSigma.Text = reader["Sigma"].ToString();
-                tbComponent.Text = reader["SampleComponent"].ToString();
-                tbLocType.Text = reader["LocationType"].ToString();
-                tbLocation.Text = reader["Location"].ToString();
-                tblatitude.Text = reader["Latitude"].ToString();
-                tbLongitude.Text = reader["Longitude"].ToString();
-                tbAltitude.Text = reader["Altitude"].ToString();
-                tbCreateDate.Text = reader["CreateDate"].ToString();
-                tbUpdateDate.Text = reader["UpdateDate"].ToString();
-                tbAqusitionDate.Text = reader["AcquisitionDate"].ToString();
-                tbBackgroundFile.Text = reader["BackgroundFile"].ToString();                
-                tbLibraryFile.Text = reader["LibraryFile"].ToString();
-                tbCommunity.Text = reader["Community"].ToString();
-                tbSampleWeight.Text = reader["SampleWeight"].ToString();
-                tbSampleWeightUnit.Text = reader["SampleWeightUnit"].ToString();
-                tbGeometry.Text = reader["SampleGeometry"].ToString();
-                cbxApproved.Checked = Convert.ToBoolean(reader["Approved"]);                
-                cbxRejected.Checked = Convert.ToBoolean(reader["Rejected"]);
-                tbLiveTime.Text = reader["Livetime"].ToString();
-                tbComment.Text = reader["Comment"].ToString();
+            try
+            {
+                string req = Settings.WebServiceUri + "/api/spectrum/get_spectrum_info/" + id.ToString();
+                string json = WebApi.MakeRequest(req, WebRequestMethods.Http.Get);
+
+                SpectrumInfo spec = JsonConvert.DeserializeObject<SpectrumInfo>(json);
+
+                tbLabName.Text = spec.Laboratory;
+                tbRefDate.Text = spec.ReferenceDate.ToString();
+                tbOperator.Text = spec.Operator;
+                tbExternalID.Text = spec.ExternalID;
+                tbSampleType.Text = spec.SampleType;
+                tbSigma.Text = spec.Sigma.ToString();
+                tbComponent.Text = spec.SampleComponent;
+                tbLocType.Text = spec.LocationType;
+                tbLocation.Text = spec.Location;
+                tblatitude.Text = spec.Latitude.ToString();
+                tbLongitude.Text = spec.Longitude.ToString();
+                tbAltitude.Text = spec.Altitude.ToString();
+                tbCreateDate.Text = spec.CreateDate.ToString();
+                tbUpdateDate.Text = spec.UpdateDate.ToString();
+                tbAqusitionDate.Text = spec.AcquisitionDate.ToString();
+                tbBackgroundFile.Text = spec.BackgroundFile;
+                tbLibraryFile.Text = spec.LibraryFile;
+                tbCommunity.Text = spec.Community;
+                tbSampleWeight.Text = spec.SampleWeight.ToString();
+                tbSampleWeightUnit.Text = spec.SampleWeightUnit;
+                tbGeometry.Text = spec.SampleGeometry;
+                cbxApproved.Checked = spec.Approved;
+                cbxRejected.Checked = spec.Rejected;
+                tbLiveTime.Text = spec.Livetime.ToString();
+                tbComment.Text = spec.Comment;
+
+                req = Settings.WebServiceUri + "/api/spectrum/get_spectrum_results_from_specid?specid=" + id.ToString();
+                json = WebApi.MakeRequest(req, WebRequestMethods.Http.Get);
+
+                List<SpectrumResult> resList = JsonConvert.DeserializeObject<List<SpectrumResult>>(json);
+
+                gridNuclideResults.Rows.Clear();
+                foreach (SpectrumResult res in resList)
+                {
+                    DataGridViewRow row = new DataGridViewRow();
+
+                    row.Cells.Add(new DataGridViewTextBoxCell { Value = res.ID });
+                    row.Cells.Add(new DataGridViewTextBoxCell { Value = res.SpectrumInfoID });
+                    row.Cells.Add(new DataGridViewTextBoxCell { Value = res.CreateDate });
+                    row.Cells.Add(new DataGridViewTextBoxCell { Value = res.UpdateDate });
+                    row.Cells.Add(new DataGridViewTextBoxCell { Value = res.NuclideName });
+                    row.Cells.Add(new DataGridViewTextBoxCell { Value = res.Confidence });
+                    row.Cells.Add(new DataGridViewTextBoxCell { Value = res.Activity });
+                    row.Cells.Add(new DataGridViewTextBoxCell { Value = res.ActivityUncertainty });
+                    row.Cells.Add(new DataGridViewTextBoxCell { Value = res.MDA });
+                    row.Cells.Add(new DataGridViewCheckBoxCell { Value = res.Evaluated });
+                    row.Cells.Add(new DataGridViewCheckBoxCell { Value = res.Approved });
+                    row.Cells.Add(new DataGridViewCheckBoxCell { Value = res.ApprovedIsMDA });
+                    row.Cells.Add(new DataGridViewTextBoxCell { Value = res.ApprovedStatus });
+                    row.Cells.Add(new DataGridViewCheckBoxCell { Value = res.Rejected });
+                    row.Cells.Add(new DataGridViewTextBoxCell { Value = res.Comment });
+
+                    gridNuclideResults.Rows.Add(row);
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
             
-            command.CommandText = "select * from SpectrumResult where SpectrumInfoID = @SID";
-            SqlDataAdapter adapter = new SqlDataAdapter(command);
-            DataTable dt = new DataTable();
-            adapter.Fill(dt);
-            gridNuclideResults.DataSource = dt;
-
-            foreach (DataGridViewColumn col in gridNuclideResults.Columns)
-                col.ReadOnly = true;
-
-            gridNuclideResults.Columns[0].Visible = false;
-            gridNuclideResults.Columns[1].Visible = false;
-
-            gridNuclideResults.Columns[gridNuclideResults.Columns.Count - 2].ReadOnly = false;
-            gridNuclideResults.Columns[gridNuclideResults.Columns.Count - 3].ReadOnly = false;            
-            gridNuclideResults.Columns[gridNuclideResults.Columns.Count - 5].ReadOnly = false;
-
-            // Check and initialize environment
+            // FIXME: Check and initialize environment
             GeniePath = GetGeniePath();
             if (String.IsNullOrEmpty(GeniePath))
             {
                 MessageBox.Show("Genie2k katalog ble ikke funnet");                
-            }
+            }            
         }
 
         private string GetGeniePath()
@@ -139,31 +156,53 @@ namespace lorakon_manager
                 return;
             }
 
-            SqlDataReader reader = null;
-
             try
             {
-                SqlCommand command = new SqlCommand("select SpectrumFileContent from SpectrumFile where SpectrumInfoID = @SID", connection);
-                command.Parameters.AddWithValue("@SID", id);
-                reader = command.ExecuteReader();
-                if (reader.Read())
-                {
-                    byte[] content = (byte[])reader["SpectrumFileContent"];
-                    string filename = Path.GetTempFileName() + ".cnf";
-                    File.WriteAllBytes(filename, content);
-                    Process.Start(genieExecutable, filename);
-                }                
+                string req = Settings.WebServiceUri + "/api/spectrum/get_spectrum_file_content_from_specinfo/" + id.ToString();
+                string json = WebApi.MakeRequest(req, WebRequestMethods.Http.Get);
+
+                SpectrumFileContent cont = JsonConvert.DeserializeObject<SpectrumFileContent>(json);
+                byte[] content = Convert.FromBase64String(cont.Base64Data);
+                string filename = Path.GetTempFileName() + ".cnf";
+                File.WriteAllBytes(filename, content);
+                Process.Start(genieExecutable, filename);
             }
-            finally
+            catch(Exception ex)
             {
-                if(reader != null)
-                    reader.Close();
+                MessageBox.Show(ex.Message);
             }
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            try
+            {
+                string req = Settings.WebServiceUri + "/api/spectrum/update_spectrum_info_approved?id=" + id.ToString() + "&approved=" + cbxApproved.Checked.ToString();
+                string json = WebApi.MakeRequest(req, WebRequestMethods.Http.Get);
 
+                req = Settings.WebServiceUri + "/api/spectrum/update_spectrum_info_rejected?id=" + id.ToString() + "&rejected=" + cbxRejected.Checked.ToString();
+                json = WebApi.MakeRequest(req, WebRequestMethods.Http.Get);
+
+                foreach (DataGridViewRow row in gridNuclideResults.Rows)
+                {
+                    string id = row.Cells["colID"].Value.ToString();
+                    bool approved = Convert.ToBoolean(row.Cells["colApproved"].Value);
+                    bool rejected = Convert.ToBoolean(row.Cells["colRejected"].Value);
+
+                    req = Settings.WebServiceUri + "/api/spectrum/update_spectrum_result_approved?id=" + id + "&approved=" + approved.ToString();
+                    json = WebApi.MakeRequest(req, WebRequestMethods.Http.Get);
+
+                    req = Settings.WebServiceUri + "/api/spectrum/update_spectrum_result_rejected?id=" + id + "&rejected=" + rejected.ToString();
+                    json = WebApi.MakeRequest(req, WebRequestMethods.Http.Get);
+
+                    req = Settings.WebServiceUri + "/api/spectrum/update_spectrum_result_evaluated?id=" + id + "&evaluated=true";
+                    json = WebApi.MakeRequest(req, WebRequestMethods.Http.Get);
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }

@@ -32,6 +32,21 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormShowDetails));
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.gridNuclideResults = new System.Windows.Forms.DataGridView();
+            this.colID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colSpecInfoID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colCreateDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colUpdateDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colNuclideName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colConfidence = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colActivity = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colActivityUncertainty = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colMDA = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colEvaluated = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.colApproved = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.colIsMDA = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.colApprovedStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colRejected = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.colComment = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel1 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel16 = new System.Windows.Forms.Panel();
@@ -163,6 +178,22 @@
             this.gridNuclideResults.BackgroundColor = System.Drawing.SystemColors.ButtonFace;
             this.gridNuclideResults.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.gridNuclideResults.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.gridNuclideResults.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.colID,
+            this.colSpecInfoID,
+            this.colCreateDate,
+            this.colUpdateDate,
+            this.colNuclideName,
+            this.colConfidence,
+            this.colActivity,
+            this.colActivityUncertainty,
+            this.colMDA,
+            this.colEvaluated,
+            this.colApproved,
+            this.colIsMDA,
+            this.colApprovedStatus,
+            this.colRejected,
+            this.colComment});
             this.gridNuclideResults.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gridNuclideResults.Location = new System.Drawing.Point(0, 306);
             this.gridNuclideResults.Name = "gridNuclideResults";
@@ -173,6 +204,95 @@
             this.gridNuclideResults.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.gridNuclideResults.Size = new System.Drawing.Size(993, 277);
             this.gridNuclideResults.TabIndex = 2;
+            // 
+            // colID
+            // 
+            this.colID.HeaderText = "ID";
+            this.colID.Name = "colID";
+            this.colID.ReadOnly = true;
+            this.colID.Visible = false;
+            // 
+            // colSpecInfoID
+            // 
+            this.colSpecInfoID.HeaderText = "SpecID";
+            this.colSpecInfoID.Name = "colSpecInfoID";
+            this.colSpecInfoID.ReadOnly = true;
+            this.colSpecInfoID.Visible = false;
+            // 
+            // colCreateDate
+            // 
+            this.colCreateDate.HeaderText = "Opprettet";
+            this.colCreateDate.Name = "colCreateDate";
+            this.colCreateDate.ReadOnly = true;
+            // 
+            // colUpdateDate
+            // 
+            this.colUpdateDate.HeaderText = "Oppdatert";
+            this.colUpdateDate.Name = "colUpdateDate";
+            this.colUpdateDate.ReadOnly = true;
+            // 
+            // colNuclideName
+            // 
+            this.colNuclideName.HeaderText = "Nuklide";
+            this.colNuclideName.Name = "colNuclideName";
+            this.colNuclideName.ReadOnly = true;
+            // 
+            // colConfidence
+            // 
+            this.colConfidence.HeaderText = "Konfidens";
+            this.colConfidence.Name = "colConfidence";
+            this.colConfidence.ReadOnly = true;
+            // 
+            // colActivity
+            // 
+            this.colActivity.HeaderText = "Akt.";
+            this.colActivity.Name = "colActivity";
+            this.colActivity.ReadOnly = true;
+            // 
+            // colActivityUncertainty
+            // 
+            this.colActivityUncertainty.HeaderText = "Usikk.";
+            this.colActivityUncertainty.Name = "colActivityUncertainty";
+            this.colActivityUncertainty.ReadOnly = true;
+            // 
+            // colMDA
+            // 
+            this.colMDA.HeaderText = "MDA";
+            this.colMDA.Name = "colMDA";
+            this.colMDA.ReadOnly = true;
+            // 
+            // colEvaluated
+            // 
+            this.colEvaluated.HeaderText = "Vurdert";
+            this.colEvaluated.Name = "colEvaluated";
+            this.colEvaluated.ReadOnly = true;
+            // 
+            // colApproved
+            // 
+            this.colApproved.HeaderText = "Godkj.";
+            this.colApproved.Name = "colApproved";
+            // 
+            // colIsMDA
+            // 
+            this.colIsMDA.HeaderText = "Er MDA";
+            this.colIsMDA.Name = "colIsMDA";
+            this.colIsMDA.ReadOnly = true;
+            // 
+            // colApprovedStatus
+            // 
+            this.colApprovedStatus.HeaderText = "Godkj. Status";
+            this.colApprovedStatus.Name = "colApprovedStatus";
+            this.colApprovedStatus.ReadOnly = true;
+            // 
+            // colRejected
+            // 
+            this.colRejected.HeaderText = "Avvist";
+            this.colRejected.Name = "colRejected";
+            // 
+            // colComment
+            // 
+            this.colComment.HeaderText = "Kommentar";
+            this.colComment.Name = "colComment";
             // 
             // panel1
             // 
@@ -1226,5 +1346,20 @@
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.ToolStrip toolsDetails;
         private System.Windows.Forms.ToolStripButton btnOpenInGenie;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colID;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colSpecInfoID;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colCreateDate;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colUpdateDate;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colNuclideName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colConfidence;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colActivity;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colActivityUncertainty;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colMDA;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn colEvaluated;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn colApproved;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn colIsMDA;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colApprovedStatus;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn colRejected;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colComment;
     }
 }

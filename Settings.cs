@@ -24,13 +24,15 @@ using System.Text;
 namespace lorakon_manager
 {
     [Serializable()]
-    public class Settings
+    public class LorakonManagerSettings
     {        
-        public string ConnectionString { get; set; }        
+        public string ConnectionString { get; set; }
+        public string WebServiceUri { get; set; }
 
-        public Settings()
+        public LorakonManagerSettings()
         {            
-            ConnectionString = "Server=zyrox3;Database=nrpa_lorakon;Trusted_Connection=True;";            
+            ConnectionString = "Server=zyrox3;Database=nrpa_lorakon;Trusted_Connection=True;";
+            WebServiceUri = "http://zyrox3/lapi";
         }
     }    
 }

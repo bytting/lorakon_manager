@@ -30,6 +30,8 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Forms;
+using System.Net;
+using Newtonsoft.Json;
 
 namespace lorakon_manager
 {
@@ -44,7 +46,7 @@ namespace lorakon_manager
         private static string SettingsFile = SettingsPath + Path.DirectorySeparatorChar + "Settings.xml";
         private string SampleTypeFile = SettingsPath + Path.DirectorySeparatorChar + "sample-types.xml";
 
-        private Settings SettingsData = new Settings();
+        private LorakonManagerSettings Settings = new LorakonManagerSettings();
 
         public FormMain()
         {
@@ -115,7 +117,7 @@ namespace lorakon_manager
 
             try
             {
-                connection = new SqlConnection(SettingsData.ConnectionString);                
+                connection = new SqlConnection(Settings.ConnectionString);                
                 connection.Open();
 
                 SqlCommand command = new SqlCommand("select ID, vchName from Account order by vchName", connection);
@@ -148,21 +150,19 @@ namespace lorakon_manager
             }
         }
 
-        private void FormMain_Paint(object sender, PaintEventArgs e)
-        {            
-        }
-
         public void LoadSettings()
         {
             if (!File.Exists(SettingsFile))
-                return;
+                SaveSettings();
 
             // Deserialize settings from file
             using (StreamReader sr = new StreamReader(SettingsFile))
             {
-                XmlSerializer x = new XmlSerializer(SettingsData.GetType());
-                SettingsData = x.Deserialize(sr) as Settings;
+                XmlSerializer x = new XmlSerializer(Settings.GetType());
+                Settings = x.Deserialize(sr) as LorakonManagerSettings;
             }
+
+            tbSettingsUrl.Text = Settings.WebServiceUri;
         }
 
         private void SaveSettings()
@@ -170,8 +170,8 @@ namespace lorakon_manager
             // Serialize settings to file
             using (StreamWriter sw = new StreamWriter(SettingsFile))
             {
-                XmlSerializer x = new XmlSerializer(SettingsData.GetType());
-                x.Serialize(sw, SettingsData);
+                XmlSerializer x = new XmlSerializer(Settings.GetType());
+                x.Serialize(sw, Settings);
             }
         }
 
@@ -336,6 +336,55 @@ namespace lorakon_manager
 
         private void populateGrid()
         {
+            // /api/spectrum/get_spectrum_info_latest?from=20100101_120000&to=20171201_120000&accid=&samp=&appr=true&rej=false
+
+            if (String.IsNullOrEmpty(Settings.WebServiceUri))
+                return;
+
+            string fromString = "from=" + dtFrom.Value.ToString("yyyyMMdd_hhmmss");
+            string toString = "to=" + dtTo.Value.ToString("yyyyMMdd_hhmmss");
+            string accidString = "accid=";
+            if (!String.IsNullOrEmpty(cboxAccount.Text))
+            {
+                Account a = cboxAccount.SelectedItem as Account;
+                accidString += a.ID.ToString();
+            }
+            string sampString = "samp=";
+            if (!String.IsNullOrEmpty(tbSearchSampleType.Text))
+            {
+                sampString += "%" + tbSearchSampleType.Text.Trim() + "%";
+            }
+            string apprString = "appr=" + ((cbApproved.Checked) ? "true" : "false");
+            string rejString = "rej=" + ((cbRejected.Checked) ? "true" : "false");
+
+            string req = Settings.WebServiceUri + "/api/spectrum/get_spectrum_info_latest?" + fromString + "&" + toString + "&" + accidString + "&" + sampString + "&" + apprString + "&" + rejString;
+
+            string json = WebApi.MakeRequest(req, WebRequestMethods.Http.Get);
+            
+            List<SpectrumInfo> specs = JsonConvert.DeserializeObject<List<SpectrumInfo>>(json);
+
+            gridSearch.Rows.Clear();
+
+            foreach (SpectrumInfo spec in specs)
+            {
+                DataGridViewRow row = new DataGridViewRow();
+
+                row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.ID });
+                row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.AccountName });
+                row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.Operator });
+                row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.CreateDate });
+                row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.AcquisitionDate });
+                row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.ReferenceDate });
+                row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.SampleType });
+                row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.SampleComponent });
+                row.Cells.Add(new DataGridViewCheckBoxCell { Value = spec.Approved });
+                row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.ApprovedStatus });
+                row.Cells.Add(new DataGridViewCheckBoxCell { Value = spec.Rejected });
+
+                gridSearch.Rows.Add(row);
+            }
+
+            /*
             if (connection == null || connection.State != ConnectionState.Open)
                 return;
 
@@ -391,6 +440,7 @@ where 1=1
 
             gridSearch.Columns[gridSearch.Columns.Count - 1].Visible = false;
             gridSearch.Columns[gridSearch.Columns.Count - 2].ReadOnly = false;            
+            */
         }
 
         private void tbSearchSampleType_TextChanged(object sender, EventArgs e)
@@ -434,8 +484,8 @@ where 1=1
                 return;
 
             DataGridViewRow row = gridSearch.SelectedRows[0];
-            Guid id = new Guid(row.Cells["ID"].Value.ToString());            
-            FormShowDetails form = new FormShowDetails(connection, id);
+            Guid id = new Guid(row.Cells["ID"].Value.ToString());                        
+            FormShowDetails form = new FormShowDetails(Settings, id);
             form.ShowDialog();
         }        
 
@@ -828,7 +878,25 @@ where 1=1
             command.Parameters.AddWithValue("@Geometry", geometry);
             command.ExecuteNonQuery();
             BindGridGeometries();
-        }        
+        }
+
+        private void btnSettingsCancel_Click(object sender, EventArgs e)
+        {
+            tabs.SelectedTab = pageMain;
+        }
+
+        private void btnSettingsOk_Click(object sender, EventArgs e)
+        {
+            Settings.WebServiceUri = tbSettingsUrl.Text;
+            SaveSettings();
+            tabs.SelectedTab = pageMain;
+        }
+
+        private void menuItemSettings_Click(object sender, EventArgs e)
+        {
+            tbSettingsUrl.Text = Settings.WebServiceUri;
+            tabs.SelectedTab = pageSettings;
+        }
 
         private bool SetSpectrumParameter(string filename, string param, string val)
         {

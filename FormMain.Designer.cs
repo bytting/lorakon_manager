@@ -38,6 +38,7 @@
             this.menu = new System.Windows.Forms.MenuStrip();
             this.menuItemFile = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItemOpenFiles = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuItemSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.menuItemExit = new System.Windows.Forms.ToolStripMenuItem();
             this.tools = new System.Windows.Forms.ToolStrip();
@@ -57,6 +58,17 @@
             this.btnMenuGeometry = new System.Windows.Forms.Button();
             this.pageSearch = new System.Windows.Forms.TabPage();
             this.gridSearch = new System.Windows.Forms.DataGridView();
+            this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.AccountName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Operator = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CreateDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ReferenceDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.AcquisitionDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SampleType = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SampleComponent = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Approved = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.ApprovedStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Rejected = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.menuGrid = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.visDetaljerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.åpneSpekterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -112,6 +124,13 @@
             this.gridGeometries = new System.Windows.Forms.DataGridView();
             this.menuGeometryGrid = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.menuItemDeleteGeometry = new System.Windows.Forms.ToolStripMenuItem();
+            this.pageSettings = new System.Windows.Forms.TabPage();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.label12 = new System.Windows.Forms.Label();
+            this.tbSettingsUrl = new System.Windows.Forms.TextBox();
+            this.panel4 = new System.Windows.Forms.Panel();
+            this.btnSettingsCancel = new System.Windows.Forms.Button();
+            this.btnSettingsOk = new System.Windows.Forms.Button();
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.status.SuspendLayout();
             this.menu.SuspendLayout();
@@ -138,6 +157,9 @@
             this.pageGeometries.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridGeometries)).BeginInit();
             this.menuGeometryGrid.SuspendLayout();
+            this.pageSettings.SuspendLayout();
+            this.tableLayoutPanel2.SuspendLayout();
+            this.panel4.SuspendLayout();
             this.SuspendLayout();
             // 
             // status
@@ -178,6 +200,7 @@
             // 
             this.menuItemFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuItemOpenFiles,
+            this.menuItemSettings,
             this.toolStripSeparator2,
             this.menuItemExit});
             this.menuItemFile.Name = "menuItemFile";
@@ -191,6 +214,13 @@
             this.menuItemOpenFiles.Size = new System.Drawing.Size(169, 22);
             this.menuItemOpenFiles.Text = "&Åpne CNF spekter";
             this.menuItemOpenFiles.Click += new System.EventHandler(this.menuItemOpenFiles_Click);
+            // 
+            // menuItemSettings
+            // 
+            this.menuItemSettings.Name = "menuItemSettings";
+            this.menuItemSettings.Size = new System.Drawing.Size(169, 22);
+            this.menuItemSettings.Text = "Innstillinger";
+            this.menuItemSettings.Click += new System.EventHandler(this.menuItemSettings_Click);
             // 
             // toolStripSeparator2
             // 
@@ -292,6 +322,7 @@
             this.tabs.Controls.Add(this.pageLog);
             this.tabs.Controls.Add(this.pageValidation);
             this.tabs.Controls.Add(this.pageGeometries);
+            this.tabs.Controls.Add(this.pageSettings);
             this.tabs.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabs.Location = new System.Drawing.Point(0, 64);
             this.tabs.Name = "tabs";
@@ -438,6 +469,18 @@
             this.gridSearch.BackgroundColor = System.Drawing.SystemColors.ButtonFace;
             this.gridSearch.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.gridSearch.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.gridSearch.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.ID,
+            this.AccountName,
+            this.Operator,
+            this.CreateDate,
+            this.ReferenceDate,
+            this.AcquisitionDate,
+            this.SampleType,
+            this.SampleComponent,
+            this.Approved,
+            this.ApprovedStatus,
+            this.Rejected});
             this.gridSearch.ContextMenuStrip = this.menuGrid;
             this.gridSearch.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gridSearch.Location = new System.Drawing.Point(3, 88);
@@ -449,6 +492,75 @@
             this.gridSearch.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.gridSearch.Size = new System.Drawing.Size(1025, 419);
             this.gridSearch.TabIndex = 2;
+            // 
+            // ID
+            // 
+            this.ID.HeaderText = "ID";
+            this.ID.Name = "ID";
+            this.ID.ReadOnly = true;
+            this.ID.Visible = false;
+            // 
+            // AccountName
+            // 
+            this.AccountName.HeaderText = "Account";
+            this.AccountName.Name = "AccountName";
+            this.AccountName.ReadOnly = true;
+            // 
+            // Operator
+            // 
+            this.Operator.HeaderText = "Operator";
+            this.Operator.Name = "Operator";
+            this.Operator.ReadOnly = true;
+            // 
+            // CreateDate
+            // 
+            this.CreateDate.HeaderText = "CreateDate";
+            this.CreateDate.Name = "CreateDate";
+            this.CreateDate.ReadOnly = true;
+            // 
+            // ReferenceDate
+            // 
+            this.ReferenceDate.HeaderText = "ReferenceDate";
+            this.ReferenceDate.Name = "ReferenceDate";
+            this.ReferenceDate.ReadOnly = true;
+            // 
+            // AcquisitionDate
+            // 
+            this.AcquisitionDate.HeaderText = "AcquisitionDate";
+            this.AcquisitionDate.Name = "AcquisitionDate";
+            this.AcquisitionDate.ReadOnly = true;
+            // 
+            // SampleType
+            // 
+            this.SampleType.HeaderText = "SampleType";
+            this.SampleType.Name = "SampleType";
+            this.SampleType.ReadOnly = true;
+            // 
+            // SampleComponent
+            // 
+            this.SampleComponent.HeaderText = "SampleComponent";
+            this.SampleComponent.Name = "SampleComponent";
+            this.SampleComponent.ReadOnly = true;
+            // 
+            // Approved
+            // 
+            this.Approved.HeaderText = "Approved";
+            this.Approved.Name = "Approved";
+            this.Approved.ReadOnly = true;
+            this.Approved.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Approved.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // ApprovedStatus
+            // 
+            this.ApprovedStatus.HeaderText = "ApprovedStatus";
+            this.ApprovedStatus.Name = "ApprovedStatus";
+            this.ApprovedStatus.ReadOnly = true;
+            // 
+            // Rejected
+            // 
+            this.Rejected.HeaderText = "Rejected";
+            this.Rejected.Name = "Rejected";
+            this.Rejected.ReadOnly = true;
             // 
             // menuGrid
             // 
@@ -1038,6 +1150,87 @@
             this.menuItemDeleteGeometry.Text = "Delete geometry";
             this.menuItemDeleteGeometry.Click += new System.EventHandler(this.menuItemDeleteGeometry_Click);
             // 
+            // pageSettings
+            // 
+            this.pageSettings.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.pageSettings.Controls.Add(this.tableLayoutPanel2);
+            this.pageSettings.Controls.Add(this.panel4);
+            this.pageSettings.Location = new System.Drawing.Point(4, 24);
+            this.pageSettings.Name = "pageSettings";
+            this.pageSettings.Padding = new System.Windows.Forms.Padding(3);
+            this.pageSettings.Size = new System.Drawing.Size(1031, 510);
+            this.pageSettings.TabIndex = 6;
+            this.pageSettings.Text = "Innstillinger";
+            // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.ColumnCount = 2;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 160F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel2.Controls.Add(this.label12, 0, 1);
+            this.tableLayoutPanel2.Controls.Add(this.tbSettingsUrl, 1, 1);
+            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 5;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1025, 470);
+            this.tableLayoutPanel2.TabIndex = 1;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(3, 28);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(94, 15);
+            this.label12.TabIndex = 0;
+            this.label12.Text = "Web Service Url";
+            // 
+            // tbSettingsUrl
+            // 
+            this.tbSettingsUrl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tbSettingsUrl.Location = new System.Drawing.Point(163, 31);
+            this.tbSettingsUrl.Name = "tbSettingsUrl";
+            this.tbSettingsUrl.Size = new System.Drawing.Size(859, 21);
+            this.tbSettingsUrl.TabIndex = 1;
+            // 
+            // panel4
+            // 
+            this.panel4.Controls.Add(this.btnSettingsCancel);
+            this.panel4.Controls.Add(this.btnSettingsOk);
+            this.panel4.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel4.Location = new System.Drawing.Point(3, 473);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(1025, 34);
+            this.panel4.TabIndex = 0;
+            // 
+            // btnSettingsCancel
+            // 
+            this.btnSettingsCancel.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnSettingsCancel.Location = new System.Drawing.Point(838, 0);
+            this.btnSettingsCancel.Name = "btnSettingsCancel";
+            this.btnSettingsCancel.Size = new System.Drawing.Size(93, 34);
+            this.btnSettingsCancel.TabIndex = 1;
+            this.btnSettingsCancel.Text = "Cancel";
+            this.btnSettingsCancel.UseVisualStyleBackColor = true;
+            this.btnSettingsCancel.Click += new System.EventHandler(this.btnSettingsCancel_Click);
+            // 
+            // btnSettingsOk
+            // 
+            this.btnSettingsOk.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnSettingsOk.Location = new System.Drawing.Point(931, 0);
+            this.btnSettingsOk.Name = "btnSettingsOk";
+            this.btnSettingsOk.Size = new System.Drawing.Size(94, 34);
+            this.btnSettingsOk.TabIndex = 0;
+            this.btnSettingsOk.Text = "Ok";
+            this.btnSettingsOk.UseVisualStyleBackColor = true;
+            this.btnSettingsOk.Click += new System.EventHandler(this.btnSettingsOk_Click);
+            // 
             // ofd
             // 
             this.ofd.Filter = "CNF files (*.cnf)|*.cnf|All files (*.*)|*.*";
@@ -1062,7 +1255,6 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);
             this.Load += new System.EventHandler(this.FormMain_Load);
             this.Shown += new System.EventHandler(this.FormMain_Shown);
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.FormMain_Paint);
             this.status.ResumeLayout(false);
             this.status.PerformLayout();
             this.menu.ResumeLayout(false);
@@ -1095,6 +1287,10 @@
             this.pageGeometries.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridGeometries)).EndInit();
             this.menuGeometryGrid.ResumeLayout(false);
+            this.pageSettings.ResumeLayout(false);
+            this.tableLayoutPanel2.ResumeLayout(false);
+            this.tableLayoutPanel2.PerformLayout();
+            this.panel4.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1183,6 +1379,25 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colAccountID;
         private System.Windows.Forms.DataGridViewTextBoxColumn colSampleType;
         private System.Windows.Forms.DataGridViewTextBoxColumn colSampleComponent;
+        private System.Windows.Forms.TabPage pageSettings;
+        private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.Button btnSettingsCancel;
+        private System.Windows.Forms.Button btnSettingsOk;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.TextBox tbSettingsUrl;
+        private System.Windows.Forms.ToolStripMenuItem menuItemSettings;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ID;
+        private System.Windows.Forms.DataGridViewTextBoxColumn AccountName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Operator;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CreateDate;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ReferenceDate;
+        private System.Windows.Forms.DataGridViewTextBoxColumn AcquisitionDate;
+        private System.Windows.Forms.DataGridViewTextBoxColumn SampleType;
+        private System.Windows.Forms.DataGridViewTextBoxColumn SampleComponent;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn Approved;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ApprovedStatus;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn Rejected;
     }
 }
 
