@@ -20,25 +20,21 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Data.SqlClient;
 using System.Drawing;
 using System.Diagnostics;
 using System.Xml;
 using System.Xml.Serialization;
-using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Forms;
-using System.Net;
+using System.Threading;
+using System.Globalization;
 using Newtonsoft.Json;
 
 namespace lorakon_manager
 {
     public partial class FormMain : Form
     {
-        SqlConnection connection = null;
-
         private string ParsExecutable, GetParsExecutable;
 
         string InstallationDirectory;
@@ -52,7 +48,8 @@ namespace lorakon_manager
 
         public FormMain()
         {
-            InitializeComponent();            
+            InitializeComponent();
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
         }
 
         private void FormMain_Load(object sender, EventArgs e)
@@ -119,9 +116,6 @@ namespace lorakon_manager
 
             try
             {
-                connection = new SqlConnection(Settings.ConnectionString);
-                connection.Open();
-
                 string req = Settings.WebServiceUri + "/api/spectrum/get_all_accounts_basic";
                 string json = WebApi.MakeGetRequest(req);
 
@@ -461,8 +455,10 @@ namespace lorakon_manager
             menuItemOpenFiles.Visible = false;
             btnEditOpen.Visible = false;
             btnValidationAdd.Visible = false;
+            btnValidationEdit.Visible = false;
             btnValidationTrash.Visible = false;
             btnGeometryAdd.Visible = false;
+            btnGeometryEdit.Visible = false;
             btnGeometryTrash.Visible = false;
 
             if (tabs.SelectedTab == pageEdit)
@@ -481,11 +477,13 @@ namespace lorakon_manager
             else if (tabs.SelectedTab == pageValidation)
             {
                 btnValidationAdd.Visible = true;
+                btnValidationEdit.Visible = true;
                 btnValidationTrash.Visible = true;
             }
             else if (tabs.SelectedTab == pageGeometries)
             {
                 btnGeometryAdd.Visible = true;
+                btnGeometryEdit.Visible = true;
                 btnGeometryTrash.Visible = true;
             }
 
@@ -655,58 +653,7 @@ namespace lorakon_manager
             gridValidation.DataSource = rules;
             gridValidation.Columns[0].Visible = false;
         }        
-
-        private void gridValidation_RowValidating(object sender, DataGridViewCellCancelEventArgs e)
-        {
-            try
-            {
-                if (!gridValidation.IsCurrentRowDirty)
-                    return;
-
-                SqlCommand command = GetInsertOrUpdateCommand(e);
-                command.ExecuteNonQuery();
-                gridValidation.Update();
-                gridValidation.Refresh();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-        }
-
-        public SqlCommand GetInsertOrUpdateCommand(DataGridViewCellCancelEventArgs e)
-        {
-            DataGridViewRow row = gridValidation.Rows[e.RowIndex];
-
-            string nuclideName = row.Cells["NuclideName"].Value.ToString();            
-
-            SqlCommand command = new SqlCommand("select count(*) from SpectrumValidationRules where NuclideName = '" + nuclideName + "'", connection);
-            int cnt = (int)command.ExecuteScalar();            
-
-            if (cnt <= 0)
-            {
-                command.CommandText = "insert into SpectrumValidationRules values (@ID, @NuclideName, @ActivityMin, @ActivityMax, @ConfidenceMin, @CanBeAutoApproved)";
-                command.Parameters.AddWithValue("@ID", Guid.NewGuid());
-            }
-            else
-            {
-                command.CommandText = "update SpectrumValidationRules set ActivityMin=@ActivityMin, ActivityMax=@ActivityMax, ConfidenceMin=@ConfidenceMin, CanBeAutoApproved=@CanBeAutoApproved where NuclideName=@NuclideName";                
-            }
-
-            bool canBeAutoApproved;
-            if (row.Cells["CanBeAutoApproved"].Value == null || row.Cells["CanBeAutoApproved"].Value == DBNull.Value)
-                canBeAutoApproved = false;
-            else canBeAutoApproved = Convert.ToBoolean(row.Cells["CanBeAutoApproved"].Value);
-
-            command.Parameters.AddWithValue("@NuclideName", row.Cells["NuclideName"].Value);
-            command.Parameters.AddWithValue("@ActivityMin", row.Cells["ActivityMin"].Value);
-            command.Parameters.AddWithValue("@ActivityMax", row.Cells["ActivityMax"].Value);
-            command.Parameters.AddWithValue("@ConfidenceMin", row.Cells["ConfidenceMin"].Value);
-            command.Parameters.AddWithValue("@CanBeAutoApproved", canBeAutoApproved);
-
-            return command;
-        }
-
+        
         private void menuItemDeleteNuclide_Click(object sender, EventArgs e)
         {
             if (gridValidation.SelectedCells.Count <= 0)
@@ -734,51 +681,6 @@ namespace lorakon_manager
             List<GeometryRule> rules = JsonConvert.DeserializeObject<List<GeometryRule>>(json);
             gridGeometries.DataSource = rules;
             gridGeometries.Columns[0].Visible = false;
-        }
-
-        private void gridGeometries_RowValidating(object sender, DataGridViewCellCancelEventArgs e)
-        {
-            try
-            {
-                if (!gridGeometries.IsCurrentRowDirty)
-                    return;
-
-                SqlCommand command = GetInsertOrUpdateCommandForGeometries(e);
-                command.ExecuteNonQuery();
-                gridGeometries.Update();
-                gridGeometries.Refresh();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-        }
-
-        public SqlCommand GetInsertOrUpdateCommandForGeometries(DataGridViewCellCancelEventArgs e)
-        {
-            DataGridViewRow row = gridGeometries.Rows[e.RowIndex];
-
-            string geometryName = row.Cells["Geometry"].Value.ToString();
-
-            SqlCommand command = new SqlCommand("select count(*) from SpectrumGeometryRules where Geometry = '" + geometryName + "'", connection);
-            int cnt = (int)command.ExecuteScalar();
-
-            if (cnt <= 0)
-            {
-                command.CommandText = "insert into SpectrumGeometryRules values (@ID, @Geometry, @Unit, @Minimum, @Maximum)";
-                command.Parameters.AddWithValue("@ID", Guid.NewGuid());
-            }
-            else
-            {
-                command.CommandText = "update SpectrumGeometryRules set Unit=@Unit, Minimum=@Minimum, Maximum=@Maximum where Geometry=@Geometry";
-            }
-
-            command.Parameters.AddWithValue("@Geometry", row.Cells["Geometry"].Value);
-            command.Parameters.AddWithValue("@Unit", row.Cells["Unit"].Value);
-            command.Parameters.AddWithValue("@Minimum", row.Cells["Minimum"].Value);
-            command.Parameters.AddWithValue("@Maximum", row.Cells["Maximum"].Value);            
-
-            return command;
         }
 
         private void menuItemDeleteGeometry_Click(object sender, EventArgs e)
@@ -826,10 +728,10 @@ namespace lorakon_manager
             tabs.SelectedTab = pageSettings;
         }
 
-        private void btnValidationAdd_Click(object sender, EventArgs e)
+        private void menuItemNewValidationRule_Click(object sender, EventArgs e)
         {
             FormAddValidationRule form = new FormAddValidationRule();
-            if(form.ShowDialog() == DialogResult.Cancel)
+            if (form.ShowDialog() == DialogResult.Cancel)
                 return;
 
             try
@@ -837,15 +739,15 @@ namespace lorakon_manager
                 string req = Settings.WebServiceUri + "/api/spectrum/insert_validation_rule";
                 WebApi.MakePostRequest(req, form.Rule);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
-            
+
             BindGridValidation();
         }
 
-        private void btnGeometryAdd_Click(object sender, EventArgs e)
+        private void menuItemNewGeometryRule_Click(object sender, EventArgs e)
         {
             FormAddGeometryRule form = new FormAddGeometryRule();
             if (form.ShowDialog() == DialogResult.Cancel)
@@ -854,6 +756,71 @@ namespace lorakon_manager
             try
             {
                 string req = Settings.WebServiceUri + "/api/spectrum/insert_geometry_rule";
+                WebApi.MakePostRequest(req, form.Rule);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+            BindGridGeometries();
+        }
+
+        private void menuItemEditValidationRule_Click(object sender, EventArgs e)
+        {
+            if (gridValidation.SelectedCells.Count <= 0)
+                return;
+
+            DataGridViewCell cell = gridValidation.SelectedCells[0];
+            DataGridViewRow row = cell.OwningRow;
+            Guid Id = new Guid(row.Cells["ID"].Value.ToString());
+            if (Id == Guid.Empty)
+                return;
+            string nuclideName = row.Cells["NuclideName"].Value.ToString();
+            float activityMin = Convert.ToSingle(row.Cells["ActivityMin"].Value);
+            float activityMax = Convert.ToSingle(row.Cells["ActivityMax"].Value);
+            float confidenceMin = Convert.ToSingle(row.Cells["ConfidenceMin"].Value);
+            bool canBeAutoApproved = Convert.ToBoolean(row.Cells["CanBeAutoApproved"].Value);
+
+            FormAddValidationRule form = new FormAddValidationRule(Id, nuclideName, activityMin, activityMax, confidenceMin, canBeAutoApproved);
+            if (form.ShowDialog() == DialogResult.Cancel)
+                return;
+
+            try
+            {
+                string req = Settings.WebServiceUri + "/api/spectrum/update_validation_rule?id=" + Id.ToString();
+                WebApi.MakePostRequest(req, form.Rule);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+            BindGridValidation();
+        }
+
+        private void menuItemEditGeometryRule_Click(object sender, EventArgs e)
+        {
+            if (gridGeometries.SelectedCells.Count <= 0)
+                return;
+
+            DataGridViewCell cell = gridGeometries.SelectedCells[0];
+            DataGridViewRow row = cell.OwningRow;
+            Guid Id = new Guid(row.Cells["ID"].Value.ToString());
+            if (Id == Guid.Empty)
+                return;
+            string geometryName = row.Cells["Geometry"].Value.ToString();
+            string unit = row.Cells["Unit"].Value.ToString();
+            float min = Convert.ToSingle(row.Cells["Minimum"].Value);
+            float max = Convert.ToSingle(row.Cells["Maximum"].Value);
+
+            FormAddGeometryRule form = new FormAddGeometryRule(Id, geometryName, unit, min, max);
+            if (form.ShowDialog() == DialogResult.Cancel)
+                return;
+
+            try
+            {
+                string req = Settings.WebServiceUri + "/api/spectrum/update_geometry_rule?id=" + Id.ToString();
                 WebApi.MakePostRequest(req, form.Rule);
             }
             catch (Exception ex)

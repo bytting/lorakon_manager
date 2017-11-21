@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.status = new System.Windows.Forms.StatusStrip();
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
@@ -134,6 +134,12 @@
             this.btnGeometryAdd = new System.Windows.Forms.ToolStripButton();
             this.menuItemOpenFiles = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItemExit = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuItemNewValidationRule = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuItemNewGeometryRule = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuItemEditValidationRule = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnValidationEdit = new System.Windows.Forms.ToolStripButton();
+            this.btnGeometryEdit = new System.Windows.Forms.ToolStripButton();
+            this.menuItemEditGeometryRule = new System.Windows.Forms.ToolStripMenuItem();
             this.status.SuspendLayout();
             this.menu.SuspendLayout();
             this.tools.SuspendLayout();
@@ -233,7 +239,9 @@
             this.btnValidationTrash,
             this.btnGeometryTrash,
             this.btnValidationAdd,
-            this.btnGeometryAdd});
+            this.btnGeometryAdd,
+            this.btnValidationEdit,
+            this.btnGeometryEdit});
             this.tools.Location = new System.Drawing.Point(0, 24);
             this.tools.Name = "tools";
             this.tools.Size = new System.Drawing.Size(1039, 40);
@@ -343,8 +351,8 @@
             this.gridSearch.MultiSelect = false;
             this.gridSearch.Name = "gridSearch";
             this.gridSearch.RowHeadersVisible = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.gridSearch.RowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.gridSearch.RowsDefaultCellStyle = dataGridViewCellStyle4;
             this.gridSearch.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.gridSearch.Size = new System.Drawing.Size(1025, 421);
             this.gridSearch.TabIndex = 2;
@@ -621,8 +629,8 @@
             this.gridEditFiles.Name = "gridEditFiles";
             this.gridEditFiles.ReadOnly = true;
             this.gridEditFiles.RowHeadersVisible = false;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.gridEditFiles.RowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.gridEditFiles.RowsDefaultCellStyle = dataGridViewCellStyle3;
             this.gridEditFiles.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.gridEditFiles.Size = new System.Drawing.Size(1025, 386);
             this.gridEditFiles.TabIndex = 1;
@@ -947,22 +955,23 @@
             this.gridValidation.MultiSelect = false;
             this.gridValidation.Name = "gridValidation";
             this.gridValidation.RowHeadersVisible = false;
-            this.gridValidation.Size = new System.Drawing.Size(1025, 506);
+            this.gridValidation.Size = new System.Drawing.Size(1025, 504);
             this.gridValidation.TabIndex = 0;
-            this.gridValidation.RowValidating += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.gridValidation_RowValidating);
             // 
             // menuValidationGrid
             // 
             this.menuValidationGrid.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuItemNewValidationRule,
+            this.menuItemEditValidationRule,
             this.menuItemDeleteNuclide});
             this.menuValidationGrid.Name = "menuValidationGrid";
-            this.menuValidationGrid.Size = new System.Drawing.Size(140, 26);
+            this.menuValidationGrid.Size = new System.Drawing.Size(201, 70);
             // 
             // menuItemDeleteNuclide
             // 
             this.menuItemDeleteNuclide.Name = "menuItemDeleteNuclide";
-            this.menuItemDeleteNuclide.Size = new System.Drawing.Size(139, 22);
-            this.menuItemDeleteNuclide.Text = "Slett nuklide";
+            this.menuItemDeleteNuclide.Size = new System.Drawing.Size(200, 22);
+            this.menuItemDeleteNuclide.Text = "Slett valideringsregel";
             this.menuItemDeleteNuclide.Click += new System.EventHandler(this.menuItemDeleteNuclide_Click);
             // 
             // pageGeometries
@@ -988,22 +997,23 @@
             this.gridGeometries.Location = new System.Drawing.Point(3, 3);
             this.gridGeometries.Name = "gridGeometries";
             this.gridGeometries.RowHeadersVisible = false;
-            this.gridGeometries.Size = new System.Drawing.Size(1025, 506);
+            this.gridGeometries.Size = new System.Drawing.Size(1025, 504);
             this.gridGeometries.TabIndex = 0;
-            this.gridGeometries.RowValidating += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.gridGeometries_RowValidating);
             // 
             // menuGeometryGrid
             // 
             this.menuGeometryGrid.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuItemNewGeometryRule,
+            this.menuItemEditGeometryRule,
             this.menuItemDeleteGeometry});
             this.menuGeometryGrid.Name = "menuGeometryGrid";
-            this.menuGeometryGrid.Size = new System.Drawing.Size(149, 26);
+            this.menuGeometryGrid.Size = new System.Drawing.Size(195, 70);
             // 
             // menuItemDeleteGeometry
             // 
             this.menuItemDeleteGeometry.Name = "menuItemDeleteGeometry";
-            this.menuItemDeleteGeometry.Size = new System.Drawing.Size(148, 22);
-            this.menuItemDeleteGeometry.Text = "Slett geometri";
+            this.menuItemDeleteGeometry.Size = new System.Drawing.Size(194, 22);
+            this.menuItemDeleteGeometry.Text = "Slett geometri regel";
             this.menuItemDeleteGeometry.Click += new System.EventHandler(this.menuItemDeleteGeometry_Click);
             // 
             // pageSettings
@@ -1232,7 +1242,7 @@
             this.btnValidationAdd.Name = "btnValidationAdd";
             this.btnValidationAdd.Size = new System.Drawing.Size(23, 37);
             this.btnValidationAdd.Text = "Ny validerings regel";
-            this.btnValidationAdd.Click += new System.EventHandler(this.btnValidationAdd_Click);
+            this.btnValidationAdd.Click += new System.EventHandler(this.menuItemNewValidationRule_Click);
             // 
             // btnGeometryAdd
             // 
@@ -1242,7 +1252,7 @@
             this.btnGeometryAdd.Name = "btnGeometryAdd";
             this.btnGeometryAdd.Size = new System.Drawing.Size(23, 37);
             this.btnGeometryAdd.Text = "Ny geometri";
-            this.btnGeometryAdd.Click += new System.EventHandler(this.btnGeometryAdd_Click);
+            this.btnGeometryAdd.Click += new System.EventHandler(this.menuItemNewGeometryRule_Click);
             // 
             // menuItemOpenFiles
             // 
@@ -1259,6 +1269,54 @@
             this.menuItemExit.Size = new System.Drawing.Size(169, 22);
             this.menuItemExit.Text = "&Avslutt";
             this.menuItemExit.Click += new System.EventHandler(this.menuItemExit_Click);
+            // 
+            // menuItemNewValidationRule
+            // 
+            this.menuItemNewValidationRule.Name = "menuItemNewValidationRule";
+            this.menuItemNewValidationRule.Size = new System.Drawing.Size(200, 22);
+            this.menuItemNewValidationRule.Text = "Ny valideringsregel";
+            this.menuItemNewValidationRule.Click += new System.EventHandler(this.menuItemNewValidationRule_Click);
+            // 
+            // menuItemNewGeometryRule
+            // 
+            this.menuItemNewGeometryRule.Name = "menuItemNewGeometryRule";
+            this.menuItemNewGeometryRule.Size = new System.Drawing.Size(194, 22);
+            this.menuItemNewGeometryRule.Text = "Ny geometri regel";
+            this.menuItemNewGeometryRule.Click += new System.EventHandler(this.menuItemNewGeometryRule_Click);
+            // 
+            // menuItemEditValidationRule
+            // 
+            this.menuItemEditValidationRule.Name = "menuItemEditValidationRule";
+            this.menuItemEditValidationRule.Size = new System.Drawing.Size(200, 22);
+            this.menuItemEditValidationRule.Text = "Rediger valideringsregel";
+            this.menuItemEditValidationRule.Click += new System.EventHandler(this.menuItemEditValidationRule_Click);
+            // 
+            // btnValidationEdit
+            // 
+            this.btnValidationEdit.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnValidationEdit.Image = ((System.Drawing.Image)(resources.GetObject("btnValidationEdit.Image")));
+            this.btnValidationEdit.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnValidationEdit.Name = "btnValidationEdit";
+            this.btnValidationEdit.Size = new System.Drawing.Size(23, 37);
+            this.btnValidationEdit.Text = "Rediger valideringsregel";
+            this.btnValidationEdit.Click += new System.EventHandler(this.menuItemEditValidationRule_Click);
+            // 
+            // btnGeometryEdit
+            // 
+            this.btnGeometryEdit.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnGeometryEdit.Image = ((System.Drawing.Image)(resources.GetObject("btnGeometryEdit.Image")));
+            this.btnGeometryEdit.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnGeometryEdit.Name = "btnGeometryEdit";
+            this.btnGeometryEdit.Size = new System.Drawing.Size(23, 37);
+            this.btnGeometryEdit.Text = "Rediger geometri regel";
+            this.btnGeometryEdit.Click += new System.EventHandler(this.menuItemEditGeometryRule_Click);
+            // 
+            // menuItemEditGeometryRule
+            // 
+            this.menuItemEditGeometryRule.Name = "menuItemEditGeometryRule";
+            this.menuItemEditGeometryRule.Size = new System.Drawing.Size(194, 22);
+            this.menuItemEditGeometryRule.Text = "Rediger geometri regel";
+            this.menuItemEditGeometryRule.Click += new System.EventHandler(this.menuItemEditGeometryRule_Click);
             // 
             // FormMain
             // 
@@ -1424,6 +1482,12 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn Rejected;
         private System.Windows.Forms.ToolStripButton btnValidationAdd;
         private System.Windows.Forms.ToolStripButton btnGeometryAdd;
+        private System.Windows.Forms.ToolStripMenuItem menuItemNewValidationRule;
+        private System.Windows.Forms.ToolStripMenuItem menuItemNewGeometryRule;
+        private System.Windows.Forms.ToolStripMenuItem menuItemEditValidationRule;
+        private System.Windows.Forms.ToolStripButton btnValidationEdit;
+        private System.Windows.Forms.ToolStripButton btnGeometryEdit;
+        private System.Windows.Forms.ToolStripMenuItem menuItemEditGeometryRule;
     }
 }
 
