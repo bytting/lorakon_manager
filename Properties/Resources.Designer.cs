@@ -123,6 +123,16 @@ namespace lorakon_manager.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap edit_32 {
+            get {
+                object obj = ResourceManager.GetObject("edit-32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap exit32 {
             get {
                 object obj = ResourceManager.GetObject("exit32", resourceCulture);
@@ -136,6 +146,16 @@ namespace lorakon_manager.Properties {
         internal static System.Drawing.Bitmap genie {
             get {
                 object obj = ResourceManager.GetObject("genie", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap new_32 {
+            get {
+                object obj = ResourceManager.GetObject("new-32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

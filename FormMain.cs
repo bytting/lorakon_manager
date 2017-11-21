@@ -37,7 +37,7 @@ namespace lorakon_manager
     {
         private string ParsExecutable, GetParsExecutable;
 
-        string InstallationDirectory;
+        string InstallationDirectory, GeniePath;
         private static string SettingsPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments) + Path.DirectorySeparatorChar + "LorakonManager";
         private static string SettingsFile = SettingsPath + Path.DirectorySeparatorChar + "Settings.xml";
         private string SampleTypeFile = SettingsPath + Path.DirectorySeparatorChar + "sample-types.xml";
@@ -100,6 +100,10 @@ namespace lorakon_manager
             string[] sampTypes = GetSampleTypes();
             foreach (string st in sampTypes)
                 cboxEditSampleType.Items.Add(new SampleType(GetLabelFromSampleType(st), st));
+
+            GeniePath = Utils.GetGeniePath();
+            if (String.IsNullOrEmpty(GeniePath))
+                MessageBox.Show("Genie2k katalog ble ikke funnet");
         }
 
         private void FormMain_Shown(object sender, EventArgs e)
@@ -391,14 +395,7 @@ namespace lorakon_manager
         }
 
         private void visDetaljerToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (gridSearch.SelectedRows.Count < 1)
-                return;
-
-            DataGridViewRow row = gridSearch.SelectedRows[0];
-            Guid id = new Guid(row.Cells["ID"].Value.ToString());                        
-            FormShowDetails form = new FormShowDetails(Settings, id);
-            form.ShowDialog();
+        {            
         }        
 
         private void menuItemOpenFiles_Click(object sender, EventArgs e)
@@ -452,6 +449,8 @@ namespace lorakon_manager
 
         private void tabs_SelectedIndexChanged(object sender, EventArgs e)
         {
+            btnBack.Visible = true;
+            separatorMain.Visible = true;
             menuItemOpenFiles.Visible = false;
             btnEditOpen.Visible = false;
             btnValidationAdd.Visible = false;
@@ -485,6 +484,11 @@ namespace lorakon_manager
                 btnGeometryAdd.Visible = true;
                 btnGeometryEdit.Visible = true;
                 btnGeometryTrash.Visible = true;
+            }
+            else if(tabs.SelectedTab == pageMain)
+            {
+                btnBack.Visible = false;
+                separatorMain.Visible = false;
             }
 
             lblPage.Text = tabs.SelectedTab.Text;
@@ -656,14 +660,13 @@ namespace lorakon_manager
         
         private void menuItemDeleteNuclide_Click(object sender, EventArgs e)
         {
-            if (gridValidation.SelectedCells.Count <= 0)
+            if (gridValidation.SelectedRows.Count < 1)
                 return;
 
             if (MessageBox.Show("Er du sikker på at du vil slette?", "Advarsel", MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
-
-            DataGridViewCell cell = gridValidation.SelectedCells[0];
-            DataGridViewRow row = cell.OwningRow;
+            
+            DataGridViewRow row = gridValidation.SelectedRows[0];
             string nuclideName = row.Cells["NuclideName"].Value.ToString();
             if (String.IsNullOrEmpty(nuclideName.Trim()))
                 return;
@@ -685,14 +688,13 @@ namespace lorakon_manager
 
         private void menuItemDeleteGeometry_Click(object sender, EventArgs e)
         {
-            if (gridGeometries.SelectedCells.Count <= 0)
+            if (gridGeometries.SelectedRows.Count < 1)
                 return;
 
             if (MessageBox.Show("Er du sikker på at du vil slette?", "Advarsel", MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
 
-            DataGridViewCell cell = gridGeometries.SelectedCells[0];
-            DataGridViewRow row = cell.OwningRow;
+            DataGridViewRow row = gridGeometries.SelectedRows[0];
             string geometry = row.Cells["Geometry"].Value.ToString();
             if (String.IsNullOrEmpty(geometry.Trim()))
                 return;
@@ -768,11 +770,10 @@ namespace lorakon_manager
 
         private void menuItemEditValidationRule_Click(object sender, EventArgs e)
         {
-            if (gridValidation.SelectedCells.Count <= 0)
+            if (gridValidation.SelectedRows.Count < 1)
                 return;
-
-            DataGridViewCell cell = gridValidation.SelectedCells[0];
-            DataGridViewRow row = cell.OwningRow;
+            
+            DataGridViewRow row = gridValidation.SelectedRows[0];
             Guid Id = new Guid(row.Cells["ID"].Value.ToString());
             if (Id == Guid.Empty)
                 return;
@@ -801,11 +802,10 @@ namespace lorakon_manager
 
         private void menuItemEditGeometryRule_Click(object sender, EventArgs e)
         {
-            if (gridGeometries.SelectedCells.Count <= 0)
+            if (gridGeometries.SelectedRows.Count <= 0)
                 return;
-
-            DataGridViewCell cell = gridGeometries.SelectedCells[0];
-            DataGridViewRow row = cell.OwningRow;
+            
+            DataGridViewRow row = gridGeometries.SelectedRows[0];
             Guid Id = new Guid(row.Cells["ID"].Value.ToString());
             if (Id == Guid.Empty)
                 return;
@@ -829,6 +829,51 @@ namespace lorakon_manager
             }
 
             BindGridGeometries();
+        }
+
+        private void menuItemShowDetails_Click(object sender, EventArgs e)
+        {
+            if (gridSearch.SelectedRows.Count < 1)
+                return;
+
+            DataGridViewRow row = gridSearch.SelectedRows[0];
+            Guid id = new Guid(row.Cells["ID"].Value.ToString());
+            FormShowDetails form = new FormShowDetails(Settings, id);
+            form.ShowDialog();
+        }
+
+        private void menuItemOpenSpectrum_Click(object sender, EventArgs e)
+        {            
+            if (gridSearch.SelectedRows.Count < 1)
+                return;
+            
+            DataGridViewRow row = gridSearch.SelectedRows[0];
+            Guid Id = new Guid(row.Cells["ID"].Value.ToString());
+            if (Id == Guid.Empty)
+                return;
+
+            string genieExecutable = GeniePath + "EXEFILES\\mvcg.exe";
+            if (!File.Exists(genieExecutable))
+            {
+                MessageBox.Show("Finner ikke Genie programmet");
+                return;
+            }
+
+            try
+            {
+                string req = Settings.WebServiceUri + "/api/spectrum/get_spectrum_file_content_from_specinfo/" + Id.ToString();
+                string json = WebApi.MakeGetRequest(req);
+
+                SpectrumFileContent cont = JsonConvert.DeserializeObject<SpectrumFileContent>(json);
+                byte[] content = Convert.FromBase64String(cont.Base64Data);
+                string filename = Path.GetTempFileName() + ".cnf";
+                File.WriteAllBytes(filename, content);
+                Process.Start(genieExecutable, filename);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private bool SetSpectrumParameter(string filename, string param, string val)

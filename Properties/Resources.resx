@@ -136,6 +136,9 @@
   <data name="doc_128" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\doc_128.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="trash-32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\trash-32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="genie" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\genie.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -145,7 +148,10 @@
   <data name="doc_settings_128" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\doc_settings_128.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="trash-32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\images\trash-32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="new-32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\new-32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="edit-32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\edit-32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

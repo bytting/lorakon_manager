@@ -23,19 +23,14 @@ using System.ComponentModel;
 using System.Text;
 using System.Windows.Forms;
 using System.Diagnostics;
-using System.Net;
 using Newtonsoft.Json;
-using Microsoft.Win32;
 
 namespace lorakon_manager
 {
     public partial class FormShowDetails : Form
     {        
         LorakonManagerSettings Settings = null;
-        Guid id = Guid.Empty;
-
-        // Registry key for the Genie2k installation path
-        const string GenieRegistry = @"SOFTWARE\Wow6432Node\Canberra Industries, Inc.\Genie-2000 Environment";
+        Guid id = Guid.Empty;        
         string GeniePath;
 
         public FormShowDetails(LorakonManagerSettings s, Guid sid)
@@ -116,27 +111,11 @@ namespace lorakon_manager
             {
                 MessageBox.Show(ex.Message);
             }
-            
-            // FIXME: Check and initialize environment
-            GeniePath = GetGeniePath();
-            if (String.IsNullOrEmpty(GeniePath))
-            {
-                MessageBox.Show("Genie2k katalog ble ikke funnet");                
-            }            
-        }
-
-        private string GetGeniePath()
-        {
-            RegistryKey rk = Registry.LocalMachine.OpenSubKey(GenieRegistry, false);
-            String value = (String)rk.GetValue("GENIE2K");
-            if (!String.IsNullOrEmpty(value))
-                return value;
-
-            if (Directory.Exists("C:\\GENIE2K\\"))
-                return "C:\\GENIE2K\\";
-
-            return String.Empty;
-        }
+                        
+            GeniePath = Utils.GetGeniePath();
+            if (String.IsNullOrEmpty(GeniePath))            
+                MessageBox.Show("Genie2k katalog ble ikke funnet");
+        }        
 
         private void btnClose_Click(object sender, EventArgs e)
         {

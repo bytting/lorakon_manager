@@ -87,6 +87,7 @@
     <Compile Include="SpectrumFileContent.cs" />
     <Compile Include="SpectrumInfo.cs" />
     <Compile Include="SpectrumResult.cs" />
+    <Compile Include="Utils.cs" />
     <Compile Include="ValidationRule.cs" />
     <Compile Include="WebApi.cs" />
     <EmbeddedResource Include="FormAddGeometryRule.resx">
@@ -131,9 +132,11 @@
     <None Include="images\doc_128.png" />
     <None Include="images\doc_settings_128.png" />
     <None Include="images\doc_star_128.png" />
+    <None Include="images\edit-32.png" />
     <Content Include="images\exit-32.png" />
     <None Include="images\log256.png" />
     <Content Include="images\Lorakon.ico" />
+    <None Include="images\new-32.png" />
     <Content Include="images\open-32.png" />
     <None Include="images\search256.png" />
     <None Include="images\trash-32.png" />
