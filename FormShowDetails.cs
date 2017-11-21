@@ -53,7 +53,7 @@ namespace lorakon_manager
             try
             {
                 string req = Settings.WebServiceUri + "/api/spectrum/get_spectrum_info/" + id.ToString();
-                string json = WebApi.MakeRequest(req, WebRequestMethods.Http.Get);
+                string json = WebApi.MakeGetRequest(req);
 
                 SpectrumInfo spec = JsonConvert.DeserializeObject<SpectrumInfo>(json);
 
@@ -84,7 +84,7 @@ namespace lorakon_manager
                 tbComment.Text = spec.Comment;
 
                 req = Settings.WebServiceUri + "/api/spectrum/get_spectrum_results_from_specid?specid=" + id.ToString();
-                json = WebApi.MakeRequest(req, WebRequestMethods.Http.Get);
+                json = WebApi.MakeGetRequest(req);
 
                 List<SpectrumResult> resList = JsonConvert.DeserializeObject<List<SpectrumResult>>(json);
 
@@ -159,7 +159,7 @@ namespace lorakon_manager
             try
             {
                 string req = Settings.WebServiceUri + "/api/spectrum/get_spectrum_file_content_from_specinfo/" + id.ToString();
-                string json = WebApi.MakeRequest(req, WebRequestMethods.Http.Get);
+                string json = WebApi.MakeGetRequest(req);
 
                 SpectrumFileContent cont = JsonConvert.DeserializeObject<SpectrumFileContent>(json);
                 byte[] content = Convert.FromBase64String(cont.Base64Data);
@@ -178,10 +178,10 @@ namespace lorakon_manager
             try
             {
                 string req = Settings.WebServiceUri + "/api/spectrum/update_spectrum_info_approved?id=" + id.ToString() + "&approved=" + cbxApproved.Checked.ToString();
-                string json = WebApi.MakeRequest(req, WebRequestMethods.Http.Get);
+                string json = WebApi.MakeGetRequest(req);
 
                 req = Settings.WebServiceUri + "/api/spectrum/update_spectrum_info_rejected?id=" + id.ToString() + "&rejected=" + cbxRejected.Checked.ToString();
-                json = WebApi.MakeRequest(req, WebRequestMethods.Http.Get);
+                json = WebApi.MakeGetRequest(req);
 
                 foreach (DataGridViewRow row in gridNuclideResults.Rows)
                 {
@@ -190,13 +190,13 @@ namespace lorakon_manager
                     bool rejected = Convert.ToBoolean(row.Cells["colRejected"].Value);
 
                     req = Settings.WebServiceUri + "/api/spectrum/update_spectrum_result_approved?id=" + id + "&approved=" + approved.ToString();
-                    json = WebApi.MakeRequest(req, WebRequestMethods.Http.Get);
+                    json = WebApi.MakeGetRequest(req);
 
                     req = Settings.WebServiceUri + "/api/spectrum/update_spectrum_result_rejected?id=" + id + "&rejected=" + rejected.ToString();
-                    json = WebApi.MakeRequest(req, WebRequestMethods.Http.Get);
+                    json = WebApi.MakeGetRequest(req);
 
                     req = Settings.WebServiceUri + "/api/spectrum/update_spectrum_result_evaluated?id=" + id + "&evaluated=true";
-                    json = WebApi.MakeRequest(req, WebRequestMethods.Http.Get);
+                    json = WebApi.MakeGetRequest(req);
                 }
             }
             catch(Exception ex)

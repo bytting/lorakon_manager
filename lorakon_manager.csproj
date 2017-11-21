@@ -48,6 +48,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccountBasic.cs" />
+    <Compile Include="AccountName.cs" />
+    <Compile Include="FormAddGeometryRule.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormAddGeometryRule.Designer.cs">
+      <DependentUpon>FormAddGeometryRule.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormAddValidationRule.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormAddValidationRule.Designer.cs">
+      <DependentUpon>FormAddValidationRule.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -60,6 +74,8 @@
     <Compile Include="FormShowDetails.Designer.cs">
       <DependentUpon>FormShowDetails.cs</DependentUpon>
     </Compile>
+    <Compile Include="GeometryRule.cs" />
+    <Compile Include="LogEntry.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -71,7 +87,14 @@
     <Compile Include="SpectrumFileContent.cs" />
     <Compile Include="SpectrumInfo.cs" />
     <Compile Include="SpectrumResult.cs" />
+    <Compile Include="ValidationRule.cs" />
     <Compile Include="WebApi.cs" />
+    <EmbeddedResource Include="FormAddGeometryRule.resx">
+      <DependentUpon>FormAddGeometryRule.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormAddValidationRule.resx">
+      <DependentUpon>FormAddValidationRule.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
     </EmbeddedResource>

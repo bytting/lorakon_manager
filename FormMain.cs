@@ -48,6 +48,8 @@ namespace lorakon_manager
 
         private LorakonManagerSettings Settings = new LorakonManagerSettings();
 
+        List<ValidationRule> ValidationRules = new List<ValidationRule>();        
+
         public FormMain()
         {
             InitializeComponent();            
@@ -117,23 +119,21 @@ namespace lorakon_manager
 
             try
             {
-                connection = new SqlConnection(Settings.ConnectionString);                
+                connection = new SqlConnection(Settings.ConnectionString);
                 connection.Open();
 
-                SqlCommand command = new SqlCommand("select ID, vchName from Account order by vchName", connection);
-                SqlDataReader reader = command.ExecuteReader();
+                string req = Settings.WebServiceUri + "/api/spectrum/get_all_accounts_basic";
+                string json = WebApi.MakeGetRequest(req);
+
+                List<AccountBasic> accs = JsonConvert.DeserializeObject<List<AccountBasic>>(json);
 
                 cboxAccount.Items.Add(new Account(Guid.Empty, ""));
                 cboxEditAccountName.Items.Add(new Account(Guid.Empty, ""));
-                while (reader.Read())
+                foreach(AccountBasic acc in accs)
                 {
-                    Guid id = new Guid(Convert.ToString(reader["ID"]));
-                    string name = Convert.ToString(reader["vchName"]);
-
-                    cboxAccount.Items.Add(new Account(id, name));
-                    cboxEditAccountName.Items.Add(new Account(id, name));
+                    cboxAccount.Items.Add(new Account(acc.ID, acc.Username));
+                    cboxEditAccountName.Items.Add(new Account(acc.ID, acc.Username));
                 }
-                reader.Close();                
 
                 BindGridValidation();
                 BindGridGeometries();
@@ -188,47 +188,26 @@ namespace lorakon_manager
 
         private string[] GetLogMessages(DateTime fromDate, DateTime toDate)
         {
+            string req = Settings.WebServiceUri + "/api/spectrum/get_log_entries?from=" + fromDate.ToString("yyyyMMdd_hhmmss") + "&to=" + toDate.ToString("yyyyMMdd_hhmmss");
+            string json = WebApi.MakeGetRequest(req);
+            List<LogEntry> ents = JsonConvert.DeserializeObject<List<LogEntry>>(json);
+
             List<string> logMessages = new List<string>();
-
-            SqlCommand command = new SqlCommand("proc_spectrum_log_select", connection);
-            command.CommandType = CommandType.StoredProcedure;
-            command.Parameters.AddWithValue("@FromDate", fromDate);
-            command.Parameters.AddWithValue("@ToDate", toDate);
-            using (SqlDataReader reader = command.ExecuteReader())
-            {
-                while(reader.Read())
-                {
-                    DateTime createDate = Convert.ToDateTime(reader["CreateDate"]);
-                    int severity = Convert.ToInt32(reader["Severity"]);
-                    string message = Convert.ToString(reader["Message"]);
-
-                    logMessages.Add(createDate.ToString("yyyy.MM.dd HH:mm:ss") + " [" + LogSeverityString(severity) + "]: " + message);
-                }
-            }
+            foreach (LogEntry ent in ents)            
+                logMessages.Add(ent.CreateDate.ToString("yyyy.MM.dd HH:mm:ss") + " [" + LogSeverityString(ent.Severity) + "]: " + ent.Message);            
 
             return logMessages.ToArray();
         }
 
         private string[] GetLogMessages(DateTime fromDate, DateTime toDate, int severity)
         {
+            string req = Settings.WebServiceUri + "/api/spectrum/get_log_entries?from=" + fromDate.ToString("yyyyMMdd_hhmmss") + "&to=" + toDate.ToString("yyyyMMdd_hhmmss") + "&severity=" + severity.ToString();
+            string json = WebApi.MakeGetRequest(req);
+            List<LogEntry> ents = JsonConvert.DeserializeObject<List<LogEntry>>(json);
+
             List<string> logMessages = new List<string>();
-
-            SqlCommand command = new SqlCommand("proc_spectrum_log_select_severity", connection);
-            command.CommandType = CommandType.StoredProcedure;
-            command.Parameters.AddWithValue("@FromDate", fromDate);
-            command.Parameters.AddWithValue("@ToDate", toDate);
-            command.Parameters.AddWithValue("@Severity", severity);
-            using (SqlDataReader reader = command.ExecuteReader())
-            {
-                while (reader.Read())
-                {
-                    DateTime createDate = Convert.ToDateTime(reader["CreateDate"]);
-                    int sev = Convert.ToInt32(reader["Severity"]);
-                    string message = Convert.ToString(reader["Message"]);
-
-                    logMessages.Add(createDate.ToString("yyyy.MM.dd HH:mm:ss") + " [" + LogSeverityString(sev) + "]: " + message);
-                }
-            }
+            foreach (LogEntry ent in ents)
+                logMessages.Add(ent.CreateDate.ToString("yyyy.MM.dd HH:mm:ss") + " [" + LogSeverityString(ent.Severity) + "]: " + ent.Message);
 
             return logMessages.ToArray();
         }
@@ -328,9 +307,6 @@ namespace lorakon_manager
 
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if(connection != null && connection.State == ConnectionState.Open)
-                connection.Close();
-
             SaveSettings();
         }
 
@@ -359,7 +335,7 @@ namespace lorakon_manager
 
             string req = Settings.WebServiceUri + "/api/spectrum/get_spectrum_info_latest?" + fromString + "&" + toString + "&" + accidString + "&" + sampString + "&" + apprString + "&" + rejString;
 
-            string json = WebApi.MakeRequest(req, WebRequestMethods.Http.Get);
+            string json = WebApi.MakeGetRequest(req);
             
             List<SpectrumInfo> specs = JsonConvert.DeserializeObject<List<SpectrumInfo>>(json);
 
@@ -383,64 +359,6 @@ namespace lorakon_manager
 
                 gridSearch.Rows.Add(row);
             }
-
-            /*
-            if (connection == null || connection.State != ConnectionState.Open)
-                return;
-
-            SqlCommand command = new SqlCommand("", connection);
-
-            command.CommandText = @"
-select a.vchName as 'Laboratorie', 
-	sil.Operator,
-	cast(sil.CreateDate as datetime2(0)) as 'Opprettet',
-	cast(sil.AcquisitionDate as datetime2(0)) as 'Måledato',
-	cast(sil.ReferenceDate as datetime2(0)) as 'Ref.dato',		
-	sil.SampleType as 'Prøvetype', 
-	sil.SampleComponent as 'Bestandel',		
-	sil.Approved as 'Godkjent',	
-    sil.ApprovedStatus as 'Godkj. status',
-    sil.Rejected as 'Forkastet',	
-    sil.ID
-from SpectrumInfoLatest sil 
-inner join Account a on a.ID = sil.AccountID
-where 1=1
-";
-
-            if (!String.IsNullOrEmpty(cboxAccount.Text))
-            {
-                Account a = cboxAccount.SelectedItem as Account;
-                command.CommandText += " and AccountID like '" + a.ID.ToString() + "'";
-            }
-
-            if (!String.IsNullOrEmpty(tbSearchSampleType.Text))
-            {
-                command.CommandText += " and SampleType like '%" + tbSearchSampleType.Text.Trim() + "%'";
-            }
-            
-            command.CommandText += " and Approved = @Approved";
-            command.Parameters.AddWithValue("@Approved", cbApproved.Checked);
-
-            command.CommandText += " and Rejected = @Rejected";
-            command.Parameters.AddWithValue("@Rejected", cbRejected.Checked);
-
-            command.CommandText += " and CreateDate between @dateFrom and @dateTo";
-            command.Parameters.AddWithValue("@dateFrom", dtFrom.Value);
-            command.Parameters.AddWithValue("@dateTo", dtTo.Value);
-
-            SqlDataAdapter adapter = new SqlDataAdapter();
-            adapter.SelectCommand = command;
-            adapter.SelectCommand.Connection = connection;
-            DataTable dt = new DataTable();
-            adapter.Fill(dt);
-            gridSearch.DataSource = dt;            
-
-            foreach (DataGridViewColumn col in gridSearch.Columns)
-                col.ReadOnly = true;
-
-            gridSearch.Columns[gridSearch.Columns.Count - 1].Visible = false;
-            gridSearch.Columns[gridSearch.Columns.Count - 2].ReadOnly = false;            
-            */
         }
 
         private void tbSearchSampleType_TextChanged(object sender, EventArgs e)
@@ -493,8 +411,6 @@ where 1=1
         {            
             if(ofd.ShowDialog() == DialogResult.OK)
             {
-                SqlCommand command = new SqlCommand("select vchName from Account where ID = @ID", connection);
-
                 gridEditFiles.Rows.Clear();
                 Application.DoEvents();
 
@@ -517,11 +433,12 @@ where 1=1
                     if (!String.IsNullOrEmpty(accountID))
                     {
                         Guid id = new Guid(accountID);
-                        command.Parameters.Clear();
-                        command.Parameters.AddWithValue("@ID", id);
-                        object o = command.ExecuteScalar();
-                        if (o != null && o != DBNull.Value)
-                            accountName = o.ToString();
+
+                        string req = Settings.WebServiceUri + "/api/spectrum/get_account_name/" + id.ToString();
+                        string json = WebApi.MakeGetRequest(req);
+                        AccountName accName = JsonConvert.DeserializeObject<AccountName>(json);
+                        if (!String.IsNullOrEmpty(accName.Name))
+                            accountName = accName.Name;
                     }                    
                     string sampleType = GetSpectrumParameter(filename, "SUCSTRING1");
                     string sampleComponent = GetSpectrumParameter(filename, "SUCSTRING2");
@@ -543,7 +460,9 @@ where 1=1
         {
             menuItemOpenFiles.Visible = false;
             btnEditOpen.Visible = false;
+            btnValidationAdd.Visible = false;
             btnValidationTrash.Visible = false;
+            btnGeometryAdd.Visible = false;
             btnGeometryTrash.Visible = false;
 
             if (tabs.SelectedTab == pageEdit)
@@ -561,10 +480,12 @@ where 1=1
             }
             else if (tabs.SelectedTab == pageValidation)
             {
+                btnValidationAdd.Visible = true;
                 btnValidationTrash.Visible = true;
             }
             else if (tabs.SelectedTab == pageGeometries)
             {
+                btnGeometryAdd.Visible = true;
                 btnGeometryTrash.Visible = true;
             }
 
@@ -728,10 +649,10 @@ where 1=1
 
         private void BindGridValidation()
         {
-            SqlDataAdapter adapter = new SqlDataAdapter("select * from SpectrumValidationRules", connection);
-            DataTable dt = new DataTable();
-            adapter.Fill(dt);
-            gridValidation.DataSource = dt;
+            string req = Settings.WebServiceUri + "/api/spectrum/get_all_validation_rules";
+            string json = WebApi.MakeGetRequest(req);
+            List<ValidationRule> rules = JsonConvert.DeserializeObject<List<ValidationRule>>(json);
+            gridValidation.DataSource = rules;
             gridValidation.Columns[0].Visible = false;
         }        
 
@@ -800,18 +721,18 @@ where 1=1
             if (String.IsNullOrEmpty(nuclideName.Trim()))
                 return;
 
-            SqlCommand command = new SqlCommand("delete from SpectrumValidationRules where NuclideName=@NuclideName", connection);
-            command.Parameters.AddWithValue("@NuclideName", nuclideName);
-            command.ExecuteNonQuery();            
+            string req = Settings.WebServiceUri + "/api/spectrum/delete_validation_rule?name=" + nuclideName;
+            string json = WebApi.MakeGetRequest(req);
+            
             BindGridValidation();
         }
 
         private void BindGridGeometries()
         {
-            SqlDataAdapter adapter = new SqlDataAdapter("select * from SpectrumGeometryRules", connection);
-            DataTable dt = new DataTable();
-            adapter.Fill(dt);
-            gridGeometries.DataSource = dt;
+            string req = Settings.WebServiceUri + "/api/spectrum/get_all_geometry_rules";
+            string json = WebApi.MakeGetRequest(req);
+            List<GeometryRule> rules = JsonConvert.DeserializeObject<List<GeometryRule>>(json);
+            gridGeometries.DataSource = rules;
             gridGeometries.Columns[0].Visible = false;
         }
 
@@ -874,9 +795,16 @@ where 1=1
             if (String.IsNullOrEmpty(geometry.Trim()))
                 return;
 
-            SqlCommand command = new SqlCommand("delete from SpectrumGeometryRules where Geometry=@Geometry", connection);
-            command.Parameters.AddWithValue("@Geometry", geometry);
-            command.ExecuteNonQuery();
+            try
+            {
+                string req = Settings.WebServiceUri + "/api/spectrum/delete_geometry_rule?name=" + geometry;
+                string json = WebApi.MakeGetRequest(req);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            
             BindGridGeometries();
         }
 
@@ -896,6 +824,44 @@ where 1=1
         {
             tbSettingsUrl.Text = Settings.WebServiceUri;
             tabs.SelectedTab = pageSettings;
+        }
+
+        private void btnValidationAdd_Click(object sender, EventArgs e)
+        {
+            FormAddValidationRule form = new FormAddValidationRule();
+            if(form.ShowDialog() == DialogResult.Cancel)
+                return;
+
+            try
+            {
+                string req = Settings.WebServiceUri + "/api/spectrum/insert_validation_rule";
+                WebApi.MakePostRequest(req, form.Rule);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            
+            BindGridValidation();
+        }
+
+        private void btnGeometryAdd_Click(object sender, EventArgs e)
+        {
+            FormAddGeometryRule form = new FormAddGeometryRule();
+            if (form.ShowDialog() == DialogResult.Cancel)
+                return;
+
+            try
+            {
+                string req = Settings.WebServiceUri + "/api/spectrum/insert_geometry_rule";
+                WebApi.MakePostRequest(req, form.Rule);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+            BindGridGeometries();
         }
 
         private bool SetSpectrumParameter(string filename, string param, string val)
