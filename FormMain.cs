@@ -44,7 +44,7 @@ namespace lorakon_manager
 
         private LorakonManagerSettings Settings = new LorakonManagerSettings();
 
-        List<ValidationRule> ValidationRules = new List<ValidationRule>();        
+        List<ValidationRule> ValidationRules = new List<ValidationRule>();
 
         public FormMain()
         {
@@ -349,9 +349,9 @@ namespace lorakon_manager
                 row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.ID });
                 row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.AccountName });
                 row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.Operator });
-                row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.CreateDate });
-                row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.AcquisitionDate });
-                row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.ReferenceDate });
+                row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.CreateDate.ToString(Utils.PrettyDateFormat) });
+                row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.AcquisitionDate.ToString(Utils.PrettyDateFormat) });
+                row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.ReferenceDate.ToString(Utils.PrettyDateFormat) });
                 row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.SampleType });
                 row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.SampleComponent });
                 row.Cells.Add(new DataGridViewCheckBoxCell { Value = spec.Approved });

@@ -90,8 +90,8 @@ namespace lorakon_manager
 
                     row.Cells.Add(new DataGridViewTextBoxCell { Value = res.ID });
                     row.Cells.Add(new DataGridViewTextBoxCell { Value = res.SpectrumInfoID });
-                    row.Cells.Add(new DataGridViewTextBoxCell { Value = res.CreateDate });
-                    row.Cells.Add(new DataGridViewTextBoxCell { Value = res.UpdateDate });
+                    row.Cells.Add(new DataGridViewTextBoxCell { Value = res.CreateDate.ToString(Utils.PrettyDateFormat) });
+                    row.Cells.Add(new DataGridViewTextBoxCell { Value = res.UpdateDate.ToString(Utils.PrettyDateFormat) });
                     row.Cells.Add(new DataGridViewTextBoxCell { Value = res.NuclideName });
                     row.Cells.Add(new DataGridViewTextBoxCell { Value = res.Confidence });
                     row.Cells.Add(new DataGridViewTextBoxCell { Value = res.Activity });

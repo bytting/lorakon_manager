@@ -25,6 +25,8 @@ namespace lorakon_manager
 {
     public static class Utils
     {
+        public const string PrettyDateFormat = "dd.MM.yyyy hh:mm:ss";
+
         // Registry key for the Genie2k installation path
         public const string GenieRegistry = @"SOFTWARE\Wow6432Node\Canberra Industries, Inc.\Genie-2000 Environment";
 

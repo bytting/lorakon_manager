@@ -62,17 +62,6 @@
             this.btnMenuGeometry = new System.Windows.Forms.Button();
             this.pageSearch = new System.Windows.Forms.TabPage();
             this.gridSearch = new System.Windows.Forms.DataGridView();
-            this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.AccountName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Operator = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CreateDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ReferenceDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.AcquisitionDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SampleType = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SampleComponent = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Approved = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.ApprovedStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Rejected = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.menuGrid = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.menuItemShowDetails = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItemOpenSpectrum = new System.Windows.Forms.ToolStripMenuItem();
@@ -140,6 +129,17 @@
             this.btnSettingsCancel = new System.Windows.Forms.Button();
             this.btnSettingsOk = new System.Windows.Forms.Button();
             this.ofd = new System.Windows.Forms.OpenFileDialog();
+            this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.AccountName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Operator = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CreateDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ReferenceDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.AcquisitionDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SampleType = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SampleComponent = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Approved = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.ApprovedStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Rejected = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.status.SuspendLayout();
             this.menu.SuspendLayout();
             this.tools.SuspendLayout();
@@ -548,75 +548,6 @@
             this.gridSearch.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.gridSearch.Size = new System.Drawing.Size(1025, 419);
             this.gridSearch.TabIndex = 2;
-            // 
-            // ID
-            // 
-            this.ID.HeaderText = "ID";
-            this.ID.Name = "ID";
-            this.ID.ReadOnly = true;
-            this.ID.Visible = false;
-            // 
-            // AccountName
-            // 
-            this.AccountName.HeaderText = "Account";
-            this.AccountName.Name = "AccountName";
-            this.AccountName.ReadOnly = true;
-            // 
-            // Operator
-            // 
-            this.Operator.HeaderText = "Operator";
-            this.Operator.Name = "Operator";
-            this.Operator.ReadOnly = true;
-            // 
-            // CreateDate
-            // 
-            this.CreateDate.HeaderText = "CreateDate";
-            this.CreateDate.Name = "CreateDate";
-            this.CreateDate.ReadOnly = true;
-            // 
-            // ReferenceDate
-            // 
-            this.ReferenceDate.HeaderText = "ReferenceDate";
-            this.ReferenceDate.Name = "ReferenceDate";
-            this.ReferenceDate.ReadOnly = true;
-            // 
-            // AcquisitionDate
-            // 
-            this.AcquisitionDate.HeaderText = "AcquisitionDate";
-            this.AcquisitionDate.Name = "AcquisitionDate";
-            this.AcquisitionDate.ReadOnly = true;
-            // 
-            // SampleType
-            // 
-            this.SampleType.HeaderText = "SampleType";
-            this.SampleType.Name = "SampleType";
-            this.SampleType.ReadOnly = true;
-            // 
-            // SampleComponent
-            // 
-            this.SampleComponent.HeaderText = "SampleComponent";
-            this.SampleComponent.Name = "SampleComponent";
-            this.SampleComponent.ReadOnly = true;
-            // 
-            // Approved
-            // 
-            this.Approved.HeaderText = "Approved";
-            this.Approved.Name = "Approved";
-            this.Approved.ReadOnly = true;
-            this.Approved.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Approved.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            // 
-            // ApprovedStatus
-            // 
-            this.ApprovedStatus.HeaderText = "ApprovedStatus";
-            this.ApprovedStatus.Name = "ApprovedStatus";
-            this.ApprovedStatus.ReadOnly = true;
-            // 
-            // Rejected
-            // 
-            this.Rejected.HeaderText = "Rejected";
-            this.Rejected.Name = "Rejected";
-            this.Rejected.ReadOnly = true;
             // 
             // menuGrid
             // 
@@ -1332,6 +1263,75 @@
             this.ofd.Filter = "CNF files (*.cnf)|*.cnf|All files (*.*)|*.*";
             this.ofd.Multiselect = true;
             // 
+            // ID
+            // 
+            this.ID.HeaderText = "ID";
+            this.ID.Name = "ID";
+            this.ID.ReadOnly = true;
+            this.ID.Visible = false;
+            // 
+            // AccountName
+            // 
+            this.AccountName.HeaderText = "Konto";
+            this.AccountName.Name = "AccountName";
+            this.AccountName.ReadOnly = true;
+            // 
+            // Operator
+            // 
+            this.Operator.HeaderText = "Operatør";
+            this.Operator.Name = "Operator";
+            this.Operator.ReadOnly = true;
+            // 
+            // CreateDate
+            // 
+            this.CreateDate.HeaderText = "Opprettet";
+            this.CreateDate.Name = "CreateDate";
+            this.CreateDate.ReadOnly = true;
+            // 
+            // ReferenceDate
+            // 
+            this.ReferenceDate.HeaderText = "Ref. dato";
+            this.ReferenceDate.Name = "ReferenceDate";
+            this.ReferenceDate.ReadOnly = true;
+            // 
+            // AcquisitionDate
+            // 
+            this.AcquisitionDate.HeaderText = "Måledato";
+            this.AcquisitionDate.Name = "AcquisitionDate";
+            this.AcquisitionDate.ReadOnly = true;
+            // 
+            // SampleType
+            // 
+            this.SampleType.HeaderText = "Prøvetype";
+            this.SampleType.Name = "SampleType";
+            this.SampleType.ReadOnly = true;
+            // 
+            // SampleComponent
+            // 
+            this.SampleComponent.HeaderText = "Prøve komp.";
+            this.SampleComponent.Name = "SampleComponent";
+            this.SampleComponent.ReadOnly = true;
+            // 
+            // Approved
+            // 
+            this.Approved.HeaderText = "Godkjent";
+            this.Approved.Name = "Approved";
+            this.Approved.ReadOnly = true;
+            this.Approved.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Approved.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // ApprovedStatus
+            // 
+            this.ApprovedStatus.HeaderText = "Godkj. status";
+            this.ApprovedStatus.Name = "ApprovedStatus";
+            this.ApprovedStatus.ReadOnly = true;
+            // 
+            // Rejected
+            // 
+            this.Rejected.HeaderText = "Avvist";
+            this.Rejected.Name = "Rejected";
+            this.Rejected.ReadOnly = true;
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -1347,7 +1347,7 @@
             this.MinimumSize = new System.Drawing.Size(800, 600);
             this.Name = "FormMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Lorakon Database";
+            this.Text = "Lorakon spektrum database";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);
             this.Load += new System.EventHandler(this.FormMain_Load);
             this.Shown += new System.EventHandler(this.FormMain_Shown);
@@ -1483,6 +1483,14 @@
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.TextBox tbSettingsUrl;
         private System.Windows.Forms.ToolStripMenuItem menuItemSettings;
+        private System.Windows.Forms.ToolStripButton btnValidationAdd;
+        private System.Windows.Forms.ToolStripButton btnGeometryAdd;
+        private System.Windows.Forms.ToolStripMenuItem menuItemNewValidationRule;
+        private System.Windows.Forms.ToolStripMenuItem menuItemNewGeometryRule;
+        private System.Windows.Forms.ToolStripMenuItem menuItemEditValidationRule;
+        private System.Windows.Forms.ToolStripButton btnValidationEdit;
+        private System.Windows.Forms.ToolStripButton btnGeometryEdit;
+        private System.Windows.Forms.ToolStripMenuItem menuItemEditGeometryRule;
         private System.Windows.Forms.DataGridViewTextBoxColumn ID;
         private System.Windows.Forms.DataGridViewTextBoxColumn AccountName;
         private System.Windows.Forms.DataGridViewTextBoxColumn Operator;
@@ -1494,14 +1502,6 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn Approved;
         private System.Windows.Forms.DataGridViewTextBoxColumn ApprovedStatus;
         private System.Windows.Forms.DataGridViewCheckBoxColumn Rejected;
-        private System.Windows.Forms.ToolStripButton btnValidationAdd;
-        private System.Windows.Forms.ToolStripButton btnGeometryAdd;
-        private System.Windows.Forms.ToolStripMenuItem menuItemNewValidationRule;
-        private System.Windows.Forms.ToolStripMenuItem menuItemNewGeometryRule;
-        private System.Windows.Forms.ToolStripMenuItem menuItemEditValidationRule;
-        private System.Windows.Forms.ToolStripButton btnValidationEdit;
-        private System.Windows.Forms.ToolStripButton btnGeometryEdit;
-        private System.Windows.Forms.ToolStripMenuItem menuItemEditGeometryRule;
     }
 }
 

@@ -202,7 +202,7 @@
             dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
             this.gridNuclideResults.RowsDefaultCellStyle = dataGridViewCellStyle1;
             this.gridNuclideResults.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.gridNuclideResults.Size = new System.Drawing.Size(993, 277);
+            this.gridNuclideResults.Size = new System.Drawing.Size(993, 284);
             this.gridNuclideResults.TabIndex = 2;
             // 
             // colID
@@ -1133,17 +1133,17 @@
             this.panel28.Controls.Add(this.btnSave);
             this.panel28.Controls.Add(this.btnClose);
             this.panel28.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel28.Location = new System.Drawing.Point(0, 583);
+            this.panel28.Location = new System.Drawing.Point(0, 590);
             this.panel28.Name = "panel28";
-            this.panel28.Size = new System.Drawing.Size(993, 39);
+            this.panel28.Size = new System.Drawing.Size(993, 32);
             this.panel28.TabIndex = 4;
             // 
             // btnSave
             // 
             this.btnSave.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnSave.Location = new System.Drawing.Point(723, 0);
+            this.btnSave.Location = new System.Drawing.Point(769, 0);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(134, 39);
+            this.btnSave.Size = new System.Drawing.Size(112, 32);
             this.btnSave.TabIndex = 1;
             this.btnSave.Text = "Lagre";
             this.btnSave.UseVisualStyleBackColor = true;
@@ -1152,9 +1152,9 @@
             // btnClose
             // 
             this.btnClose.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnClose.Location = new System.Drawing.Point(857, 0);
+            this.btnClose.Location = new System.Drawing.Point(881, 0);
             this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(136, 39);
+            this.btnClose.Size = new System.Drawing.Size(112, 32);
             this.btnClose.TabIndex = 0;
             this.btnClose.Text = "Lukk";
             this.btnClose.UseVisualStyleBackColor = true;
