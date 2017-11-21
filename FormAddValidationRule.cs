@@ -30,12 +30,13 @@ namespace lorakon_manager
 
         public FormAddValidationRule()
         {
-            InitializeComponent();
+            InitializeComponent();            
         }
 
         public FormAddValidationRule(Guid id, string nuclideName, float activityMin, float activityMax, float confidenceMin, bool canBeAutoApproved)
         {
             InitializeComponent();
+
             Updating = true;
             Rule.Id = id;
             tbNuclideName.Text = nuclideName;
@@ -43,7 +44,15 @@ namespace lorakon_manager
             tbActivityMax.Text = activityMax.ToString();
             tbConfidenceMin.Text = confidenceMin.ToString();
             cbCanBeAutoApproved.Checked = canBeAutoApproved;
-        }        
+        }
+
+        private void FormAddValidationRule_Load(object sender, EventArgs e)
+        {
+            tbNuclideName.KeyPress += CustomEvents.Alpha_KeyPress;
+            tbActivityMin.KeyPress += CustomEvents.Numeric_KeyPress;
+            tbActivityMax.KeyPress += CustomEvents.Numeric_KeyPress;
+            tbConfidenceMin.KeyPress += CustomEvents.Numeric_KeyPress;
+        }
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
@@ -63,6 +72,6 @@ namespace lorakon_manager
 
             DialogResult = DialogResult.OK;
             Close();
-        }
+        }        
     }
 }

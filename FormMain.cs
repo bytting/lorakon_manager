@@ -160,6 +160,9 @@ namespace lorakon_manager
                 Settings = x.Deserialize(sr) as LorakonManagerSettings;
             }
 
+            if (!String.IsNullOrEmpty(Settings.WebServiceUri) && Settings.WebServiceUri.EndsWith("/"))
+                Settings.WebServiceUri = Settings.WebServiceUri.TrimEnd(new char[] { '/' });
+
             tbSettingsUrl.Text = Settings.WebServiceUri;
         }
 

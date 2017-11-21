@@ -30,18 +30,27 @@ namespace lorakon_manager
 
         public FormAddGeometryRule()
         {
-            InitializeComponent();
+            InitializeComponent();            
         }
 
         public FormAddGeometryRule(Guid id, string geometryName, string unit, float minimum, float maximum)
         {
             InitializeComponent();
+
             Updating = true;
             Rule.Id = id;
             tbName.Text = geometryName;
             tbUnit.Text = unit;
             tbMinimum.Text = minimum.ToString();
             tbMaximum.Text = maximum.ToString();
+        }
+
+        private void FormAddGeometryRule_Load(object sender, EventArgs e)
+        {
+            tbName.KeyPress += CustomEvents.Alpha_KeyPress;
+            tbUnit.KeyPress += CustomEvents.Alpha_KeyPress;
+            tbMinimum.KeyPress += CustomEvents.Numeric_KeyPress;
+            tbMaximum.KeyPress += CustomEvents.Numeric_KeyPress;
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -60,6 +69,6 @@ namespace lorakon_manager
             Rule.Maximum = Convert.ToSingle(tbMaximum.Text);
             DialogResult = DialogResult.OK;
             Close();
-        }
+        }        
     }
 }

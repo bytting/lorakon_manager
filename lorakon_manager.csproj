@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="AccountBasic.cs" />
     <Compile Include="AccountName.cs" />
+    <Compile Include="CustomEvents.cs" />
     <Compile Include="FormAddGeometryRule.cs">
       <SubType>Form</SubType>
     </Compile>
