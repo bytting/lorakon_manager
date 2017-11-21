@@ -62,9 +62,21 @@
             this.btnMenuGeometry = new System.Windows.Forms.Button();
             this.pageSearch = new System.Windows.Forms.TabPage();
             this.gridSearch = new System.Windows.Forms.DataGridView();
+            this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.AccountName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Operator = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CreateDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ReferenceDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.AcquisitionDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SampleType = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SampleComponent = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Approved = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.ApprovedStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Rejected = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.menuGrid = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.menuItemShowDetails = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItemOpenSpectrum = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuItemDeleteSpectrum = new System.Windows.Forms.ToolStripMenuItem();
             this.panelSearchTop = new System.Windows.Forms.Panel();
             this.tableSearch = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
@@ -129,17 +141,7 @@
             this.btnSettingsCancel = new System.Windows.Forms.Button();
             this.btnSettingsOk = new System.Windows.Forms.Button();
             this.ofd = new System.Windows.Forms.OpenFileDialog();
-            this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.AccountName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Operator = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CreateDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ReferenceDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.AcquisitionDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SampleType = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SampleComponent = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Approved = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.ApprovedStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Rejected = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.btnSpectrumDelete = new System.Windows.Forms.ToolStripButton();
             this.status.SuspendLayout();
             this.menu.SuspendLayout();
             this.tools.SuspendLayout();
@@ -257,7 +259,8 @@
             this.btnValidationEdit,
             this.btnGeometryEdit,
             this.btnGeometryTrash,
-            this.btnValidationTrash});
+            this.btnValidationTrash,
+            this.btnSpectrumDelete});
             this.tools.Location = new System.Drawing.Point(0, 24);
             this.tools.Name = "tools";
             this.tools.Size = new System.Drawing.Size(1039, 40);
@@ -549,13 +552,83 @@
             this.gridSearch.Size = new System.Drawing.Size(1025, 419);
             this.gridSearch.TabIndex = 2;
             // 
+            // ID
+            // 
+            this.ID.HeaderText = "ID";
+            this.ID.Name = "ID";
+            this.ID.ReadOnly = true;
+            this.ID.Visible = false;
+            // 
+            // AccountName
+            // 
+            this.AccountName.HeaderText = "Konto";
+            this.AccountName.Name = "AccountName";
+            this.AccountName.ReadOnly = true;
+            // 
+            // Operator
+            // 
+            this.Operator.HeaderText = "Operatør";
+            this.Operator.Name = "Operator";
+            this.Operator.ReadOnly = true;
+            // 
+            // CreateDate
+            // 
+            this.CreateDate.HeaderText = "Opprettet";
+            this.CreateDate.Name = "CreateDate";
+            this.CreateDate.ReadOnly = true;
+            // 
+            // ReferenceDate
+            // 
+            this.ReferenceDate.HeaderText = "Ref. dato";
+            this.ReferenceDate.Name = "ReferenceDate";
+            this.ReferenceDate.ReadOnly = true;
+            // 
+            // AcquisitionDate
+            // 
+            this.AcquisitionDate.HeaderText = "Måledato";
+            this.AcquisitionDate.Name = "AcquisitionDate";
+            this.AcquisitionDate.ReadOnly = true;
+            // 
+            // SampleType
+            // 
+            this.SampleType.HeaderText = "Prøvetype";
+            this.SampleType.Name = "SampleType";
+            this.SampleType.ReadOnly = true;
+            // 
+            // SampleComponent
+            // 
+            this.SampleComponent.HeaderText = "Prøve komp.";
+            this.SampleComponent.Name = "SampleComponent";
+            this.SampleComponent.ReadOnly = true;
+            // 
+            // Approved
+            // 
+            this.Approved.HeaderText = "Godkjent";
+            this.Approved.Name = "Approved";
+            this.Approved.ReadOnly = true;
+            this.Approved.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Approved.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // ApprovedStatus
+            // 
+            this.ApprovedStatus.HeaderText = "Godkj. status";
+            this.ApprovedStatus.Name = "ApprovedStatus";
+            this.ApprovedStatus.ReadOnly = true;
+            // 
+            // Rejected
+            // 
+            this.Rejected.HeaderText = "Avvist";
+            this.Rejected.Name = "Rejected";
+            this.Rejected.ReadOnly = true;
+            // 
             // menuGrid
             // 
             this.menuGrid.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuItemShowDetails,
-            this.menuItemOpenSpectrum});
+            this.menuItemOpenSpectrum,
+            this.menuItemDeleteSpectrum});
             this.menuGrid.Name = "menuGrid";
-            this.menuGrid.Size = new System.Drawing.Size(144, 48);
+            this.menuGrid.Size = new System.Drawing.Size(144, 70);
             // 
             // menuItemShowDetails
             // 
@@ -570,6 +643,13 @@
             this.menuItemOpenSpectrum.Size = new System.Drawing.Size(143, 22);
             this.menuItemOpenSpectrum.Text = "Åpne spekter";
             this.menuItemOpenSpectrum.Click += new System.EventHandler(this.menuItemOpenSpectrum_Click);
+            // 
+            // menuItemDeleteSpectrum
+            // 
+            this.menuItemDeleteSpectrum.Name = "menuItemDeleteSpectrum";
+            this.menuItemDeleteSpectrum.Size = new System.Drawing.Size(143, 22);
+            this.menuItemDeleteSpectrum.Text = "Slett spekter";
+            this.menuItemDeleteSpectrum.Click += new System.EventHandler(this.menuItemDeleteSpectrum_Click);
             // 
             // panelSearchTop
             // 
@@ -1263,74 +1343,16 @@
             this.ofd.Filter = "CNF files (*.cnf)|*.cnf|All files (*.*)|*.*";
             this.ofd.Multiselect = true;
             // 
-            // ID
+            // btnSpectrumDelete
             // 
-            this.ID.HeaderText = "ID";
-            this.ID.Name = "ID";
-            this.ID.ReadOnly = true;
-            this.ID.Visible = false;
-            // 
-            // AccountName
-            // 
-            this.AccountName.HeaderText = "Konto";
-            this.AccountName.Name = "AccountName";
-            this.AccountName.ReadOnly = true;
-            // 
-            // Operator
-            // 
-            this.Operator.HeaderText = "Operatør";
-            this.Operator.Name = "Operator";
-            this.Operator.ReadOnly = true;
-            // 
-            // CreateDate
-            // 
-            this.CreateDate.HeaderText = "Opprettet";
-            this.CreateDate.Name = "CreateDate";
-            this.CreateDate.ReadOnly = true;
-            // 
-            // ReferenceDate
-            // 
-            this.ReferenceDate.HeaderText = "Ref. dato";
-            this.ReferenceDate.Name = "ReferenceDate";
-            this.ReferenceDate.ReadOnly = true;
-            // 
-            // AcquisitionDate
-            // 
-            this.AcquisitionDate.HeaderText = "Måledato";
-            this.AcquisitionDate.Name = "AcquisitionDate";
-            this.AcquisitionDate.ReadOnly = true;
-            // 
-            // SampleType
-            // 
-            this.SampleType.HeaderText = "Prøvetype";
-            this.SampleType.Name = "SampleType";
-            this.SampleType.ReadOnly = true;
-            // 
-            // SampleComponent
-            // 
-            this.SampleComponent.HeaderText = "Prøve komp.";
-            this.SampleComponent.Name = "SampleComponent";
-            this.SampleComponent.ReadOnly = true;
-            // 
-            // Approved
-            // 
-            this.Approved.HeaderText = "Godkjent";
-            this.Approved.Name = "Approved";
-            this.Approved.ReadOnly = true;
-            this.Approved.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Approved.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            // 
-            // ApprovedStatus
-            // 
-            this.ApprovedStatus.HeaderText = "Godkj. status";
-            this.ApprovedStatus.Name = "ApprovedStatus";
-            this.ApprovedStatus.ReadOnly = true;
-            // 
-            // Rejected
-            // 
-            this.Rejected.HeaderText = "Avvist";
-            this.Rejected.Name = "Rejected";
-            this.Rejected.ReadOnly = true;
+            this.btnSpectrumDelete.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnSpectrumDelete.Image = global::lorakon_manager.Properties.Resources.trash_32;
+            this.btnSpectrumDelete.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.btnSpectrumDelete.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnSpectrumDelete.Name = "btnSpectrumDelete";
+            this.btnSpectrumDelete.Size = new System.Drawing.Size(36, 37);
+            this.btnSpectrumDelete.Text = "Slett spekter";
+            this.btnSpectrumDelete.Click += new System.EventHandler(this.menuItemDeleteSpectrum_Click);
             // 
             // FormMain
             // 
@@ -1502,6 +1524,8 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn Approved;
         private System.Windows.Forms.DataGridViewTextBoxColumn ApprovedStatus;
         private System.Windows.Forms.DataGridViewCheckBoxColumn Rejected;
+        private System.Windows.Forms.ToolStripMenuItem menuItemDeleteSpectrum;
+        private System.Windows.Forms.ToolStripButton btnSpectrumDelete;
     }
 }
 

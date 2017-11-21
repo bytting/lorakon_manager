@@ -453,6 +453,7 @@ namespace lorakon_manager
         private void tabs_SelectedIndexChanged(object sender, EventArgs e)
         {
             btnBack.Visible = true;
+            btnSpectrumDelete.Visible = false;
             separatorMain.Visible = true;
             menuItemOpenFiles.Visible = false;
             btnEditOpen.Visible = false;
@@ -487,6 +488,10 @@ namespace lorakon_manager
                 btnGeometryAdd.Visible = true;
                 btnGeometryEdit.Visible = true;
                 btnGeometryTrash.Visible = true;
+            }
+            else if(tabs.SelectedTab == pageSearch)
+            {
+                btnSpectrumDelete.Visible = true;
             }
             else if(tabs.SelectedTab == pageMain)
             {
@@ -843,6 +848,30 @@ namespace lorakon_manager
             Guid id = new Guid(row.Cells["ID"].Value.ToString());
             FormShowDetails form = new FormShowDetails(Settings, id);
             form.ShowDialog();
+        }
+
+        private void menuItemDeleteSpectrum_Click(object sender, EventArgs e)
+        {
+            if (gridSearch.SelectedRows.Count < 1)
+                return;
+
+            if (MessageBox.Show("Er du sikker på at du vil slette?", "Advarsel", MessageBoxButtons.YesNo) == DialogResult.No)
+                return;
+
+            try
+            {
+                DataGridViewRow row = gridSearch.SelectedRows[0];
+                Guid Id = new Guid(row.Cells["ID"].Value.ToString());
+
+                string req = Settings.WebServiceUri + "/api/spectrum/delete_spectrum_info/" + Id.ToString();
+                string json = WebApi.MakeGetRequest(req);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+            populateGrid();
         }
 
         private void menuItemOpenSpectrum_Click(object sender, EventArgs e)
