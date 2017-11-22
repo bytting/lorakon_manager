@@ -84,6 +84,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="SampleType.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="SpectrumFileContent.cs" />
     <Compile Include="SpectrumInfo.cs" />

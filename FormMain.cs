@@ -125,12 +125,12 @@ namespace lorakon_manager
 
                 List<AccountBasic> accs = JsonConvert.DeserializeObject<List<AccountBasic>>(json);
 
-                cboxAccount.Items.Add(new Account(Guid.Empty, ""));
-                cboxEditAccountName.Items.Add(new Account(Guid.Empty, ""));
+                cboxAccount.Items.Add(new AccountBasic(Guid.Empty, ""));
+                cboxEditAccountName.Items.Add(new AccountBasic(Guid.Empty, ""));
                 foreach(AccountBasic acc in accs)
                 {
-                    cboxAccount.Items.Add(new Account(acc.ID, acc.Username));
-                    cboxEditAccountName.Items.Add(new Account(acc.ID, acc.Username));
+                    cboxAccount.Items.Add(new AccountBasic(acc.ID, acc.Username));
+                    cboxEditAccountName.Items.Add(new AccountBasic(acc.ID, acc.Username));
                 }
 
                 BindGridValidation();
@@ -323,7 +323,7 @@ namespace lorakon_manager
             string accidString = "accid=";
             if (!String.IsNullOrEmpty(cboxAccount.Text))
             {
-                Account a = cboxAccount.SelectedItem as Account;
+                AccountBasic a = cboxAccount.SelectedItem as AccountBasic;
                 accidString += a.ID.ToString();
             }
             string sampString = "samp=";
@@ -396,11 +396,7 @@ namespace lorakon_manager
         {
             populateGrid();
         }
-
-        private void visDetaljerToolStripMenuItem_Click(object sender, EventArgs e)
-        {            
-        }        
-
+        
         private void menuItemOpenFiles_Click(object sender, EventArgs e)
         {            
             if(ofd.ShowDialog() == DialogResult.OK)
@@ -564,7 +560,7 @@ namespace lorakon_manager
         private void btnEditSave_Click(object sender, EventArgs e)
         {
             String labName = tbEditLab.Text.Trim();
-            Account account = cboxEditAccountName.SelectedItem as Account;
+            AccountBasic account = cboxEditAccountName.SelectedItem as AccountBasic;
             SampleType sampleType = cboxEditSampleType.SelectedItem as SampleType;
             String sampleComponent = cboxEditSampleComponent.SelectedItem as String;
 
@@ -595,7 +591,7 @@ namespace lorakon_manager
                 {
                     SetSpectrumParameter(filename, "SURSTRING1", account.ID.ToString());
                     row.Cells["colAccountID"].Value = account.ID.ToString();
-                    row.Cells["colAccountName"].Value = account.Name;
+                    row.Cells["colAccountName"].Value = account.Username;
                 }
 
                 if (sampleType != null && !String.IsNullOrEmpty(sampleType.Value))
@@ -618,7 +614,7 @@ namespace lorakon_manager
 
         private void cboxEditAccountName_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Account account = cboxEditAccountName.SelectedItem as Account;
+            AccountBasic account = cboxEditAccountName.SelectedItem as AccountBasic;
             if (account != null && account.ID != Guid.Empty)
                 tbEditAccountID.Text = account.ID.ToString();
             else tbEditAccountID.Text = "";
@@ -931,34 +927,5 @@ namespace lorakon_manager
 
             return true;
         }
-    }
-
-    public class Account
-    {
-        public Account(Guid id, string name)
-        {
-            ID = id;
-            Name = name;
-        }
-
-        public Guid ID { get; }
-        public string Name { get; }
-    }
-
-    public class SampleType
-    {
-        public string Name { get; set; }
-        public string Value { get; set; }
-
-        public SampleType(string name, string value)
-        {
-            Name = name;
-            Value = value;
-        }
-
-        public override string ToString()
-        {
-            return Name;
-        }
-    }
+    }    
 }

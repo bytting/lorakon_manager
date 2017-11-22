@@ -17,29 +17,24 @@
 // Authors: Dag Robole,
 
 using System;
+using System.Text;
 
 namespace lorakon_manager
 {
-    public class AccountBasic
+    public class SampleType
     {
-        public AccountBasic()
-        {
-            ID = Guid.Empty;
-            Username = String.Empty;
-        }
+        public string Name { get; set; }
+        public string Value { get; set; }
 
-        public AccountBasic(Guid id, string username)
+        public SampleType(string name, string value)
         {
-            ID = id;
-            Username = username;
+            Name = name;
+            Value = value;
         }
-
-        public Guid ID { get; set; }
-        public string Username { get; set; }
 
         public override string ToString()
         {
-            return Username;
+            return Name;
         }
     }
 }
