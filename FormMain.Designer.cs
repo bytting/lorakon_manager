@@ -52,6 +52,7 @@
             this.btnGeometryEdit = new System.Windows.Forms.ToolStripButton();
             this.btnGeometryTrash = new System.Windows.Forms.ToolStripButton();
             this.btnValidationTrash = new System.Windows.Forms.ToolStripButton();
+            this.btnSpectrumDelete = new System.Windows.Forms.ToolStripButton();
             this.tabs = new System.Windows.Forms.TabControl();
             this.pageMain = new System.Windows.Forms.TabPage();
             this.tableMain = new System.Windows.Forms.TableLayoutPanel();
@@ -141,7 +142,6 @@
             this.btnSettingsCancel = new System.Windows.Forms.Button();
             this.btnSettingsOk = new System.Windows.Forms.Button();
             this.ofd = new System.Windows.Forms.OpenFileDialog();
-            this.btnSpectrumDelete = new System.Windows.Forms.ToolStripButton();
             this.status.SuspendLayout();
             this.menu.SuspendLayout();
             this.tools.SuspendLayout();
@@ -372,6 +372,17 @@
             this.btnValidationTrash.Text = "Slett valideringsregel";
             this.btnValidationTrash.ToolTipText = "Slett valideringsregel";
             this.btnValidationTrash.Click += new System.EventHandler(this.menuItemDeleteNuclide_Click);
+            // 
+            // btnSpectrumDelete
+            // 
+            this.btnSpectrumDelete.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnSpectrumDelete.Image = global::lorakon_manager.Properties.Resources.trash_32;
+            this.btnSpectrumDelete.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.btnSpectrumDelete.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnSpectrumDelete.Name = "btnSpectrumDelete";
+            this.btnSpectrumDelete.Size = new System.Drawing.Size(36, 37);
+            this.btnSpectrumDelete.Text = "Slett spekter";
+            this.btnSpectrumDelete.Click += new System.EventHandler(this.menuItemDeleteSpectrum_Click);
             // 
             // tabs
             // 
@@ -1342,17 +1353,6 @@
             // 
             this.ofd.Filter = "CNF files (*.cnf)|*.cnf|All files (*.*)|*.*";
             this.ofd.Multiselect = true;
-            // 
-            // btnSpectrumDelete
-            // 
-            this.btnSpectrumDelete.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnSpectrumDelete.Image = global::lorakon_manager.Properties.Resources.trash_32;
-            this.btnSpectrumDelete.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.btnSpectrumDelete.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnSpectrumDelete.Name = "btnSpectrumDelete";
-            this.btnSpectrumDelete.Size = new System.Drawing.Size(36, 37);
-            this.btnSpectrumDelete.Text = "Slett spekter";
-            this.btnSpectrumDelete.Click += new System.EventHandler(this.menuItemDeleteSpectrum_Click);
             // 
             // FormMain
             // 

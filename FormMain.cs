@@ -202,7 +202,7 @@ namespace lorakon_manager
 
         private string[] GetLogMessages(DateTime fromDate, DateTime toDate, int severity)
         {
-            string req = Settings.WebServiceUri + "/api/spectrum/get_log_entries?from=" + fromDate.ToString("yyyyMMdd_hhmmss") + "&to=" + toDate.ToString("yyyyMMdd_hhmmss") + "&severity=" + severity.ToString();
+            string req = Settings.WebServiceUri + "/api/spectrum/get_log_entries_severity?from=" + fromDate.ToString("yyyyMMdd_hhmmss") + "&to=" + toDate.ToString("yyyyMMdd_hhmmss") + "&severity=" + severity.ToString();
             string json = WebApi.MakeGetRequest(req);
             List<LogEntry> ents = JsonConvert.DeserializeObject<List<LogEntry>>(json);
 
