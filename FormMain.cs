@@ -749,7 +749,7 @@ namespace lorakon_manager
 
         private void btnSettingsOk_Click(object sender, EventArgs e)
         {
-            Settings.WebServiceUri = tbSettingsUrl.Text;
+            Settings.WebServiceUri = tbSettingsUrl.Text.Trim();
             SaveSettings();
             tabs.SelectedTab = pageMain;
         }
