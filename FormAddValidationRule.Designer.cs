@@ -62,7 +62,7 @@
             this.btnCancel.Location = new System.Drawing.Point(252, 0);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(112, 32);
-            this.btnCancel.TabIndex = 1;
+            this.btnCancel.TabIndex = 6;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
@@ -73,7 +73,7 @@
             this.btnOk.Location = new System.Drawing.Point(364, 0);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(112, 32);
-            this.btnOk.TabIndex = 0;
+            this.btnOk.TabIndex = 5;
             this.btnOk.Text = "Add";
             this.btnOk.UseVisualStyleBackColor = true;
             this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
@@ -113,7 +113,7 @@
             this.tbNuclideName.MaxLength = 16;
             this.tbNuclideName.Name = "tbNuclideName";
             this.tbNuclideName.Size = new System.Drawing.Size(330, 21);
-            this.tbNuclideName.TabIndex = 1;
+            this.tbNuclideName.TabIndex = 0;
             // 
             // tbActivityMin
             // 
@@ -122,7 +122,7 @@
             this.tbActivityMin.MaxLength = 16;
             this.tbActivityMin.Name = "tbActivityMin";
             this.tbActivityMin.Size = new System.Drawing.Size(330, 21);
-            this.tbActivityMin.TabIndex = 3;
+            this.tbActivityMin.TabIndex = 1;
             // 
             // tbActivityMax
             // 
@@ -131,7 +131,7 @@
             this.tbActivityMax.MaxLength = 16;
             this.tbActivityMax.Name = "tbActivityMax";
             this.tbActivityMax.Size = new System.Drawing.Size(330, 21);
-            this.tbActivityMax.TabIndex = 4;
+            this.tbActivityMax.TabIndex = 2;
             // 
             // tbConfidenceMin
             // 
@@ -140,7 +140,7 @@
             this.tbConfidenceMin.MaxLength = 16;
             this.tbConfidenceMin.Name = "tbConfidenceMin";
             this.tbConfidenceMin.Size = new System.Drawing.Size(330, 21);
-            this.tbConfidenceMin.TabIndex = 5;
+            this.tbConfidenceMin.TabIndex = 3;
             // 
             // cbCanBeAutoApproved
             // 
@@ -148,7 +148,7 @@
             this.cbCanBeAutoApproved.Location = new System.Drawing.Point(143, 163);
             this.cbCanBeAutoApproved.Name = "cbCanBeAutoApproved";
             this.cbCanBeAutoApproved.Size = new System.Drawing.Size(142, 19);
-            this.cbCanBeAutoApproved.TabIndex = 6;
+            this.cbCanBeAutoApproved.TabIndex = 4;
             this.cbCanBeAutoApproved.Text = "Kan auto godkjennes";
             this.cbCanBeAutoApproved.UseVisualStyleBackColor = true;
             // 

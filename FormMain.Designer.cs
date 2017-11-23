@@ -1372,7 +1372,7 @@
             this.Text = "Lorakon spektrum database";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);
             this.Load += new System.EventHandler(this.FormMain_Load);
-            this.Shown += new System.EventHandler(this.FormMain_Shown);
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.FormMain_Paint);
             this.status.ResumeLayout(false);
             this.status.PerformLayout();
             this.menu.ResumeLayout(false);

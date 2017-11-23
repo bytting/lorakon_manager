@@ -26,10 +26,13 @@ namespace lorakon_manager
 {
     public static class WebApi
     {
-        public static string MakeGetRequest(string req)
+        public static string MakeGetRequest(string req, string username, string password)
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(req);
-            request.Credentials = CredentialCache.DefaultCredentials;
+            byte[] toEncodeAsBytes = UTF8Encoding.UTF8.GetBytes(username + ":" + password);
+            string cred = Convert.ToBase64String(toEncodeAsBytes);            
+            request.Headers.Add("Authorization", "Basic " + cred);
+            request.PreAuthenticate = true;
             request.Timeout = 30000;
             request.Method = WebRequestMethods.Http.Get;
             request.Accept = "application/json";
@@ -42,10 +45,13 @@ namespace lorakon_manager
             return json;
         }
 
-        public static bool MakePostRequest<T>(string req, T obj)
+        public static bool MakePostRequest<T>(string req, T obj, string username, string password)
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(req);
-            request.Credentials = CredentialCache.DefaultCredentials;
+            byte[] toEncodeAsBytes = UTF8Encoding.UTF8.GetBytes(username + ":" + password);
+            string cred = Convert.ToBase64String(toEncodeAsBytes);
+            request.Headers.Add("Authorization", "Basic " + cred);
+            request.PreAuthenticate = true;
             request.Timeout = 30000;
             request.Method = WebRequestMethods.Http.Post;
             request.ContentType = "application/json";

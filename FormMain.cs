@@ -35,6 +35,8 @@ namespace lorakon_manager
 {
     public partial class FormMain : Form
     {
+        bool Initialized = false;
+
         private string ParsExecutable, GetParsExecutable;
 
         string InstallationDirectory, GeniePath;
@@ -44,7 +46,7 @@ namespace lorakon_manager
 
         private LorakonManagerSettings Settings = new LorakonManagerSettings();
 
-        List<ValidationRule> ValidationRules = new List<ValidationRule>();
+        List<ValidationRule> ValidationRules = new List<ValidationRule>();        
 
         public FormMain()
         {
@@ -54,97 +56,121 @@ namespace lorakon_manager
 
         private void FormMain_Load(object sender, EventArgs e)
         {
-            Width = (Screen.FromControl(this).Bounds.Right - Screen.FromControl(this).Bounds.Left) / 2;
-            Height = (Screen.FromControl(this).Bounds.Bottom - Screen.FromControl(this).Bounds.Top) / 2;
-
-            tabs.Appearance = TabAppearance.FlatButtons;
-            tabs.ItemSize = new Size(0, 1);
-            tabs.SizeMode = TabSizeMode.Fixed;
-
-            tabs_SelectedIndexChanged(sender, e);
-
-            cboxAccount.DisplayMember = "Name";
-            cboxAccount.ValueMember = "ID";
-            cboxEditAccountName.DisplayMember = "Name";
-            cboxEditAccountName.ValueMember = "ID";
-
-            dtFrom.Value = DateTime.Now - new TimeSpan(30, 0, 0, 0);
-            dtTo.Value = DateTime.Now;
-
-            InstallationDirectory = Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]) + Path.DirectorySeparatorChar;
-
-            if (!Directory.Exists(SettingsPath))
-                Directory.CreateDirectory(SettingsPath);
-
-            if (!File.Exists(SettingsPath + Path.DirectorySeparatorChar + "sample-types.xml"))
-                File.Copy(InstallationDirectory + Path.DirectorySeparatorChar + "sample-types.xml", SampleTypeFile, false);
-
-            LoadSettings();
-            lblStatus.Text = "Kontakter databasen, vennligst vent...";
-
-            ParsExecutable = InstallationDirectory + "pars.exe";
-            if (!File.Exists(ParsExecutable))
-            {
-                MessageBox.Show("Finner ikke filen: " + ParsExecutable);
-                Application.Exit();
-            }
-
-            GetParsExecutable = InstallationDirectory + "getpars.exe";
-            if (!File.Exists(GetParsExecutable))
-            {
-                MessageBox.Show("Finner ikke filen: " + GetParsExecutable);
-                Application.Exit();
-            }
-
-            // Load sample types
-            string[] sampTypes = GetSampleTypes();
-            foreach (string st in sampTypes)
-                cboxEditSampleType.Items.Add(new SampleType(GetLabelFromSampleType(st), st));
-
-            GeniePath = Utils.GetGeniePath();
-            if (String.IsNullOrEmpty(GeniePath))
-                MessageBox.Show("Genie2k katalog ble ikke funnet");
-        }
-
-        private void FormMain_Shown(object sender, EventArgs e)
-        {
-            Enabled = false;
-
             try
             {
-                string[] files = Directory.GetFiles(Path.GetTempPath(), "*.cnf");
-                foreach (string file in files)
-                    File.Delete(file);
-            }
-            catch { }            
+                Width = (Screen.FromControl(this).Bounds.Right - Screen.FromControl(this).Bounds.Left) / 2;
+                Height = (Screen.FromControl(this).Bounds.Bottom - Screen.FromControl(this).Bounds.Top) / 2;
 
-            try
-            {
-                string req = Settings.WebServiceUri + "/api/spectrum/get_all_accounts_basic";
-                string json = WebApi.MakeGetRequest(req);
+                tabs.Appearance = TabAppearance.FlatButtons;
+                tabs.ItemSize = new Size(0, 1);
+                tabs.SizeMode = TabSizeMode.Fixed;
 
-                List<AccountBasic> accs = JsonConvert.DeserializeObject<List<AccountBasic>>(json);
+                cboxAccount.DisplayMember = "Name";
+                cboxAccount.ValueMember = "ID";
+                cboxEditAccountName.DisplayMember = "Name";
+                cboxEditAccountName.ValueMember = "ID";
 
-                cboxAccount.Items.Add(new AccountBasic(Guid.Empty, ""));
-                cboxEditAccountName.Items.Add(new AccountBasic(Guid.Empty, ""));
-                foreach(AccountBasic acc in accs)
+                dtFrom.ValueChanged -= dtFrom_ValueChanged;
+                dtTo.ValueChanged -= dtTo_ValueChanged;
+                dtFrom.Value = DateTime.Now - new TimeSpan(30, 0, 0, 0);
+                dtTo.Value = DateTime.Now;
+                dtFrom.ValueChanged += dtFrom_ValueChanged;
+                dtTo.ValueChanged += dtTo_ValueChanged;
+
+                InstallationDirectory = Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]) + Path.DirectorySeparatorChar;
+
+                if (!Directory.Exists(SettingsPath))
+                    Directory.CreateDirectory(SettingsPath);
+
+                if (!File.Exists(SettingsPath + Path.DirectorySeparatorChar + "sample-types.xml"))
+                    File.Copy(InstallationDirectory + Path.DirectorySeparatorChar + "sample-types.xml", SampleTypeFile, false);
+
+                LoadSettings();
+
+                ParsExecutable = InstallationDirectory + "pars.exe";
+                if (!File.Exists(ParsExecutable))
                 {
-                    cboxAccount.Items.Add(new AccountBasic(acc.ID, acc.Username));
-                    cboxEditAccountName.Items.Add(new AccountBasic(acc.ID, acc.Username));
+                    MessageBox.Show("Finner ikke filen: " + ParsExecutable);
+                    Application.Exit();
                 }
 
-                BindGridValidation();
-                BindGridGeometries();
+                GetParsExecutable = InstallationDirectory + "getpars.exe";
+                if (!File.Exists(GetParsExecutable))
+                {
+                    MessageBox.Show("Finner ikke filen: " + GetParsExecutable);
+                    Application.Exit();
+                }
+
+                // Load sample types
+                string[] sampTypes = GetSampleTypes();
+                foreach (string st in sampTypes)
+                    cboxEditSampleType.Items.Add(new SampleType(GetLabelFromSampleType(st), st));
+
+                GeniePath = Utils.GetGeniePath();
+                if (String.IsNullOrEmpty(GeniePath))
+                    MessageBox.Show("Genie2k katalog ble ikke funnet");
+
+                lblStatus.Text = "Kontakter databasen, vennligst vent...";
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
-                MessageBox.Show(ex.Message, "Feil");
+                MessageBox.Show(ex.Message);
                 Application.Exit();
             }
-            finally
+        }
+
+        private void FormMain_Paint(object sender, PaintEventArgs e)
+        {
+            if (!Initialized)
             {
-                lblStatus.Text = "";
-                Enabled = true;
+                Initialized = true;
+                Enabled = false;
+
+                FormLogin form = new FormLogin();
+                if (form.ShowDialog() == DialogResult.Cancel)
+                    Application.Exit();
+
+                Utils.Username = form.Username;
+                Utils.Password = form.Password;
+
+                try
+                {
+                    string[] files = Directory.GetFiles(Path.GetTempPath(), "*.cnf");
+                    foreach (string file in files)
+                        File.Delete(file);
+                }
+                catch { }
+
+                try
+                {
+                    tabs_SelectedIndexChanged(sender, e);
+
+                    string req = Settings.WebServiceUri + "/spectrum/get_all_accounts_basic";
+                    string json = WebApi.MakeGetRequest(req, Utils.Username, Utils.Password);
+
+                    List<AccountBasic> accs = JsonConvert.DeserializeObject<List<AccountBasic>>(json);
+
+                    cboxAccount.Items.Add(new AccountBasic(Guid.Empty, ""));
+                    cboxEditAccountName.Items.Add(new AccountBasic(Guid.Empty, ""));
+                    foreach (AccountBasic acc in accs)
+                    {
+                        cboxAccount.Items.Add(new AccountBasic(acc.ID, acc.Username));
+                        cboxEditAccountName.Items.Add(new AccountBasic(acc.ID, acc.Username));
+                    }
+
+                    BindGridValidation();
+                    BindGridGeometries();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Feil");
+                    Application.Exit();
+                }
+                finally
+                {
+                    lblStatus.Text = "";
+                    Enabled = true;
+                }
             }
         }
 
@@ -189,8 +215,8 @@ namespace lorakon_manager
 
         private string[] GetLogMessages(DateTime fromDate, DateTime toDate)
         {
-            string req = Settings.WebServiceUri + "/api/spectrum/get_log_entries?from=" + fromDate.ToString("yyyyMMdd_hhmmss") + "&to=" + toDate.ToString("yyyyMMdd_hhmmss");
-            string json = WebApi.MakeGetRequest(req);
+            string req = Settings.WebServiceUri + "/spectrum/get_log_entries?from=" + fromDate.ToString("yyyyMMdd_hhmmss") + "&to=" + toDate.ToString("yyyyMMdd_hhmmss");
+            string json = WebApi.MakeGetRequest(req, Utils.Username, Utils.Password);
             List<LogEntry> ents = JsonConvert.DeserializeObject<List<LogEntry>>(json);
 
             List<string> logMessages = new List<string>();
@@ -202,8 +228,8 @@ namespace lorakon_manager
 
         private string[] GetLogMessages(DateTime fromDate, DateTime toDate, int severity)
         {
-            string req = Settings.WebServiceUri + "/api/spectrum/get_log_entries_severity?from=" + fromDate.ToString("yyyyMMdd_hhmmss") + "&to=" + toDate.ToString("yyyyMMdd_hhmmss") + "&severity=" + severity.ToString();
-            string json = WebApi.MakeGetRequest(req);
+            string req = Settings.WebServiceUri + "/spectrum/get_log_entries_severity?from=" + fromDate.ToString("yyyyMMdd_hhmmss") + "&to=" + toDate.ToString("yyyyMMdd_hhmmss") + "&severity=" + severity.ToString();
+            string json = WebApi.MakeGetRequest(req, Utils.Username, Utils.Password);
             List<LogEntry> ents = JsonConvert.DeserializeObject<List<LogEntry>>(json);
 
             List<string> logMessages = new List<string>();
@@ -313,7 +339,7 @@ namespace lorakon_manager
 
         private void populateGrid()
         {
-            // /api/spectrum/get_spectrum_info_latest?from=20100101_120000&to=20171201_120000&accid=&samp=&appr=true&rej=false
+            // /spectrum/get_spectrum_info_latest?from=20100101_120000&to=20171201_120000&accid=&samp=&appr=true&rej=false
 
             if (String.IsNullOrEmpty(Settings.WebServiceUri))
                 return;
@@ -334,9 +360,8 @@ namespace lorakon_manager
             string apprString = "appr=" + ((cbApproved.Checked) ? "true" : "false");
             string rejString = "rej=" + ((cbRejected.Checked) ? "true" : "false");
 
-            string req = Settings.WebServiceUri + "/api/spectrum/get_spectrum_info_latest?" + fromString + "&" + toString + "&" + accidString + "&" + sampString + "&" + apprString + "&" + rejString;
-
-            string json = WebApi.MakeGetRequest(req);
+            string req = Settings.WebServiceUri + "/spectrum/get_spectrum_info_latest?" + fromString + "&" + toString + "&" + accidString + "&" + sampString + "&" + apprString + "&" + rejString;
+            string json = WebApi.MakeGetRequest(req, Utils.Username, Utils.Password);
             
             List<SpectrumInfo> specs = JsonConvert.DeserializeObject<List<SpectrumInfo>>(json);
 
@@ -424,8 +449,8 @@ namespace lorakon_manager
                     {
                         Guid id = new Guid(accountID);
 
-                        string req = Settings.WebServiceUri + "/api/spectrum/get_account_name/" + id.ToString();
-                        string json = WebApi.MakeGetRequest(req);
+                        string req = Settings.WebServiceUri + "/spectrum/get_account_name/" + id.ToString();
+                        string json = WebApi.MakeGetRequest(req, Utils.Username, Utils.Password);
                         AccountName accName = JsonConvert.DeserializeObject<AccountName>(json);
                         if (!String.IsNullOrEmpty(accName.Name))
                             accountName = accName.Name;
@@ -464,6 +489,7 @@ namespace lorakon_manager
             {
                 menuItemOpenFiles.Visible = true;
                 btnEditOpen.Visible = true;
+                gridEditFiles.Rows.Clear();
             }
             else if (tabs.SelectedTab == pageLog)
             {
@@ -655,8 +681,8 @@ namespace lorakon_manager
 
         private void BindGridValidation()
         {
-            string req = Settings.WebServiceUri + "/api/spectrum/get_all_validation_rules";
-            string json = WebApi.MakeGetRequest(req);
+            string req = Settings.WebServiceUri + "/spectrum/get_all_validation_rules";
+            string json = WebApi.MakeGetRequest(req, Utils.Username, Utils.Password);
             List<ValidationRule> rules = JsonConvert.DeserializeObject<List<ValidationRule>>(json);
             gridValidation.DataSource = rules;
             gridValidation.Columns[0].Visible = false;
@@ -675,16 +701,16 @@ namespace lorakon_manager
             if (String.IsNullOrEmpty(nuclideName.Trim()))
                 return;
 
-            string req = Settings.WebServiceUri + "/api/spectrum/delete_validation_rule?name=" + nuclideName;
-            string json = WebApi.MakeGetRequest(req);
+            string req = Settings.WebServiceUri + "/spectrum/delete_validation_rule?name=" + nuclideName;
+            string json = WebApi.MakeGetRequest(req, Utils.Username, Utils.Password);
             
             BindGridValidation();
         }
 
         private void BindGridGeometries()
         {
-            string req = Settings.WebServiceUri + "/api/spectrum/get_all_geometry_rules";
-            string json = WebApi.MakeGetRequest(req);
+            string req = Settings.WebServiceUri + "/spectrum/get_all_geometry_rules";
+            string json = WebApi.MakeGetRequest(req, Utils.Username, Utils.Password);
             List<GeometryRule> rules = JsonConvert.DeserializeObject<List<GeometryRule>>(json);
             gridGeometries.DataSource = rules;
             gridGeometries.Columns[0].Visible = false;
@@ -705,8 +731,8 @@ namespace lorakon_manager
 
             try
             {
-                string req = Settings.WebServiceUri + "/api/spectrum/delete_geometry_rule?name=" + geometry;
-                string json = WebApi.MakeGetRequest(req);
+                string req = Settings.WebServiceUri + "/spectrum/delete_geometry_rule?name=" + geometry;
+                string json = WebApi.MakeGetRequest(req, Utils.Username, Utils.Password);
             }
             catch(Exception ex)
             {
@@ -742,8 +768,8 @@ namespace lorakon_manager
 
             try
             {
-                string req = Settings.WebServiceUri + "/api/spectrum/insert_validation_rule";
-                WebApi.MakePostRequest(req, form.Rule);
+                string req = Settings.WebServiceUri + "/spectrum/insert_validation_rule";
+                WebApi.MakePostRequest(req, form.Rule, Utils.Username, Utils.Password);
             }
             catch (Exception ex)
             {
@@ -761,8 +787,8 @@ namespace lorakon_manager
 
             try
             {
-                string req = Settings.WebServiceUri + "/api/spectrum/insert_geometry_rule";
-                WebApi.MakePostRequest(req, form.Rule);
+                string req = Settings.WebServiceUri + "/spectrum/insert_geometry_rule";
+                WebApi.MakePostRequest(req, form.Rule, Utils.Username, Utils.Password);
             }
             catch (Exception ex)
             {
@@ -793,8 +819,8 @@ namespace lorakon_manager
 
             try
             {
-                string req = Settings.WebServiceUri + "/api/spectrum/update_validation_rule?id=" + Id.ToString();
-                WebApi.MakePostRequest(req, form.Rule);
+                string req = Settings.WebServiceUri + "/spectrum/update_validation_rule?id=" + Id.ToString();
+                WebApi.MakePostRequest(req, form.Rule, Utils.Username, Utils.Password);
             }
             catch (Exception ex)
             {
@@ -824,8 +850,8 @@ namespace lorakon_manager
 
             try
             {
-                string req = Settings.WebServiceUri + "/api/spectrum/update_geometry_rule?id=" + Id.ToString();
-                WebApi.MakePostRequest(req, form.Rule);
+                string req = Settings.WebServiceUri + "/spectrum/update_geometry_rule?id=" + Id.ToString();
+                WebApi.MakePostRequest(req, form.Rule, Utils.Username, Utils.Password);
             }
             catch (Exception ex)
             {
@@ -859,8 +885,8 @@ namespace lorakon_manager
                 DataGridViewRow row = gridSearch.SelectedRows[0];
                 Guid Id = new Guid(row.Cells["ID"].Value.ToString());
 
-                string req = Settings.WebServiceUri + "/api/spectrum/delete_spectrum_info/" + Id.ToString();
-                string json = WebApi.MakeGetRequest(req);
+                string req = Settings.WebServiceUri + "/spectrum/delete_spectrum_info/" + Id.ToString();
+                string json = WebApi.MakeGetRequest(req, Utils.Username, Utils.Password);
             }
             catch(Exception ex)
             {
@@ -868,7 +894,7 @@ namespace lorakon_manager
             }
 
             populateGrid();
-        }
+        }        
 
         private void menuItemOpenSpectrum_Click(object sender, EventArgs e)
         {            
@@ -889,8 +915,8 @@ namespace lorakon_manager
 
             try
             {
-                string req = Settings.WebServiceUri + "/api/spectrum/get_spectrum_file_content_from_specinfo/" + Id.ToString();
-                string json = WebApi.MakeGetRequest(req);
+                string req = Settings.WebServiceUri + "/spectrum/get_spectrum_file_content_from_specinfo/" + Id.ToString();
+                string json = WebApi.MakeGetRequest(req, Utils.Username, Utils.Password);
 
                 SpectrumFileContent cont = JsonConvert.DeserializeObject<SpectrumFileContent>(json);
                 byte[] content = Convert.FromBase64String(cont.Base64Data);

@@ -51,6 +51,7 @@ namespace lorakon_manager
             tbUnit.KeyPress += CustomEvents.Alpha_KeyPress;
             tbMinimum.KeyPress += CustomEvents.Numeric_KeyPress;
             tbMaximum.KeyPress += CustomEvents.Numeric_KeyPress;
+            tbName.Select();
         }
 
         private void btnCancel_Click(object sender, EventArgs e)

@@ -47,8 +47,8 @@ namespace lorakon_manager
 
             try
             {
-                string req = Settings.WebServiceUri + "/api/spectrum/get_spectrum_info/" + id.ToString();
-                string json = WebApi.MakeGetRequest(req);
+                string req = Settings.WebServiceUri + "/spectrum/get_spectrum_info/" + id.ToString();
+                string json = WebApi.MakeGetRequest(req, Utils.Username, Utils.Password);
 
                 SpectrumInfo spec = JsonConvert.DeserializeObject<SpectrumInfo>(json);
 
@@ -78,8 +78,8 @@ namespace lorakon_manager
                 tbLiveTime.Text = spec.Livetime.ToString();
                 tbComment.Text = spec.Comment;
 
-                req = Settings.WebServiceUri + "/api/spectrum/get_spectrum_results_from_specid?specid=" + id.ToString();
-                json = WebApi.MakeGetRequest(req);
+                req = Settings.WebServiceUri + "/spectrum/get_spectrum_results_from_specid?specid=" + id.ToString();
+                json = WebApi.MakeGetRequest(req, Utils.Username, Utils.Password);
 
                 List<SpectrumResult> resList = JsonConvert.DeserializeObject<List<SpectrumResult>>(json);
 
@@ -137,8 +137,8 @@ namespace lorakon_manager
 
             try
             {
-                string req = Settings.WebServiceUri + "/api/spectrum/get_spectrum_file_content_from_specinfo/" + id.ToString();
-                string json = WebApi.MakeGetRequest(req);
+                string req = Settings.WebServiceUri + "/spectrum/get_spectrum_file_content_from_specinfo/" + id.ToString();
+                string json = WebApi.MakeGetRequest(req, Utils.Username, Utils.Password);
 
                 SpectrumFileContent cont = JsonConvert.DeserializeObject<SpectrumFileContent>(json);
                 byte[] content = Convert.FromBase64String(cont.Base64Data);
@@ -156,11 +156,11 @@ namespace lorakon_manager
         {
             try
             {
-                string req = Settings.WebServiceUri + "/api/spectrum/update_spectrum_info_approved?id=" + id.ToString() + "&approved=" + cbxApproved.Checked.ToString();
-                string json = WebApi.MakeGetRequest(req);
+                string req = Settings.WebServiceUri + "/spectrum/update_spectrum_info_approved?id=" + id.ToString() + "&approved=" + cbxApproved.Checked.ToString();
+                string json = WebApi.MakeGetRequest(req, Utils.Username, Utils.Password);
 
-                req = Settings.WebServiceUri + "/api/spectrum/update_spectrum_info_rejected?id=" + id.ToString() + "&rejected=" + cbxRejected.Checked.ToString();
-                json = WebApi.MakeGetRequest(req);
+                req = Settings.WebServiceUri + "/spectrum/update_spectrum_info_rejected?id=" + id.ToString() + "&rejected=" + cbxRejected.Checked.ToString();
+                json = WebApi.MakeGetRequest(req, Utils.Username, Utils.Password);
 
                 foreach (DataGridViewRow row in gridNuclideResults.Rows)
                 {
@@ -168,14 +168,14 @@ namespace lorakon_manager
                     bool approved = Convert.ToBoolean(row.Cells["colApproved"].Value);
                     bool rejected = Convert.ToBoolean(row.Cells["colRejected"].Value);
 
-                    req = Settings.WebServiceUri + "/api/spectrum/update_spectrum_result_approved?id=" + id + "&approved=" + approved.ToString();
-                    json = WebApi.MakeGetRequest(req);
+                    req = Settings.WebServiceUri + "/spectrum/update_spectrum_result_approved?id=" + id + "&approved=" + approved.ToString();
+                    json = WebApi.MakeGetRequest(req, Utils.Username, Utils.Password);
 
-                    req = Settings.WebServiceUri + "/api/spectrum/update_spectrum_result_rejected?id=" + id + "&rejected=" + rejected.ToString();
-                    json = WebApi.MakeGetRequest(req);
+                    req = Settings.WebServiceUri + "/spectrum/update_spectrum_result_rejected?id=" + id + "&rejected=" + rejected.ToString();
+                    json = WebApi.MakeGetRequest(req, Utils.Username, Utils.Password);
 
-                    req = Settings.WebServiceUri + "/api/spectrum/update_spectrum_result_evaluated?id=" + id + "&evaluated=true";
-                    json = WebApi.MakeGetRequest(req);
+                    req = Settings.WebServiceUri + "/spectrum/update_spectrum_result_evaluated?id=" + id + "&evaluated=true";
+                    json = WebApi.MakeGetRequest(req, Utils.Username, Utils.Password);
                 }
             }
             catch(Exception ex)

@@ -42,5 +42,7 @@ namespace lorakon_manager
 
             return String.Empty;
         }
+
+        public static string Username, Password;
     }
 }

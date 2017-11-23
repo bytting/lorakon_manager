@@ -27,7 +27,8 @@ namespace lorakon_manager
         public static void Alpha_KeyPress(object sender, KeyPressEventArgs e)
         {
             // Only allow letters and numbers
-            e.Handled = !char.IsLetter(e.KeyChar) && !char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar);
+            e.Handled = !char.IsLetter(e.KeyChar) && !char.IsControl(e.KeyChar) 
+                && !char.IsDigit(e.KeyChar) && !"-_".Contains(e.KeyChar.ToString());
         }
 
         public static void Integer_KeyPress(object sender, KeyPressEventArgs e)

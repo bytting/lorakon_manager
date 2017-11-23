@@ -21,8 +21,26 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_3754B7D395B3543F7746A12D314DB7B5"
+        "OwnerKey" = "8:_234BD8EA67ED4BA299178178CE611A85"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_4A1E3CA5DA9E411CB702E0D290870371"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_234BD8EA67ED4BA299178178CE611A85"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_3754B7D395B3543F7746A12D314DB7B5"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -43,6 +61,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
         "Release"
         {
@@ -59,6 +85,22 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.5"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.5 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.5"
+                    }
+                }
+            }
         }
     }
     "Deployable"
@@ -88,6 +130,57 @@
         }
         "File"
         {
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_3754B7D395B3543F7746A12D314DB7B5"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_3754B7D395B3543F7746A12D314DB7B5"
+                    {
+                    "Name" = "8:Newtonsoft.Json.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Newtonsoft.Json.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_E30FF64A6ADA4686B14365396648A347"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4A1E3CA5DA9E411CB702E0D290870371"
+            {
+            "SourcePath" = "8:..\\images\\Lorakon.ico"
+            "TargetName" = "8:Lorakon.ico"
+            "Tag" = "8:"
+            "Folder" = "8:_E30FF64A6ADA4686B14365396648A347"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
         }
         "FileType"
         {
@@ -143,9 +236,9 @@
         "Product"
         {
         "Name" = "8:Microsoft Visual Studio"
-        "ProductName" = "8:Lorakon Manager Setup"
+        "ProductName" = "8:Lorakon Manager"
         "ProductCode" = "8:{B8E11255-B381-4EE3-BE29-25C2DB826397}"
-        "PackageCode" = "8:{92D7B186-62C8-40E9-959D-768CEF261890}"
+        "PackageCode" = "8:{130E0741-2C35-4D6B-952E-B46C49BC5070}"
         "UpgradeCode" = "8:{67292146-B2A9-4E2B-A2B0-EA58D18E9A5A}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -156,11 +249,11 @@
         "Manufacturer" = "8:NRPA"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
-        "Title" = "8:Lorakon Manager Setup"
+        "Title" = "8:Lorakon Manager"
         "Subject" = "8:"
         "ARPCONTACT" = "8:NRPA"
         "Keywords" = "8:"
-        "ARPCOMMENTS" = "8:Lorakon manager setup"
+        "ARPCOMMENTS" = "8:Lorakon manager"
         "ARPURLINFOABOUT" = "8:"
         "ARPPRODUCTICON" = "8:"
         "ARPIconIndex" = "3:0"
@@ -265,6 +358,34 @@
         }
         "Shortcut"
         {
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_589FDD2C4700458F9F1055667A4F78D2"
+            {
+            "Name" = "8:Lorakon Manager"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_234BD8EA67ED4BA299178178CE611A85"
+            "Folder" = "8:_BDA5B99917844FEAAE9F29A15D973F79"
+            "WorkingFolder" = "8:_E30FF64A6ADA4686B14365396648A347"
+            "Icon" = "8:_4A1E3CA5DA9E411CB702E0D290870371"
+            "Feature" = "8:"
+            }
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_B1B36832168940D3AA4E88F3E3B1B780"
+            {
+            "Name" = "8:Lorakon Manager"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_234BD8EA67ED4BA299178178CE611A85"
+            "Folder" = "8:_E30FF64A6ADA4686B14365396648A347"
+            "WorkingFolder" = "8:_E30FF64A6ADA4686B14365396648A347"
+            "Icon" = "8:_4A1E3CA5DA9E411CB702E0D290870371"
+            "Feature" = "8:"
+            }
         }
         "UserInterface"
         {
@@ -666,7 +787,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_234BD8EA67ED4BA299178178CE611A85"
             {
-            "SourcePath" = "8:..\\obj\\Debug\\lorakon_manager.exe"
+            "SourcePath" = "8:..\\obj\\Release\\lorakon_manager.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_E30FF64A6ADA4686B14365396648A347"
