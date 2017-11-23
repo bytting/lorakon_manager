@@ -65,6 +65,18 @@ namespace lorakon_manager
                 tabs.ItemSize = new Size(0, 1);
                 tabs.SizeMode = TabSizeMode.Fixed;
 
+                btnBack.Visible = false;
+                btnSpectrumDelete.Visible = false;
+                separatorMain.Visible = false;
+                menuItemOpenFiles.Visible = false;
+                btnEditOpen.Visible = false;
+                btnValidationAdd.Visible = false;
+                btnValidationEdit.Visible = false;
+                btnValidationTrash.Visible = false;
+                btnGeometryAdd.Visible = false;
+                btnGeometryEdit.Visible = false;
+                btnGeometryTrash.Visible = false;
+
                 cboxAccount.DisplayMember = "Name";
                 cboxAccount.ValueMember = "ID";
                 cboxEditAccountName.DisplayMember = "Name";
@@ -140,37 +152,9 @@ namespace lorakon_manager
                         File.Delete(file);
                 }
                 catch { }
-
-                try
-                {
-                    tabs_SelectedIndexChanged(sender, e);
-
-                    string req = Settings.WebServiceUri + "/spectrum/get_all_accounts_basic";
-                    string json = WebApi.MakeGetRequest(req, Utils.Username, Utils.Password);
-
-                    List<AccountBasic> accs = JsonConvert.DeserializeObject<List<AccountBasic>>(json);
-
-                    cboxAccount.Items.Add(new AccountBasic(Guid.Empty, ""));
-                    cboxEditAccountName.Items.Add(new AccountBasic(Guid.Empty, ""));
-                    foreach (AccountBasic acc in accs)
-                    {
-                        cboxAccount.Items.Add(new AccountBasic(acc.ID, acc.Username));
-                        cboxEditAccountName.Items.Add(new AccountBasic(acc.ID, acc.Username));
-                    }
-
-                    BindGridValidation();
-                    BindGridGeometries();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Feil");
-                    Application.Exit();
-                }
-                finally
-                {
-                    lblStatus.Text = "";
-                    Enabled = true;
-                }
+                
+                lblStatus.Text = "";
+                Enabled = true;
             }
         }
 
@@ -308,22 +292,61 @@ namespace lorakon_manager
 
         private void btnMainSearch_Click(object sender, EventArgs e)
         {
-            tabs.SelectedTab = pageSearch;
+            try
+            {
+                string req = Settings.WebServiceUri + "/spectrum/get_all_accounts_basic";
+                string json = WebApi.MakeGetRequest(req, Utils.Username, Utils.Password);
+
+                List<AccountBasic> accs = JsonConvert.DeserializeObject<List<AccountBasic>>(json);
+
+                cboxAccount.Items.Clear();
+                cboxAccount.Items.Add(new AccountBasic(Guid.Empty, ""));
+                foreach (AccountBasic acc in accs)                
+                    cboxAccount.Items.Add(new AccountBasic(acc.ID, acc.Username));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Feil");
+            }
+
             populateGrid();
+
+            tabs.SelectedTab = pageSearch;            
         }
 
         private void btnMenuValidation_Click(object sender, EventArgs e)
         {
+            BindGridValidation();            
+
             tabs.SelectedTab = pageValidation;
         }
 
         private void btnMenuGeometry_Click(object sender, EventArgs e)
-        {
+        {            
+            BindGridGeometries();
+
             tabs.SelectedTab = pageGeometries;
         }
 
         private void btnMainEdit_Click(object sender, EventArgs e)
         {
+            try
+            {
+                string req = Settings.WebServiceUri + "/spectrum/get_all_accounts_basic";
+                string json = WebApi.MakeGetRequest(req, Utils.Username, Utils.Password);
+
+                List<AccountBasic> accs = JsonConvert.DeserializeObject<List<AccountBasic>>(json);
+
+                cboxEditAccountName.Items.Clear();
+                cboxEditAccountName.Items.Add(new AccountBasic(Guid.Empty, ""));
+                foreach (AccountBasic acc in accs)
+                    cboxEditAccountName.Items.Add(new AccountBasic(acc.ID, acc.Username));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Feil");
+            }
+
             tabs.SelectedTab = pageEdit;
         }
 

@@ -64,9 +64,9 @@ namespace lorakon_manager
                 tblatitude.Text = spec.Latitude.ToString();
                 tbLongitude.Text = spec.Longitude.ToString();
                 tbAltitude.Text = spec.Altitude.ToString();
-                tbCreateDate.Text = spec.CreateDate.ToString();
-                tbUpdateDate.Text = spec.UpdateDate.ToString();
-                tbAqusitionDate.Text = spec.AcquisitionDate.ToString();
+                tbCreateDate.Text = spec.CreateDate.ToString(Utils.PrettyDateFormat);
+                tbUpdateDate.Text = spec.UpdateDate.ToString(Utils.PrettyDateFormat);
+                tbAqusitionDate.Text = spec.AcquisitionDate.ToString(Utils.PrettyDateFormat);
                 tbBackgroundFile.Text = spec.BackgroundFile;
                 tbLibraryFile.Text = spec.LibraryFile;
                 tbCommunity.Text = spec.Community;

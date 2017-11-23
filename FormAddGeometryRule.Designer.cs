@@ -61,7 +61,7 @@
             this.btnCancel.Location = new System.Drawing.Point(252, 0);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(112, 32);
-            this.btnCancel.TabIndex = 5;
+            this.btnCancel.TabIndex = 6;
             this.btnCancel.Text = "Avbryt";
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
@@ -72,7 +72,7 @@
             this.btnOk.Location = new System.Drawing.Point(364, 0);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(112, 32);
-            this.btnOk.TabIndex = 4;
+            this.btnOk.TabIndex = 5;
             this.btnOk.Text = "Ok";
             this.btnOk.UseVisualStyleBackColor = true;
             this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
@@ -110,7 +110,7 @@
             this.tbName.MaxLength = 16;
             this.tbName.Name = "tbName";
             this.tbName.Size = new System.Drawing.Size(320, 21);
-            this.tbName.TabIndex = 0;
+            this.tbName.TabIndex = 1;
             // 
             // tbUnit
             // 
@@ -119,7 +119,7 @@
             this.tbUnit.MaxLength = 16;
             this.tbUnit.Name = "tbUnit";
             this.tbUnit.Size = new System.Drawing.Size(320, 21);
-            this.tbUnit.TabIndex = 1;
+            this.tbUnit.TabIndex = 2;
             // 
             // tbMinimum
             // 
@@ -128,7 +128,7 @@
             this.tbMinimum.MaxLength = 16;
             this.tbMinimum.Name = "tbMinimum";
             this.tbMinimum.Size = new System.Drawing.Size(320, 21);
-            this.tbMinimum.TabIndex = 2;
+            this.tbMinimum.TabIndex = 3;
             // 
             // tbMaximum
             // 
@@ -137,7 +137,7 @@
             this.tbMaximum.MaxLength = 16;
             this.tbMaximum.Name = "tbMaximum";
             this.tbMaximum.Size = new System.Drawing.Size(320, 21);
-            this.tbMaximum.TabIndex = 3;
+            this.tbMaximum.TabIndex = 4;
             // 
             // label1
             // 
