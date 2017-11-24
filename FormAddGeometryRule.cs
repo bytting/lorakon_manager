@@ -47,6 +47,7 @@ namespace lorakon_manager
 
         private void FormAddGeometryRule_Load(object sender, EventArgs e)
         {
+            lblStatus.Text = "";
             tbName.KeyPress += CustomEvents.Alpha_KeyPress;
             tbUnit.KeyPress += CustomEvents.Alpha_KeyPress;
             tbMinimum.KeyPress += CustomEvents.Numeric_KeyPress;
@@ -62,7 +63,31 @@ namespace lorakon_manager
 
         private void btnOk_Click(object sender, EventArgs e)
         {
-            if(!Updating)
+            if(String.IsNullOrEmpty(tbName.Text.Trim()))
+            {
+                lblStatus.Text = "Mangler geometri navn";
+                return;
+            }
+
+            if (String.IsNullOrEmpty(tbUnit.Text.Trim()))
+            {
+                lblStatus.Text = "Mangler geometri enhet";
+                return;
+            }
+
+            if (String.IsNullOrEmpty(tbMinimum.Text.Trim()))
+            {
+                lblStatus.Text = "Mangler minimum";
+                return;
+            }
+
+            if (String.IsNullOrEmpty(tbMaximum.Text.Trim()))
+            {
+                lblStatus.Text = "Mangler maximum";
+                return;
+            }
+
+            if (!Updating)
                 Rule.Id = Guid.NewGuid();
             Rule.Geometry = tbName.Text;
             Rule.Unit = tbUnit.Text;

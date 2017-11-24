@@ -48,6 +48,7 @@ namespace lorakon_manager
 
         private void FormAddValidationRule_Load(object sender, EventArgs e)
         {
+            lblStatus.Text = "";
             tbNuclideName.KeyPress += CustomEvents.Alpha_KeyPress;
             tbActivityMin.KeyPress += CustomEvents.Numeric_KeyPress;
             tbActivityMax.KeyPress += CustomEvents.Numeric_KeyPress;
@@ -64,7 +65,31 @@ namespace lorakon_manager
 
         private void btnOk_Click(object sender, EventArgs e)
         {   
-            if(!Updating)         
+            if(String.IsNullOrEmpty(tbNuclideName.Text.Trim()))
+            {
+                lblStatus.Text = "Mangler nuklide navn";
+                return;
+            }
+
+            if (String.IsNullOrEmpty(tbActivityMin.Text.Trim()))
+            {
+                lblStatus.Text = "Mangler minimum aktivitet";
+                return;
+            }
+
+            if (String.IsNullOrEmpty(tbActivityMax.Text.Trim()))
+            {
+                lblStatus.Text = "Mangler maximum aktivitet";
+                return;
+            }
+
+            if (String.IsNullOrEmpty(tbConfidenceMin.Text.Trim()))
+            {
+                lblStatus.Text = "Mangler minimum konfidens intervall";
+                return;
+            }
+
+            if (!Updating)         
                 Rule.Id = Guid.NewGuid();
             Rule.NuclideName = tbNuclideName.Text;
             Rule.ActivityMin = Convert.ToSingle(tbActivityMin.Text);

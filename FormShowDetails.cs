@@ -83,6 +83,8 @@ namespace lorakon_manager
 
                 List<SpectrumResult> resList = JsonConvert.DeserializeObject<List<SpectrumResult>>(json);
 
+                resList.Sort((i1, i2) => i1.NuclideName.CompareTo(i2.NuclideName));
+
                 gridNuclideResults.Rows.Clear();
                 foreach (SpectrumResult res in resList)
                 {
@@ -92,17 +94,17 @@ namespace lorakon_manager
                     row.Cells.Add(new DataGridViewTextBoxCell { Value = res.SpectrumInfoID });
                     row.Cells.Add(new DataGridViewTextBoxCell { Value = res.CreateDate.ToString(Utils.PrettyDateFormat) });
                     row.Cells.Add(new DataGridViewTextBoxCell { Value = res.UpdateDate.ToString(Utils.PrettyDateFormat) });
-                    row.Cells.Add(new DataGridViewTextBoxCell { Value = res.NuclideName });
-                    row.Cells.Add(new DataGridViewTextBoxCell { Value = res.Confidence });
+                    row.Cells.Add(new DataGridViewTextBoxCell { Value = res.NuclideName });                    
                     row.Cells.Add(new DataGridViewTextBoxCell { Value = res.Activity });
                     row.Cells.Add(new DataGridViewTextBoxCell { Value = res.ActivityUncertainty });
-                    row.Cells.Add(new DataGridViewTextBoxCell { Value = res.MDA });
-                    row.Cells.Add(new DataGridViewCheckBoxCell { Value = res.Evaluated });
+                    row.Cells.Add(new DataGridViewTextBoxCell { Value = res.Confidence });
+                    row.Cells.Add(new DataGridViewTextBoxCell { Value = res.MDA });                    
                     row.Cells.Add(new DataGridViewCheckBoxCell { Value = res.Approved });
                     row.Cells.Add(new DataGridViewCheckBoxCell { Value = res.ApprovedIsMDA });
                     row.Cells.Add(new DataGridViewTextBoxCell { Value = res.ApprovedStatus });
                     row.Cells.Add(new DataGridViewCheckBoxCell { Value = res.Rejected });
                     row.Cells.Add(new DataGridViewTextBoxCell { Value = res.Comment });
+                    row.Cells.Add(new DataGridViewCheckBoxCell { Value = res.Evaluated });
 
                     gridNuclideResults.Rows.Add(row);
                 }

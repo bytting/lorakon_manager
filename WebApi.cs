@@ -27,7 +27,7 @@ namespace lorakon_manager
     public static class WebApi
     {
         public static string MakeGetRequest(string req, string username, string password)
-        {
+        {            
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(req);
             byte[] toEncodeAsBytes = UTF8Encoding.UTF8.GetBytes(username + ":" + password);
             string cred = Convert.ToBase64String(toEncodeAsBytes);            

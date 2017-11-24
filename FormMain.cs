@@ -199,26 +199,42 @@ namespace lorakon_manager
 
         private string[] GetLogMessages(DateTime fromDate, DateTime toDate)
         {
-            string req = Settings.WebServiceUri + "/spectrum/get_log_entries?from=" + fromDate.ToString("yyyyMMdd_hhmmss") + "&to=" + toDate.ToString("yyyyMMdd_hhmmss");
-            string json = WebApi.MakeGetRequest(req, Utils.Username, Utils.Password);
-            List<LogEntry> ents = JsonConvert.DeserializeObject<List<LogEntry>>(json);
-
             List<string> logMessages = new List<string>();
-            foreach (LogEntry ent in ents)            
-                logMessages.Add(ent.CreateDate.ToString("yyyy.MM.dd HH:mm:ss") + " [" + LogSeverityString(ent.Severity) + "]: " + ent.Message);            
+
+            try
+            {
+                string req = Settings.WebServiceUri + "/spectrum/get_log_entries?from=" + fromDate.ToString("yyyyMMdd_hhmmss") + "&to=" + toDate.ToString("yyyyMMdd_hhmmss");
+                string json = WebApi.MakeGetRequest(req, Utils.Username, Utils.Password);
+                List<LogEntry> ents = JsonConvert.DeserializeObject<List<LogEntry>>(json);
+                
+                foreach (LogEntry ent in ents)
+                    logMessages.Add(ent.CreateDate.ToString("yyyy.MM.dd HH:mm:ss") + " [" + LogSeverityString(ent.Severity) + "]: " + ent.Message);                
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
 
             return logMessages.ToArray();
         }
 
         private string[] GetLogMessages(DateTime fromDate, DateTime toDate, int severity)
         {
-            string req = Settings.WebServiceUri + "/spectrum/get_log_entries_severity?from=" + fromDate.ToString("yyyyMMdd_hhmmss") + "&to=" + toDate.ToString("yyyyMMdd_hhmmss") + "&severity=" + severity.ToString();
-            string json = WebApi.MakeGetRequest(req, Utils.Username, Utils.Password);
-            List<LogEntry> ents = JsonConvert.DeserializeObject<List<LogEntry>>(json);
-
             List<string> logMessages = new List<string>();
-            foreach (LogEntry ent in ents)
-                logMessages.Add(ent.CreateDate.ToString("yyyy.MM.dd HH:mm:ss") + " [" + LogSeverityString(ent.Severity) + "]: " + ent.Message);
+
+            try
+            {
+                string req = Settings.WebServiceUri + "/spectrum/get_log_entries_severity?from=" + fromDate.ToString("yyyyMMdd_hhmmss") + "&to=" + toDate.ToString("yyyyMMdd_hhmmss") + "&severity=" + severity.ToString();
+                string json = WebApi.MakeGetRequest(req, Utils.Username, Utils.Password);
+                List<LogEntry> ents = JsonConvert.DeserializeObject<List<LogEntry>>(json);
+                
+                foreach (LogEntry ent in ents)
+                    logMessages.Add(ent.CreateDate.ToString("yyyy.MM.dd HH:mm:ss") + " [" + LogSeverityString(ent.Severity) + "]: " + ent.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
 
             return logMessages.ToArray();
         }
@@ -292,23 +308,6 @@ namespace lorakon_manager
 
         private void btnMainSearch_Click(object sender, EventArgs e)
         {
-            try
-            {
-                string req = Settings.WebServiceUri + "/spectrum/get_all_accounts_basic";
-                string json = WebApi.MakeGetRequest(req, Utils.Username, Utils.Password);
-
-                List<AccountBasic> accs = JsonConvert.DeserializeObject<List<AccountBasic>>(json);
-
-                cboxAccount.Items.Clear();
-                cboxAccount.Items.Add(new AccountBasic(Guid.Empty, ""));
-                foreach (AccountBasic acc in accs)                
-                    cboxAccount.Items.Add(new AccountBasic(acc.ID, acc.Username));
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Feil");
-            }
-
             populateGrid();
 
             tabs.SelectedTab = pageSearch;            
@@ -367,46 +366,65 @@ namespace lorakon_manager
             if (String.IsNullOrEmpty(Settings.WebServiceUri))
                 return;
 
-            string fromString = "from=" + dtFrom.Value.ToString("yyyyMMdd_hhmmss");
-            string toString = "to=" + dtTo.Value.ToString("yyyyMMdd_hhmmss");
-            string accidString = "accid=";
-            if (!String.IsNullOrEmpty(cboxAccount.Text))
+            try
             {
-                AccountBasic a = cboxAccount.SelectedItem as AccountBasic;
-                accidString += a.ID.ToString();
-            }
-            string sampString = "samp=";
-            if (!String.IsNullOrEmpty(tbSearchSampleType.Text))
-            {
-                sampString += "%" + tbSearchSampleType.Text.Trim() + "%";
-            }
-            string apprString = "appr=" + ((cbApproved.Checked) ? "true" : "false");
-            string rejString = "rej=" + ((cbRejected.Checked) ? "true" : "false");
+                // Populate account dropdown
+                string req = Settings.WebServiceUri + "/spectrum/get_all_accounts_basic";
+                string json = WebApi.MakeGetRequest(req, Utils.Username, Utils.Password);
 
-            string req = Settings.WebServiceUri + "/spectrum/get_spectrum_info_latest?" + fromString + "&" + toString + "&" + accidString + "&" + sampString + "&" + apprString + "&" + rejString;
-            string json = WebApi.MakeGetRequest(req, Utils.Username, Utils.Password);
+                List<AccountBasic> accs = JsonConvert.DeserializeObject<List<AccountBasic>>(json);
+
+                cboxAccount.Items.Clear();
+                cboxAccount.Items.Add(new AccountBasic(Guid.Empty, ""));
+                foreach (AccountBasic acc in accs)
+                    cboxAccount.Items.Add(new AccountBasic(acc.ID, acc.Username));
+
+                // Populate spectrum grid
+                string fromString = "from=" + dtFrom.Value.ToString("yyyyMMdd_hhmmss");
+                string toString = "to=" + dtTo.Value.ToString("yyyyMMdd_hhmmss");
+                string accidString = "accid=";
+                if (!String.IsNullOrEmpty(cboxAccount.Text))
+                {
+                    AccountBasic a = cboxAccount.SelectedItem as AccountBasic;
+                    accidString += a.ID.ToString();
+                }
+                string sampString = "samp=";
+                if (!String.IsNullOrEmpty(tbSearchSampleType.Text))
+                {
+                    sampString += "%" + tbSearchSampleType.Text.Trim() + "%";
+                }
+                string apprString = "appr=" + ((cbApproved.Checked) ? "true" : "false");
+                string rejString = "rej=" + ((cbRejected.Checked) ? "true" : "false");
             
-            List<SpectrumInfo> specs = JsonConvert.DeserializeObject<List<SpectrumInfo>>(json);
+                req = Settings.WebServiceUri + "/spectrum/get_spectrum_info_latest?" + fromString + "&" + toString + "&" + accidString + "&" + sampString + "&" + apprString + "&" + rejString;
+                json = WebApi.MakeGetRequest(req, Utils.Username, Utils.Password);
 
-            gridSearch.Rows.Clear();
+                List<SpectrumInfo> specs = JsonConvert.DeserializeObject<List<SpectrumInfo>>(json);
 
-            foreach (SpectrumInfo spec in specs)
+                gridSearch.Rows.Clear();
+
+                foreach (SpectrumInfo spec in specs)
+                {
+                    DataGridViewRow row = new DataGridViewRow();
+
+                    row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.ID });
+                    row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.AccountName });
+                    row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.Operator });
+                    row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.CreateDate.ToString(Utils.PrettyDateFormat) });
+                    row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.AcquisitionDate.ToString(Utils.PrettyDateFormat) });
+                    row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.ReferenceDate.ToString(Utils.PrettyDateFormat) });
+                    row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.SampleType });
+                    row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.SampleComponent });
+                    row.Cells.Add(new DataGridViewCheckBoxCell { Value = spec.Approved });
+                    row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.ApprovedStatus });
+                    row.Cells.Add(new DataGridViewCheckBoxCell { Value = spec.Rejected });
+
+                    gridSearch.Rows.Add(row);
+                }
+            }
+            catch (Exception ex)
             {
-                DataGridViewRow row = new DataGridViewRow();
-
-                row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.ID });
-                row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.AccountName });
-                row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.Operator });
-                row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.CreateDate.ToString(Utils.PrettyDateFormat) });
-                row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.AcquisitionDate.ToString(Utils.PrettyDateFormat) });
-                row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.ReferenceDate.ToString(Utils.PrettyDateFormat) });
-                row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.SampleType });
-                row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.SampleComponent });
-                row.Cells.Add(new DataGridViewCheckBoxCell { Value = spec.Approved });
-                row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.ApprovedStatus });
-                row.Cells.Add(new DataGridViewCheckBoxCell { Value = spec.Rejected });
-
-                gridSearch.Rows.Add(row);
+                MessageBox.Show(ex.Message);
             }
         }
 
@@ -458,34 +476,41 @@ namespace lorakon_manager
                 progress.Step = 1;
                 progress.Value = 0;
                 progress.Visible = true;
-                
-                foreach(string filename in ofd.FileNames)
+
+                try
                 {
-                    progress.Value++;
-
-                    string stype = GetSpectrumParameter(filename, "STYPE");
-                    stype += " - " + GetSpectrumParameter(filename, "STITLE");
-                    string lab = GetSpectrumParameter(filename, "SSPRSTR1");
-                    string accountID = GetSpectrumParameter(filename, "SURSTRING1");
-                    string accountName = "";
-                    if (!String.IsNullOrEmpty(accountID))
+                    foreach (string filename in ofd.FileNames)
                     {
-                        Guid id = new Guid(accountID);
+                        progress.Value++;
 
-                        string req = Settings.WebServiceUri + "/spectrum/get_account_name/" + id.ToString();
-                        string json = WebApi.MakeGetRequest(req, Utils.Username, Utils.Password);
-                        AccountName accName = JsonConvert.DeserializeObject<AccountName>(json);
-                        if (!String.IsNullOrEmpty(accName.Name))
-                            accountName = accName.Name;
-                    }                    
-                    string sampleType = GetSpectrumParameter(filename, "SUCSTRING1");
-                    string sampleComponent = GetSpectrumParameter(filename, "SUCSTRING2");
+                        string stype = GetSpectrumParameter(filename, "STYPE");
+                        stype += " - " + GetSpectrumParameter(filename, "STITLE");
+                        string lab = GetSpectrumParameter(filename, "SSPRSTR1");
+                        string accountID = GetSpectrumParameter(filename, "SURSTRING1");
+                        string accountName = "";
+                        if (!String.IsNullOrEmpty(accountID))
+                        {
+                            Guid id = new Guid(accountID);
 
-                    string[] items = { filename, stype, lab, accountName, accountID, sampleType, sampleComponent };
+                            string req = Settings.WebServiceUri + "/spectrum/get_account_name/" + id.ToString();
+                            string json = WebApi.MakeGetRequest(req, Utils.Username, Utils.Password);
+                            AccountName accName = JsonConvert.DeserializeObject<AccountName>(json);
+                            if (!String.IsNullOrEmpty(accName.Name))
+                                accountName = accName.Name;
+                        }
+                        string sampleType = GetSpectrumParameter(filename, "SUCSTRING1");
+                        string sampleComponent = GetSpectrumParameter(filename, "SUCSTRING2");
 
-                    gridEditFiles.Rows.Add(items);
+                        string[] items = { filename, stype, lab, accountName, accountID, sampleType, sampleComponent };
 
-                    Application.DoEvents();
+                        gridEditFiles.Rows.Add(items);
+
+                        Application.DoEvents();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
                 }
 
                 progress.Visible = false;
@@ -704,11 +729,19 @@ namespace lorakon_manager
 
         private void BindGridValidation()
         {
-            string req = Settings.WebServiceUri + "/spectrum/get_all_validation_rules";
-            string json = WebApi.MakeGetRequest(req, Utils.Username, Utils.Password);
-            List<ValidationRule> rules = JsonConvert.DeserializeObject<List<ValidationRule>>(json);
-            gridValidation.DataSource = rules;
-            gridValidation.Columns[0].Visible = false;
+            try
+            {
+                string req = Settings.WebServiceUri + "/spectrum/get_all_validation_rules";
+                string json = WebApi.MakeGetRequest(req, Utils.Username, Utils.Password);
+                List<ValidationRule> rules = JsonConvert.DeserializeObject<List<ValidationRule>>(json);
+                rules.Sort((i1, i2) => i1.NuclideName.CompareTo(i2.NuclideName));
+                gridValidation.DataSource = rules;
+                gridValidation.Columns[0].Visible = false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }        
         
         private void menuItemDeleteNuclide_Click(object sender, EventArgs e)
@@ -724,19 +757,35 @@ namespace lorakon_manager
             if (String.IsNullOrEmpty(nuclideName.Trim()))
                 return;
 
-            string req = Settings.WebServiceUri + "/spectrum/delete_validation_rule?name=" + nuclideName;
-            string json = WebApi.MakeGetRequest(req, Utils.Username, Utils.Password);
-            
+            try
+            {
+                string req = Settings.WebServiceUri + "/spectrum/delete_validation_rule?name=" + nuclideName;
+                string json = WebApi.MakeGetRequest(req, Utils.Username, Utils.Password);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
             BindGridValidation();
         }
 
         private void BindGridGeometries()
         {
-            string req = Settings.WebServiceUri + "/spectrum/get_all_geometry_rules";
-            string json = WebApi.MakeGetRequest(req, Utils.Username, Utils.Password);
-            List<GeometryRule> rules = JsonConvert.DeserializeObject<List<GeometryRule>>(json);
-            gridGeometries.DataSource = rules;
-            gridGeometries.Columns[0].Visible = false;
+            try
+            {
+                string req = Settings.WebServiceUri + "/spectrum/get_all_geometry_rules";
+                string json = WebApi.MakeGetRequest(req, Utils.Username, Utils.Password);
+                List<GeometryRule> rules = JsonConvert.DeserializeObject<List<GeometryRule>>(json);
+                rules.Sort((i1, i2) => i1.Geometry.CompareTo(i2.Geometry));
+
+                gridGeometries.DataSource = rules;
+                gridGeometries.Columns[0].Visible = false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void menuItemDeleteGeometry_Click(object sender, EventArgs e)
@@ -797,6 +846,7 @@ namespace lorakon_manager
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+                return;
             }
 
             BindGridValidation();
@@ -816,6 +866,7 @@ namespace lorakon_manager
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+                return;
             }
 
             BindGridGeometries();
