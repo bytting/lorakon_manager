@@ -58,8 +58,10 @@ namespace lorakon_manager
         {
             try
             {
-                Width = (Screen.FromControl(this).Bounds.Right - Screen.FromControl(this).Bounds.Left) / 2;
-                Height = (Screen.FromControl(this).Bounds.Bottom - Screen.FromControl(this).Bounds.Top) / 2;
+                int w3 = (Screen.FromControl(this).Bounds.Right - Screen.FromControl(this).Bounds.Left) / 3;
+                int h3 = (Screen.FromControl(this).Bounds.Bottom - Screen.FromControl(this).Bounds.Top) / 3;
+                Width = w3 * 2;
+                Height = h3 * 2;
 
                 tabs.Appearance = TabAppearance.FlatButtons;
                 tabs.ItemSize = new Size(0, 1);
@@ -408,11 +410,11 @@ namespace lorakon_manager
                 foreach (SpectrumInfo spec in specs)
                 {
                     DataGridViewRow row = new DataGridViewRow();
-
+                    
                     row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.ID });
                     row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.AccountName });
                     row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.Operator });
-                    row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.CreateDate.ToString(Utils.PrettyDateFormat) });
+                    row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.ExternalID });
                     row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.AcquisitionDate.ToString(Utils.PrettyDateFormat) });
                     row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.ReferenceDate.ToString(Utils.PrettyDateFormat) });
                     row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.SampleType });
@@ -973,6 +975,7 @@ namespace lorakon_manager
             catch(Exception ex)
             {
                 MessageBox.Show(ex.Message);
+                return;
             }
 
             populateGrid();
