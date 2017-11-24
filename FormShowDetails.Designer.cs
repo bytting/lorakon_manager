@@ -31,6 +31,7 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormShowDetails));
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.gridNuclideResults = new System.Windows.Forms.DataGridView();
             this.colID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colSpecInfoID = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -129,7 +130,6 @@
             this.btnClose = new System.Windows.Forms.Button();
             this.toolsDetails = new System.Windows.Forms.ToolStrip();
             this.btnOpenInGenie = new System.Windows.Forms.ToolStripButton();
-            this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridNuclideResults)).BeginInit();
             this.panel1.SuspendLayout();
@@ -173,6 +173,12 @@
             this.statusStrip1.Size = new System.Drawing.Size(993, 22);
             this.statusStrip1.TabIndex = 0;
             this.statusStrip1.Text = "statusStrip1";
+            // 
+            // lblStatus
+            // 
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(68, 17);
+            this.lblStatus.Text = "<lblStatus>";
             // 
             // gridNuclideResults
             // 
@@ -1187,12 +1193,6 @@
             this.btnOpenInGenie.Size = new System.Drawing.Size(99, 37);
             this.btnOpenInGenie.Text = "Vis spekter";
             this.btnOpenInGenie.Click += new System.EventHandler(this.btnOpenInGenie_Click);
-            // 
-            // lblStatus
-            // 
-            this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(68, 17);
-            this.lblStatus.Text = "<lblStatus>";
             // 
             // FormShowDetails
             // 

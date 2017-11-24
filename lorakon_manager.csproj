@@ -144,6 +144,7 @@
     <None Include="images\doc_settings_128.png" />
     <None Include="images\doc_star_128.png" />
     <None Include="images\edit-32.png" />
+    <None Include="images\details-32.png" />
     <Content Include="images\exit-32.png" />
     <None Include="images\log256.png" />
     <Content Include="images\Lorakon.ico" />

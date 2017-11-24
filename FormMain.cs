@@ -66,6 +66,8 @@ namespace lorakon_manager
                 tabs.SizeMode = TabSizeMode.Fixed;
 
                 btnBack.Visible = false;
+                btnSpectrumOpenInGenie.Visible = false;
+                btnSpectrumDetails.Visible = false;
                 btnSpectrumDelete.Visible = false;
                 separatorMain.Visible = false;
                 menuItemOpenFiles.Visible = false;
@@ -522,6 +524,8 @@ namespace lorakon_manager
         private void tabs_SelectedIndexChanged(object sender, EventArgs e)
         {
             btnBack.Visible = true;
+            btnSpectrumOpenInGenie.Visible = false;
+            btnSpectrumDetails.Visible = false;
             btnSpectrumDelete.Visible = false;
             separatorMain.Visible = true;
             menuItemOpenFiles.Visible = false;
@@ -561,6 +565,8 @@ namespace lorakon_manager
             }
             else if(tabs.SelectedTab == pageSearch)
             {
+                btnSpectrumDetails.Visible = true;
+                btnSpectrumOpenInGenie.Visible = true;
                 btnSpectrumDelete.Visible = true;
             }
             else if(tabs.SelectedTab == pageMain)
@@ -944,6 +950,8 @@ namespace lorakon_manager
             Guid id = new Guid(row.Cells["ID"].Value.ToString());
             FormShowDetails form = new FormShowDetails(Settings, id);
             form.ShowDialog();
+            if (form.HasUpdated)
+                populateGrid();
         }
 
         private void menuItemDeleteSpectrum_Click(object sender, EventArgs e)

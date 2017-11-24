@@ -28,10 +28,12 @@ using Newtonsoft.Json;
 namespace lorakon_manager
 {
     public partial class FormShowDetails : Form
-    {        
-        LorakonManagerSettings Settings = null;
-        Guid id = Guid.Empty;        
-        string GeniePath;
+    {
+        public bool HasUpdated = false;
+
+        private LorakonManagerSettings Settings = null;
+        private Guid id = Guid.Empty;
+        private string GeniePath;
 
         public FormShowDetails(LorakonManagerSettings s, Guid sid)
         {
@@ -182,7 +184,8 @@ namespace lorakon_manager
                     json = WebApi.MakeGetRequest(req, Utils.Username, Utils.Password);
                 }
 
-                lblStatus.Text = "Spektrum " + id + " oppdatert";
+                HasUpdated = true;
+                lblStatus.Text = DateTime.Now.ToString(Utils.PrettyDateFormat) + " - Spektrum " + id + " oppdatert";
             }
             catch(Exception ex)
             {
