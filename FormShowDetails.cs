@@ -42,6 +42,8 @@ namespace lorakon_manager
 
         private void FormShowDetails_Load(object sender, EventArgs e)
         {
+            lblStatus.Text = "";
+
             if (String.IsNullOrEmpty(Settings.WebServiceUri))
                 return;
 
@@ -166,19 +168,21 @@ namespace lorakon_manager
 
                 foreach (DataGridViewRow row in gridNuclideResults.Rows)
                 {
-                    string id = row.Cells["colID"].Value.ToString();
+                    string resId = row.Cells["colID"].Value.ToString();
                     bool approved = Convert.ToBoolean(row.Cells["colApproved"].Value);
                     bool rejected = Convert.ToBoolean(row.Cells["colRejected"].Value);
 
-                    req = Settings.WebServiceUri + "/spectrum/update_spectrum_result_approved?id=" + id + "&approved=" + approved.ToString();
+                    req = Settings.WebServiceUri + "/spectrum/update_spectrum_result_approved?id=" + resId + "&approved=" + approved.ToString();
                     json = WebApi.MakeGetRequest(req, Utils.Username, Utils.Password);
 
-                    req = Settings.WebServiceUri + "/spectrum/update_spectrum_result_rejected?id=" + id + "&rejected=" + rejected.ToString();
+                    req = Settings.WebServiceUri + "/spectrum/update_spectrum_result_rejected?id=" + resId + "&rejected=" + rejected.ToString();
                     json = WebApi.MakeGetRequest(req, Utils.Username, Utils.Password);
 
-                    req = Settings.WebServiceUri + "/spectrum/update_spectrum_result_evaluated?id=" + id + "&evaluated=true";
+                    req = Settings.WebServiceUri + "/spectrum/update_spectrum_result_evaluated?id=" + resId + "&evaluated=true";
                     json = WebApi.MakeGetRequest(req, Utils.Username, Utils.Password);
                 }
+
+                lblStatus.Text = "Spektrum " + id + " oppdatert";
             }
             catch(Exception ex)
             {

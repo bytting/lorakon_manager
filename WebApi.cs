@@ -28,9 +28,8 @@ namespace lorakon_manager
     {
         public static string MakeGetRequest(string req, string username, string password)
         {            
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(req);
-            byte[] toEncodeAsBytes = UTF8Encoding.UTF8.GetBytes(username + ":" + password);
-            string cred = Convert.ToBase64String(toEncodeAsBytes);            
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(req);            
+            string cred = Convert.ToBase64String(UTF8Encoding.UTF8.GetBytes(username + ":" + password));
             request.Headers.Add("Authorization", "Basic " + cred);
             request.PreAuthenticate = true;
             request.Timeout = 30000;
@@ -48,8 +47,7 @@ namespace lorakon_manager
         public static bool MakePostRequest<T>(string req, T obj, string username, string password)
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(req);
-            byte[] toEncodeAsBytes = UTF8Encoding.UTF8.GetBytes(username + ":" + password);
-            string cred = Convert.ToBase64String(toEncodeAsBytes);
+            string cred = Convert.ToBase64String(UTF8Encoding.UTF8.GetBytes(username + ":" + password));
             request.Headers.Add("Authorization", "Basic " + cred);
             request.PreAuthenticate = true;
             request.Timeout = 30000;
