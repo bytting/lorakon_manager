@@ -310,8 +310,34 @@ namespace lorakon_manager
             tabs.SelectedTab = pageMain;
         }
 
+        private bool populateAccounts()
+        {
+            try
+            {
+                // Populate account dropdown
+                string req = Settings.WebServiceUri + "/spectrum/get_all_accounts_basic";
+                string json = WebApi.MakeGetRequest(req, Utils.Username, Utils.Password);
+
+                List<AccountBasic> accs = JsonConvert.DeserializeObject<List<AccountBasic>>(json);
+
+                cboxAccount.Items.Clear();
+                cboxAccount.Items.Add(new AccountBasic(Guid.Empty, ""));
+                foreach (AccountBasic acc in accs)
+                    cboxAccount.Items.Add(new AccountBasic(acc.ID, acc.Username));
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return false;
+            }
+            return true;
+        }
+
         private void btnMainSearch_Click(object sender, EventArgs e)
         {
+            if (!populateAccounts())
+                return;
+
             populateGrid();
 
             tabs.SelectedTab = pageSearch;            
@@ -340,6 +366,7 @@ namespace lorakon_manager
 
                 List<AccountBasic> accs = JsonConvert.DeserializeObject<List<AccountBasic>>(json);
 
+                tbEditAccountID.Text = "";
                 cboxEditAccountName.Items.Clear();
                 cboxEditAccountName.Items.Add(new AccountBasic(Guid.Empty, ""));
                 foreach (AccountBasic acc in accs)
@@ -348,6 +375,7 @@ namespace lorakon_manager
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Feil");
+                return;
             }
 
             tabs.SelectedTab = pageEdit;
@@ -373,7 +401,7 @@ namespace lorakon_manager
             try
             {
                 // Populate account dropdown
-                string req = Settings.WebServiceUri + "/spectrum/get_all_accounts_basic";
+                /*string req = Settings.WebServiceUri + "/spectrum/get_all_accounts_basic";
                 string json = WebApi.MakeGetRequest(req, Utils.Username, Utils.Password);
 
                 List<AccountBasic> accs = JsonConvert.DeserializeObject<List<AccountBasic>>(json);
@@ -381,7 +409,7 @@ namespace lorakon_manager
                 cboxAccount.Items.Clear();
                 cboxAccount.Items.Add(new AccountBasic(Guid.Empty, ""));
                 foreach (AccountBasic acc in accs)
-                    cboxAccount.Items.Add(new AccountBasic(acc.ID, acc.Username));
+                    cboxAccount.Items.Add(new AccountBasic(acc.ID, acc.Username));*/
 
                 // Populate spectrum grid
                 string fromString = "from=" + dtFrom.Value.ToString("yyyyMMdd_hhmmss");
@@ -400,8 +428,8 @@ namespace lorakon_manager
                 string apprString = "appr=" + ((cbApproved.Checked) ? "true" : "false");
                 string rejString = "rej=" + ((cbRejected.Checked) ? "true" : "false");
             
-                req = Settings.WebServiceUri + "/spectrum/get_spectrum_info_latest?" + fromString + "&" + toString + "&" + accidString + "&" + sampString + "&" + apprString + "&" + rejString;
-                json = WebApi.MakeGetRequest(req, Utils.Username, Utils.Password);
+                string req = Settings.WebServiceUri + "/spectrum/get_spectrum_info_latest?" + fromString + "&" + toString + "&" + accidString + "&" + sampString + "&" + apprString + "&" + rejString;
+                string json = WebApi.MakeGetRequest(req, Utils.Username, Utils.Password);
 
                 List<SpectrumInfo> specs = JsonConvert.DeserializeObject<List<SpectrumInfo>>(json);
 
