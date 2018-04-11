@@ -132,7 +132,7 @@ namespace lorakon_manager
             {
                 MessageBox.Show(ex.Message);
                 Application.Exit();
-            }
+            }            
         }
 
         private void FormMain_Paint(object sender, PaintEventArgs e)
@@ -443,8 +443,8 @@ namespace lorakon_manager
                     row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.AccountName });
                     row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.Operator });
                     row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.ExternalID });
-                    row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.AcquisitionDate.ToString(Utils.PrettyDateFormat) });
                     row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.ReferenceDate.ToString(Utils.PrettyDateFormat) });
+                    row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.AcquisitionDate.ToString(Utils.PrettyDateFormat) });                    
                     row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.SampleType });
                     row.Cells.Add(new DataGridViewTextBoxCell { Value = spec.SampleComponent });
                     row.Cells.Add(new DataGridViewCheckBoxCell { Value = spec.Approved });

@@ -282,7 +282,6 @@
             // 
             this.colIsMDA.HeaderText = "Godkj.MDA";
             this.colIsMDA.Name = "colIsMDA";
-            this.colIsMDA.ReadOnly = true;
             // 
             // colApprovedStatus
             // 
@@ -1361,6 +1360,7 @@
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.ToolStrip toolsDetails;
         private System.Windows.Forms.ToolStripButton btnOpenInGenie;
+        private System.Windows.Forms.ToolStripStatusLabel lblStatus;
         private System.Windows.Forms.DataGridViewTextBoxColumn colID;
         private System.Windows.Forms.DataGridViewTextBoxColumn colSpecInfoID;
         private System.Windows.Forms.DataGridViewTextBoxColumn colCreateDate;
@@ -1376,6 +1376,5 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn colRejected;
         private System.Windows.Forms.DataGridViewTextBoxColumn colComment;
         private System.Windows.Forms.DataGridViewCheckBoxColumn colEvaluated;
-        private System.Windows.Forms.ToolStripStatusLabel lblStatus;
     }
 }

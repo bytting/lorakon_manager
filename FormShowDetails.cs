@@ -173,11 +173,15 @@ namespace lorakon_manager
                     string resId = row.Cells["colID"].Value.ToString();
                     bool approved = Convert.ToBoolean(row.Cells["colApproved"].Value);
                     bool rejected = Convert.ToBoolean(row.Cells["colRejected"].Value);
+                    bool ismda = Convert.ToBoolean(row.Cells["colIsMDA"].Value);
 
                     req = Settings.WebServiceUri + "/spectrum/update_spectrum_result_approved?id=" + resId + "&approved=" + approved.ToString();
                     json = WebApi.MakeGetRequest(req, Utils.Username, Utils.Password);
 
                     req = Settings.WebServiceUri + "/spectrum/update_spectrum_result_rejected?id=" + resId + "&rejected=" + rejected.ToString();
+                    json = WebApi.MakeGetRequest(req, Utils.Username, Utils.Password);
+
+                    req = Settings.WebServiceUri + "/spectrum/update_spectrum_result_ismda?id=" + resId + "&ismda=" + ismda.ToString();
                     json = WebApi.MakeGetRequest(req, Utils.Username, Utils.Password);
 
                     req = Settings.WebServiceUri + "/spectrum/update_spectrum_result_evaluated?id=" + resId + "&evaluated=true";
